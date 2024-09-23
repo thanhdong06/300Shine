@@ -1,0 +1,6 @@
+@_300Shine_HostAddress = http://localhost:5035
+
+GET {{_300Shine_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -11,9 +11,8 @@ using System.Threading.Tasks;
 namespace _300Shine.DataAccessLayer.Entities
 {
     [Table("User")]
-    public class UserEntity
+    public class UserEntity : BaseEntity
     {
-        public int Id { get; set; }
         public string FullName { get; set; }
         public string Password { get; set; }
         public DateTime DateOfBirth { get; set; }

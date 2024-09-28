@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -8,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace _300Shine.DataAccessLayer.Entities
 {
-    [Table("Role")]
-    public class RoleEntity : BaseEntity
+    [Table("Salon")]
+    public class SalonEntity : BaseEntity
     {
-        public string Name { get; set; }
-
-        public ICollection<UserEntity> Users { get; set; }
+        public string Address { get; set; }
+        public int Phone { get; set; }
+        public string District { get; set; }
     }
 }

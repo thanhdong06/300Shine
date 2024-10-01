@@ -10,7 +10,7 @@ namespace _300Shine.DataAccessLayer.Entities
     [Table("Service")]
     public class ServiceEntity : BaseEntity
     {
-
+        public string ImageUrl { get; set; }
         public decimal Price { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

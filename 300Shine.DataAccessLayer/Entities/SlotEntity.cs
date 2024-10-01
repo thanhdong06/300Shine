@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 namespace _300Shine.DataAccessLayer.Entities
 {
     [Table("Slot")]
-    public class SlotEntity
+    public class SlotEntity : BaseEntity
     {
         public DateTime Time { get; set; }
+        public ICollection<AppointmentSlotEntity> AppointmentSlots { get; set; }
     }
 }

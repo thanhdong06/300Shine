@@ -14,15 +14,16 @@ namespace _300Shine.DataAccessLayer.Entities
     public class UserEntity : BaseEntity
     {
         public string FullName { get; set; }
-        public string Password { get; set; }
         public DateTime DateOfBirth { get; set; }
         public bool Gender { get; set; }
         public int Phone { get; set; }
         public string Address { get; set; }
         public string Status { get; set; }
         public int RoleId { get; set; }
-
+        [ForeignKey(nameof(RoleId))]
         public RoleEntity Role { get; set; }
+
+        public ICollection<AppointmentEntity> Appointments { get; set; }
 
     }
 }

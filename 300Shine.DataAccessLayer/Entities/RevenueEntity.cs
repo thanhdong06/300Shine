@@ -13,6 +13,7 @@ namespace _300Shine.DataAccessLayer.Entities
         public decimal Amount { get; set; }
         public DateTime Date {  get; set; } 
         public int SalonId { get; set; }
+        [ForeignKey(nameof(SalonId))]
         public SalonEntity Salon { get; set; }
     }
 }

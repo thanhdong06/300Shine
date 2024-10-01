@@ -11,8 +11,12 @@ namespace _300Shine.DataAccessLayer.Entities
     public class AppointmentSlotEntity : BaseEntity
     {
         public int AppointmentId { get; set; }
-        public int SlotId { get; set; }
+        [ForeignKey(nameof(AppointmentId))]
         public AppointmentEntity Appointment { get; set; }
+        public int SlotId { get; set; }
+        [ForeignKey(nameof(SlotId))]
         public SlotEntity Slot { get; set; }
+        
+        
     }
 }

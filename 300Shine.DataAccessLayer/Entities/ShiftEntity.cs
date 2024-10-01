@@ -18,6 +18,8 @@ namespace _300Shine.DataAccessLayer.Entities
         public int MaxStaff { get; set; }
         public string Status { get; set; }
         public int SalonId { get; set; }
+        [ForeignKey(nameof(SalonId))]
         public SalonEntity Salon { get; set; }
+        public ICollection<StylistShiftEntity> StylistShifts { get; set; }
     }
 }

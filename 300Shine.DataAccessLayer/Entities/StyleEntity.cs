@@ -11,5 +11,7 @@ namespace _300Shine.DataAccessLayer.Entities
     public class StyleEntity : BaseEntity
     {
         public string Style { get; set; }
+        public ICollection<ServiceStyleEntity> ServiceStyles { get; set; }
+        public ICollection<StylistStyleEntity> StylistStyles { get; set; }
     }
 }

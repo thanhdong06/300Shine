@@ -10,7 +10,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("local")));
+    //options.UseSqlServer(builder.Configuration.GetConnectionString("local")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PostGresServer")));
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins",

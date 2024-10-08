@@ -1,4 +1,4 @@
-﻿namespace GlobalMind.ResponseType
+﻿namespace _300Shine.ResponseType
 {
     public class JsonResponse<T>
     {

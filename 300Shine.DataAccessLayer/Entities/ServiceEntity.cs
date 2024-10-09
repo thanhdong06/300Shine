@@ -10,11 +10,15 @@ namespace _300Shine.DataAccessLayer.Entities
     [Table("Service")]
     public class ServiceEntity : BaseEntity
     {
+        public int SalonId { get; set; }
+        [ForeignKey(nameof(SalonId))]
+        public SalonEntity Salon { get; set; }
         public string ImageUrl { get; set; }
         public decimal Price { get; set; }
         public string Name { get; set; }
         public string? Description { get; set; }
         public ICollection<AppointmentEntity> Appointments { get; set; }
         public ICollection<ServiceStyleEntity> ServiceStyles { get; set; }
+        
     }
 }

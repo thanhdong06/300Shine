@@ -18,5 +18,7 @@ namespace _300Shine.DataAccessLayer.Entities
         public ICollection<ShiftEntity> Shifts { get; set; }
         public ICollection<RevenueEntity> Revenues { get; set; }
         public ICollection<StylistEntity> Stylists { get; set; }
+        public ICollection<UserEntity> Users { get; set; }
+        public ICollection<ServiceEntity> Services { get; set; }
     }
 }

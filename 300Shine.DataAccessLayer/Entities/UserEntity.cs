@@ -18,7 +18,11 @@ namespace _300Shine.DataAccessLayer.Entities
         public bool Gender { get; set; }
         public int Phone { get; set; }
         public string Address { get; set; }
+        public bool IsVerified { get; set; }
         public string Status { get; set; }
+        public int SalonId { get; set; }
+        [ForeignKey(nameof(SalonId))]
+        public SalonEntity Salon { get; set; }
         public int RoleId { get; set; }
         [ForeignKey(nameof(RoleId))]
         public RoleEntity Role { get; set; }

@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 namespace _300Shine.DataAccessLayer.Entities
 {
     [Table("AppointmentSlot")]
-    public class AppointmentSlotEntity : BaseEntity
+    public class AppointmentDetailSlotEntity : BaseEntity
     {
-        public int AppointmentId { get; set; }
-        [ForeignKey(nameof(AppointmentId))]
-        public AppointmentEntity Appointment { get; set; }
+        public int AppointmentDetailId { get; set; }
+        [ForeignKey(nameof(AppointmentDetailId))]
+        public AppointmentDetailEntity AppointmentDetail { get; set; }
         public int SlotId { get; set; }
         [ForeignKey(nameof(SlotId))]
         public SlotEntity Slot { get; set; }

@@ -25,6 +25,6 @@ namespace _300Shine.DataAccessLayer.Entities
 
 
         public ICollection<AppointmentDetailEntity> AppointmentDetails { get; set; }
-        public ICollection<AppointmentSlotEntity> AppointmentSlots { get; set; }
+        
     }
 }

@@ -11,6 +11,6 @@ namespace _300Shine.DataAccessLayer.Entities
     public class SlotEntity : BaseEntity
     {
         public DateTime Time { get; set; }
-        public ICollection<AppointmentSlotEntity> AppointmentSlots { get; set; }
+        public ICollection<AppointmentDetailSlotEntity> AppointmentSlots { get; set; }
     }
 }

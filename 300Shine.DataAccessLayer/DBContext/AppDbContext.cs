@@ -23,7 +23,7 @@ namespace _300Shine.DataAccessLayer.DBContext
         }
         public DbSet<AppointmentDetailEntity> AppointmentDetails { get; set; }
         public DbSet<AppointmentEntity> Appointments { get; set; }
-        public DbSet<AppointmentSlotEntity> AppointmentSlots { get; set; }
+        public DbSet<AppointmentDetailSlotEntity> AppointmentSlots { get; set; }
         public DbSet<FeedbackEntity> Feedbacks { get; set; }
         public DbSet<RevenueEntity> Revenues { get; set; }
         public DbSet<RoleEntity> Roles { get; set; }

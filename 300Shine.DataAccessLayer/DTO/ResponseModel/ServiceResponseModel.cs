@@ -14,6 +14,7 @@ namespace _300Shine.DataAccessLayer.DTO.ResponseModel
         public decimal Price { get; set; }
         public string Name { get; set; }
         public string? Description { get; set; }
+        public int SalonId { get; set; }
         public bool IsDeleted { get; set; }
         public List<ServiceStyleRequestModel> ServiceStyles { get; set; }
     }

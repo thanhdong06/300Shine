@@ -28,20 +28,24 @@ namespace _300Shine.Repository.Repositories.Service
         public async Task<string> CreateService(CreateServiceRequestModel s)
         {
             var serviceStyleDTOList = s.ServiceStyles;
-
+            var checkSalonId = await _context.Salons.SingleOrDefaultAsync(sa=>sa.Id == s.SalonId);
+            if (checkSalonId == null || checkSalonId.IsDeleted == true)
+            {
+                throw new InvalidDataException("Salon is not found");
+            }
             var newService = new ServiceEntity()
             {
                 Name = s.Name,
                 Price = s.Price,
                 Description = s.Description,
                 ImageUrl = s.ImageUrl,
+                SalonId = s.SalonId,
                 ServiceStyles=new List<ServiceStyleEntity>()
             };
             foreach (var serviceStyles in serviceStyleDTOList)
             {
-                var checkStyle = await _context.Styles
-                .SingleOrDefaultAsync(x => x.Id == serviceStyles.StyleId);
-                if (checkStyle == null)
+                var checkStyle = await _context.Styles.SingleOrDefaultAsync(x => x.Id == serviceStyles.StyleId);
+                if (checkStyle == null || checkStyle.IsDeleted == true)
                 {
                     throw new InvalidDataException("Style is not found");
 
@@ -73,13 +77,13 @@ namespace _300Shine.Repository.Repositories.Service
         {
             var serviceStyleList = s.ServiceStyles;
             var serviceEntity = await _context.Services.Include(s=>s.ServiceStyles).SingleOrDefaultAsync(x => x.Id == s.Id && x.IsDeleted == false);
-            if (serviceEntity == null)
+            if (serviceEntity == null || serviceEntity.IsDeleted==true)
                 throw new InvalidDataException("Service is not found");
             serviceEntity.Name = s.Name;
             serviceEntity.Description = s.Description;
             serviceEntity.Price = s.Price;
             serviceEntity.ImageUrl = s.ImageUrl;
-           
+           serviceEntity.SalonId=s.SalonId;
             var existedServiceStyleIdInList = serviceEntity.ServiceStyles.Select(x => x.StyleId).ToList();
             var newServiceStyleIdInList = serviceStyleList.Select(x => x.StyleId).ToList();
             var removeServiceStyleIdInList = existedServiceStyleIdInList.Where(existedServiceStyleId => !newServiceStyleIdInList.Contains(existedServiceStyleId)).ToList();
@@ -90,7 +94,7 @@ namespace _300Shine.Repository.Repositories.Service
                 if (existedStyleIdPosition == -1)
                 {
                     var checkStyle = await _context.Styles.SingleOrDefaultAsync(x => x.Id == serviceStyles.StyleId);
-                    if (checkStyle == null)
+                    if (checkStyle == null || checkStyle.IsDeleted==true)
                         throw new InvalidDataException("Style is not found");
                     var serviceStyle = new ServiceStyleEntity()
                     {
@@ -125,7 +129,7 @@ namespace _300Shine.Repository.Repositories.Service
         public async Task<string> DeleteService(int id)
         {
             var service = await _context.Services.SingleOrDefaultAsync(x => x.Id == id);
-            if (service == null)
+            if (service == null || service.IsDeleted == true)
                 throw new InvalidDataException("Service is not found");
 
             service.IsDeleted = true;
@@ -196,7 +200,7 @@ namespace _300Shine.Repository.Repositories.Service
         public async Task<ServiceResponseModel> GetServiceByID(int id)
         {
             var service = await _context.Services.Include(ss=>ss.ServiceStyles).SingleOrDefaultAsync(x => x.Id == id && x.IsDeleted == false);
-            if (service == null)
+            if (service == null || service.IsDeleted == true)
                 throw new Exception("Service is not found");
 
             return _mapper.Map<ServiceResponseModel>(service);

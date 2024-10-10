@@ -98,7 +98,7 @@ namespace _300Shine.Controllers
             try
             {
                 var result = await _userService.DeleteUserAsync(userId);
-                return Ok(new JsonResponse<string>(result, 200, "Delete User Successfully!"));
+                return Ok(new JsonResponse<string>(result, 200, ""));
             }
             catch (Exception ex)
             {

@@ -17,6 +17,8 @@ namespace _300Shine.DataAccessLayer.Entities
         public DateTime DateOfBirth { get; set; }
         public bool Gender { get; set; }
         public int Phone { get; set; }
+        public string Password { get; set; }
+
         public string Address { get; set; }
         public bool IsVerified { get; set; }
         public string Status { get; set; }
@@ -26,6 +28,7 @@ namespace _300Shine.DataAccessLayer.Entities
         public int RoleId { get; set; }
         [ForeignKey(nameof(RoleId))]
         public RoleEntity Role { get; set; }
+        public bool IsDeleted { get; set; } = false;
 
         public ICollection<AppointmentEntity> Appointments { get; set; }
 

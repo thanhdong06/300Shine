@@ -37,6 +37,7 @@ namespace _300Shine.Repository.Repositories.Service
                 Phone = request.Phone,
                 Address = request.Address,
                 RoleId = 3,
+                SalonId = 1,
                 IsVerified = false,
                 Status = "Active",
             };

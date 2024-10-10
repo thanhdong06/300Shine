@@ -127,7 +127,7 @@ namespace _300Shine.Repository
                     Address = request.Address,
                     RoleId = request.RoleId,
                     IsVerified = request.IsVerified,
-                    Status = request.Status ?? "Active",
+                    Status = "Active",
                     SalonId = request.SalonId
                 };
 

@@ -1,7 +1,17 @@
+using _300Shine.Configuration;
 using _300Shine.DataAccessLayer.DBContext;
+using _300Shine.Repository;
+using _300Shine.Repository.Interface;
 using _300Shine.Repository.Repositories.Salon;
 using _300Shine.Repository.Repositories.Service;
+using _300Shine.Service;
+using _300Shine.Service.Interface;
 using _300Shine.Service.Salons;
+using _300Shine.Repository;
+using _300Shine.Repository.Interface;
+using _300Shine.Repository.Repositories.Service;
+using _300Shine.Service;
+using _300Shine.Service.Interface;
 using _300Shine.Service.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,7 +22,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerService();
 builder.Services.AddDbContext<AppDbContext>(options =>
     //options.UseSqlServer(builder.Configuration.GetConnectionString("local")));
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostGresServer")));
@@ -33,6 +43,11 @@ builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 builder.Services.AddScoped<IServiceEntityService, ServiceEntityService>();
 builder.Services.AddScoped<ISalonRepository, SalonRepository>();
 builder.Services.AddScoped<ISalonService, SalonService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

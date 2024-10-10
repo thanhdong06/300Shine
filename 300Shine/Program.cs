@@ -1,6 +1,7 @@
 using _300Shine.DataAccessLayer.DBContext;
-
+using _300Shine.Repository.Repositories.Salon;
 using _300Shine.Repository.Repositories.Service;
+using _300Shine.Service.Salons;
 using _300Shine.Service.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,6 +31,8 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 builder.Services.AddScoped<IServiceEntityService, ServiceEntityService>();
+builder.Services.AddScoped<ISalonRepository, SalonRepository>();
+builder.Services.AddScoped<ISalonService, SalonService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

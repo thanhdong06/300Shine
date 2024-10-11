@@ -28,6 +28,7 @@ namespace _300Shine.DataAccessLayer.Entities
         public int RoleId { get; set; }
         [ForeignKey(nameof(RoleId))]
         public RoleEntity Role { get; set; }
+        public string ImageUrl { get; set; }
         public bool IsDeleted { get; set; } = false;
 
         public ICollection<AppointmentEntity> Appointments { get; set; }

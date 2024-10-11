@@ -36,9 +36,40 @@ namespace _300Shine.Repository.Repositories.Salon
         {
             var salon = await _context.Salons.Include(ss => ss.Services).Include(s=>s.Stylists).SingleOrDefaultAsync(x => x.Id == id && x.IsDeleted == false);
             if (salon == null || salon.IsDeleted == true)
-                throw new Exception("Service is not found");
+                throw new Exception("Salon is not found");
 
             return _mapper.Map<SalonResponseModel>(salon);
+        }
+
+        public async Task<List<StylistResponseModel>> GetStylistBySalonAndServiceID(int salonId, int serviceId)
+        {
+            var salon = await _context.Salons.Include(ss => ss.Services).Include(s => s.Stylists).AnyAsync(x => x.Id == salonId && x.IsDeleted == false);
+            if (!salon)
+                throw new Exception("Salon is not found");
+            var serviceStyle = await _context.ServiceStyles.SingleOrDefaultAsync(x => x.ServiceId == serviceId && x.IsDeleted == false);
+            if (serviceStyle == null)
+                throw new Exception("Style of service is not found");
+
+            var stylistStyle = await _context.StylistStyles.Where(x => x.StyleId == serviceStyle.StyleId).ToListAsync();
+            if(stylistStyle == null)
+                throw new Exception("Stylist of style is not found");
+
+            var stylistList = new List<StylistResponseModel>();
+
+            foreach(var stylist in stylistStyle)
+            {
+                var stylists = await _context.Stylists.Include(u=>u.User).SingleOrDefaultAsync(x => x.Id == stylist.StylistId && x.SalonId==salonId);
+                var stylistResponse = new StylistResponseModel() 
+                {
+                    Id = stylists.Id,
+                    Name = stylists.User.FullName,
+                    ImageUrl = stylists.User.ImageUrl,
+                };
+                stylistList.Add(stylistResponse);
+
+            }
+            return stylistList;
+
         }
     }
 }

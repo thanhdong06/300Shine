@@ -16,4 +16,11 @@ namespace _300Shine.DataAccessLayer.DTO.RequestModel
         public List<ServiceRequestModel> Services { get; set; }
         public List<StylistRequestModel> Stylists { get; set; }  
     }
+    public class SalonStylistRequestDTO
+    {
+        public int Id { get; set; }
+        public int ServiceId { get; set; }
+        public List<StylistRequestModel> Stylists { get; set; }
+
+    }
 }

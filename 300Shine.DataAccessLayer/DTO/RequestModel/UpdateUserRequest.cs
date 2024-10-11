@@ -17,7 +17,8 @@ namespace _300Shine.DataAccessLayer.DTO.RequestModel
         public bool? IsStylist { get; set; }       
         public bool? IsVerified { get; set; }      
         public string Status { get; set; }
-        public int? SalonId { get; set; }           
+        public int? SalonId { get; set; }       
+        public string? ImageUrl { get; set; }
 
         // Stylist specific fields
         public decimal? Commission { get; set; }   

@@ -37,13 +37,27 @@ namespace _300Shine.Controllers
             }
         }
 
-        [HttpGet("salon/service-by-id")]
-        public async Task<ActionResult<JsonResponse<SalonResponseModel>>> GetHotPotByID(int id)
+        [HttpGet("salon/salon-by-id")]
+        public async Task<ActionResult<JsonResponse<SalonResponseModel>>> GetSalonID(int id)
         {
             try
             {
                 var result = await _service.GetSalonByID(id);
                 return Ok(new JsonResponse<SalonResponseModel>(result, 200, "Successfully"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>("Something wrong, please contact with admin", 400, ex.Message));
+            }
+
+        }
+        [HttpGet("salon/stylist-by-salonid-and-serviceId")]
+        public async Task<ActionResult<JsonResponse<List<StylistResponseModel>>>> GetStylistID(int salonId,int serviceId)
+        {
+            try
+            {
+                var result = await _service.GetStylistBySalonAndServiceID(salonId,serviceId);
+                return Ok(new JsonResponse<List<StylistResponseModel>>(result, 200, "Successfully"));
             }
             catch (Exception ex)
             {

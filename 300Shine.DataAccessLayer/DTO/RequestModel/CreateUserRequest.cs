@@ -22,6 +22,7 @@ namespace _300Shine.BusinessObject.DTO.Request
         public bool IsVerified { get; set; } 
         public string Status { get; set; } 
         public int SalonId { get; set; }
+        public string? ImageUrl { get; set; }
 
         // Stylist specific fields
         public decimal Commission { get; set; }

@@ -9,6 +9,7 @@ namespace _300Shine.Service.Salons
 {
     public interface ISalonService
     {
+        Task<List<StylistResponseModel>> GetStylistBySalonAndServiceID(int salonId, int serviceId);
         Task<List<SalonResponseModel>> GetSalons(string? search, string? sortBy,
            decimal? fromPrice, decimal? toPrice,
            string? size,

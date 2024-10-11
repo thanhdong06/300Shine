@@ -9,6 +9,7 @@ namespace _300Shine.Repository.Repositories.Salon
 {
     public interface ISalonRepository
     {
+        Task<List<StylistResponseModel>> GetStylistBySalonAndServiceID(int salonId, int serviceId);
         Task<List<SalonResponseModel>> GetSalons(string? search, string? sortBy,
            decimal? fromPrice, decimal? toPrice,
            string? size,

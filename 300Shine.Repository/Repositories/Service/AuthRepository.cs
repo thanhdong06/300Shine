@@ -40,6 +40,7 @@ namespace _300Shine.Repository.Repositories.Service
                 SalonId = 1,
                 IsVerified = false,
                 Status = "Active",
+                ImageUrl = request.ImageUrl,
             };
 
             _context.Users.Add(newUser);

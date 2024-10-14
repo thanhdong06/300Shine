@@ -14,6 +14,8 @@ using _300Shine.Service;
 using _300Shine.Service.Interface;
 using _300Shine.Service.Services;
 using Microsoft.EntityFrameworkCore;
+using _300Shine.Repository.Repositories.Stylist;
+using _300Shine.Service.Stylists;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +49,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IStylistRepository, StylistRepository>();
+builder.Services.AddScoped<IStylistService, StylistService>();
 
 var app = builder.Build();
 

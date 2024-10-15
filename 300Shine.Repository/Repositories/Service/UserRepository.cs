@@ -28,11 +28,6 @@ namespace _300Shine.Repository
             return await _context.Users.AnyAsync(u => u.Phone == phone);
         }
 
-        public async Task<UserEntity> GetUserByPhoneAsync(string phone)
-        {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Phone == phone);
-        }
-
         public async Task<List<ResponseUser>> GetAllUsersAsync()
         {
             var users = await _context.Users.Include(u => u.Role).Include(u => u.Salon).Where(u => !u.IsDeleted).ToListAsync();
@@ -69,9 +64,9 @@ namespace _300Shine.Repository
             return userResponses;
         }
 
-        public async Task<ResponseUser> GetUserByIdAsync(int userId)
+        public async Task<ResponseUser> GetUserByPhoneAsync(string phone)
         {
-            var user = await _context.Users.Include(u => u.Role).Include(u => u.Salon).FirstOrDefaultAsync(u => u.Id == userId && !u.IsDeleted);
+            var user = await _context.Users.Include(u => u.Role).Include(u => u.Salon).FirstOrDefaultAsync(u => u.Phone == phone && !u.IsDeleted);
 
             if (user == null)
             {

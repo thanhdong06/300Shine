@@ -13,10 +13,8 @@ namespace _300Shine.Repository.Interface
     public interface IUserRepository
     {
         Task<bool> PhoneExistsAsync(string phone);
-        Task<UserEntity> GetUserByPhoneAsync(string phone);
-
         Task<List<ResponseUser>> GetAllUsersAsync();
-        Task<ResponseUser> GetUserByIdAsync(int userId);
+        Task<ResponseUser> GetUserByPhoneAsync(string phone);
         Task<string> CreateStylistAsync(CreateUserRequest request);
         Task<string> UpdateUserAsync(int userId, UpdateUserRequest request);
         Task<string> DeleteUserAsync(int userId);

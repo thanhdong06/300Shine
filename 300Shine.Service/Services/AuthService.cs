@@ -42,7 +42,7 @@ namespace _300Shine.Service
             var claims = new[]
             {   
                 new Claim(ClaimTypes.NameIdentifier, user.Phone.ToString()),
-                new Claim(ClaimTypes.Name, user.Phone.ToString())
+                new Claim(ClaimTypes.Name, user.Phone.ToString())                
             };
 
             var tokenDescriptor = new SecurityTokenDescriptor

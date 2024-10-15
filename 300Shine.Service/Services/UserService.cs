@@ -40,9 +40,9 @@ namespace _300Shine.Service
             return await _userRepository.GetAllUsersAsync();
         }
 
-        public async Task<ResponseUser> GetUserByIdAsync(int userId)
+        public async Task<ResponseUser> GetUserByPhoneAsync(string phone)
         {
-            return await _userRepository.GetUserByIdAsync(userId);
+            return await _userRepository.GetUserByPhoneAsync(phone);
         }
 
         public async Task<string> UpdateUserAsync(int userId, UpdateUserRequest request)

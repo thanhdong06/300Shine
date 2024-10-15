@@ -2,6 +2,7 @@
 using _300Shine.DataAccessLayer.DBContext;
 using _300Shine.DataAccessLayer.DTO.RequestModel;
 using _300Shine.DataAccessLayer.Entities;
+
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,6 @@ namespace _300Shine.Repository.Repositories.Service
     public class AuthRepository : IAuthRepository
     {
         private readonly AppDbContext _context;
-
         public AuthRepository(AppDbContext context)
         {
             _context = context;
@@ -22,12 +22,11 @@ namespace _300Shine.Repository.Repositories.Service
 
         public async Task<string> Register(RegisterRequest request)
         {
-            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Phone == request.Phone);
+            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Phone == request.Phone && !u.IsDeleted);
             if (existingUser != null)
             {
                 throw new InvalidDataException("Phone number already exists");
             }
-
             var newUser = new UserEntity()
             {
                 FullName = request.FullName,
@@ -50,7 +49,7 @@ namespace _300Shine.Repository.Repositories.Service
 
         public async Task<string> LoginAsync(LoginRequest request)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.Phone == request.Phone);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Phone == request.Phone);
 
             if (user == null)
             {
@@ -62,6 +61,17 @@ namespace _300Shine.Repository.Repositories.Service
                 throw new InvalidDataException("Invalid phone number or password");
             }
             return "Login successful";
+        }
+
+        public async Task<UserEntity> GetUserByPhoneAsync(string phone)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Phone == phone);
+        }
+
+        public async Task UpdateUserAsync(UserEntity user)
+        {
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
         }
     }
 }

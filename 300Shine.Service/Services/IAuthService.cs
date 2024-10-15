@@ -14,6 +14,7 @@ namespace _300Shine.Service.Interface
         Task<string> RegisterUserAsync(RegisterRequest registerRequest);
         string CreateToken(LoginRequest user);
         Task<string> LoginAsync(LoginRequest request);
+        Task<string> VerifyOtpAsync(VerifyOtpRequest request);
 
     }
 }

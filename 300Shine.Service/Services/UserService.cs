@@ -25,9 +25,9 @@ namespace _300Shine.Service
             _userRepository = userRepository;
             _mapper = mapper;
         }
-        public async Task<string> CreateUserAsync(CreateUserRequest request)
+        public async Task<string> CreateStylistAsync(CreateUserRequest request)
         {
-            return await _userRepository.CreateUserAsync(request);
+            return await _userRepository.CreateStylistAsync(request);
         }
 
         public async Task<string> DeleteUserAsync(int userId)

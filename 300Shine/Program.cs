@@ -17,7 +17,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerService();
 builder.Services.AddDbContext<AppDbContext>(options =>
-    //options.UseSqlServer(builder.Configuration.GetConnectionString("local")));
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostGresServer")));
 builder.Services.AddCors(options =>
 {
@@ -38,6 +37,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ISMSService, SMSService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

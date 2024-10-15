@@ -5,6 +5,7 @@ using _300Shine.Repository;
 using _300Shine.Repository.Interface;
 using _300Shine.Repository.Repositories.Service;
 using _300Shine.Service.Interface;
+using _300Shine.Service.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -22,15 +23,16 @@ namespace _300Shine.Service
     {
         private readonly IConfiguration _configuration;
         private readonly IAuthRepository _authRepository;
+        private readonly ISMSService _smsService;
 
-        public AuthService(IConfiguration configuration, IAuthRepository authRepository) { 
+        public AuthService(IConfiguration configuration, IAuthRepository authRepository, ISMSService smsService) { 
             _configuration = configuration;
             _authRepository = authRepository;
-
+            _smsService = smsService;
         }
         public string CreateToken(LoginRequest user)
         {
-            if (user == null || user.Phone <= 0)
+            if (user == null || user.Phone.IsNullOrEmpty())
             {
                 throw new ArgumentException("Invalid login request", nameof(user));
             }
@@ -58,7 +60,15 @@ namespace _300Shine.Service
 
         public async Task<string> RegisterUserAsync(RegisterRequest registerRequest)
         {
-            return await _authRepository.Register(registerRequest);
+            var result = await _authRepository.Register(registerRequest);
+
+            var otp = _smsService.GenerateOtp();
+            await _smsService.SendOtpSmsAsync(registerRequest.Phone, otp);
+
+            var user = await _authRepository.GetUserByPhoneAsync(registerRequest.Phone);
+            user.Otp = otp;
+            await _authRepository.UpdateUserAsync(user);
+            return result;
         }
 
         public async Task<string> LoginAsync(LoginRequest request)
@@ -70,6 +80,27 @@ namespace _300Shine.Service
                 throw new InvalidDataException("Invalid phone number or password");
             }
             return CreateToken(request);
+        }
+
+        public async Task<string> VerifyOtpAsync(VerifyOtpRequest request)
+        {
+            var user = await _authRepository.GetUserByPhoneAsync(request.Phone);
+            if (user == null)
+            {
+                return "User not found.";
+            }
+
+            if (user.Otp == request.Otp)
+            {
+                user.IsVerified = true;
+                user.Otp = null; // Clear OTP after verification
+                await _authRepository.UpdateUserAsync(user);
+                return "Phone number verified successfully.";
+            }
+            else
+            {
+                return "";
+            }
         }
     }
 }

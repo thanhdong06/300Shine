@@ -16,11 +16,12 @@ namespace _300Shine.DataAccessLayer.Entities
         public string FullName { get; set; }
         public DateTime DateOfBirth { get; set; }
         public bool Gender { get; set; }
-        public int Phone { get; set; }
+        public string Phone { get; set; }
         public string Password { get; set; }
 
         public string Address { get; set; }
         public bool IsVerified { get; set; }
+        public string Otp { get; set; } = string.Empty;
         public string Status { get; set; }
         public int SalonId { get; set; }
         [ForeignKey(nameof(SalonId))]

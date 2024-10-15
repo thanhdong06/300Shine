@@ -54,7 +54,7 @@ namespace _300Shine.Controllers
         {
             try
             {
-                var result = await _userService.CreateUserAsync(request);
+                var result = await _userService.CreateStylistAsync(request);
                 if (result == "Role not found")
                 {
                     return BadRequest(new JsonResponse<string>("Role not found", 400, ""));

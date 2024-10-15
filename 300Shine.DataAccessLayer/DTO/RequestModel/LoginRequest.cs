@@ -10,7 +10,7 @@ namespace _300Shine.BusinessObject.DTO.Request
     public class LoginRequest
     {
         [Required]
-        public int Phone { get; set; }
+        public string Phone { get; set; }
 
         [Required]
         public string Password { get; set; }

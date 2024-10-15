@@ -14,7 +14,7 @@ namespace _300Shine.Service.Interface
     {
         Task<List<ResponseUser>> GetAllUsersAsync();
         Task<ResponseUser> GetUserByIdAsync(int userId);
-        Task<string> CreateUserAsync(CreateUserRequest request);
+        Task<string> CreateStylistAsync(CreateUserRequest request);
         Task<string> UpdateUserAsync(int userId, UpdateUserRequest request);
         Task<string> DeleteUserAsync(int userId);
     }

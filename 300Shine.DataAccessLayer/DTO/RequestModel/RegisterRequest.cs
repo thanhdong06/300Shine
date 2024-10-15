@@ -14,5 +14,6 @@ namespace _300Shine.DataAccessLayer.DTO.RequestModel
         public DateTime DateOfBirth { get; set; }
         public bool Gender { get; set; }
         public string Address { get; set; }
+        public string ImageUrl { get; set; }    
     }
 }

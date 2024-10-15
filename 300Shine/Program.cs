@@ -2,11 +2,20 @@ using _300Shine.Configuration;
 using _300Shine.DataAccessLayer.DBContext;
 using _300Shine.Repository;
 using _300Shine.Repository.Interface;
+using _300Shine.Repository.Repositories.Salon;
+using _300Shine.Repository.Repositories.Service;
+using _300Shine.Service;
+using _300Shine.Service.Interface;
+using _300Shine.Service.Salons;
+using _300Shine.Repository;
+using _300Shine.Repository.Interface;
 using _300Shine.Repository.Repositories.Service;
 using _300Shine.Service;
 using _300Shine.Service.Interface;
 using _300Shine.Service.Services;
 using Microsoft.EntityFrameworkCore;
+using _300Shine.Repository.Repositories.Stylist;
+using _300Shine.Service.Stylists;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,11 +42,16 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 builder.Services.AddScoped<IServiceEntityService, ServiceEntityService>();
+builder.Services.AddScoped<ISalonRepository, SalonRepository>();
+builder.Services.AddScoped<ISalonService, SalonService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ISMSService, SMSService>();
+builder.Services.AddScoped<IStylistRepository, StylistRepository>();
+builder.Services.AddScoped<IStylistService, StylistService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -2,6 +2,7 @@
 using _300Shine.ResponseType;
 using _300Shine.Service.Stylists;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace _300Shine.Controllers
 {
@@ -17,11 +18,11 @@ namespace _300Shine.Controllers
         }
 
         [HttpGet("stylist/slot-by-stylistId")]
-        public async Task<ActionResult<JsonResponse<List<SlotResponseModel>>>> GetHotPotByID(int id)
+        public async Task<ActionResult<JsonResponse<List<SlotResponseModel>>>> GetHotPotByID(int? stylistId, int? salonId, int? serviceId, DateTime? date)
         {
             try
             {
-                var result = await _stylistService.GetEmptySlotByStylistId(id);
+                var result = await _stylistService.GetEmptySlotByStylistId(stylistId, salonId, serviceId, date);
                 return Ok(new JsonResponse<List<SlotResponseModel>> (result, 200, "Successfully"));
             }
             catch (Exception ex)

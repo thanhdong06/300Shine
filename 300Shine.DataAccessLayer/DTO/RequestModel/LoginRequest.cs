@@ -14,5 +14,6 @@ namespace _300Shine.BusinessObject.DTO.Request
 
         [Required]
         public string Password { get; set; }
+
     }
 }

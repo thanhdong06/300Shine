@@ -30,33 +30,6 @@ namespace _300Shine.Service
             _authRepository = authRepository;
             _smsService = smsService;
         }
-        public string CreateToken(LoginRequest user)
-        {
-            if (user == null || user.Phone.IsNullOrEmpty())
-            {
-                throw new ArgumentException("Invalid login request", nameof(user));
-            }
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:secret"]);
-            var claims = new[]
-            {   
-                new Claim(ClaimTypes.NameIdentifier, user.Phone.ToString()),
-                new Claim(ClaimTypes.Name, user.Phone.ToString())                
-            };
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddHours(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-                Issuer = _configuration["Jwt:Issuer"],
-                Audience = _configuration["Jwt:Audience"]
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
 
         public async Task<string> RegisterUserAsync(RegisterRequest registerRequest)
         {
@@ -79,7 +52,7 @@ namespace _300Shine.Service
             {
                 throw new InvalidDataException("Invalid phone number or password");
             }
-            return CreateToken(request);
+            return CreateToken(user);
         }
 
         public async Task<string> VerifyOtpAsync(VerifyOtpRequest request)
@@ -102,5 +75,34 @@ namespace _300Shine.Service
                 return "";
             }
         }
+
+        private string CreateToken(UserEntity user)
+        {
+            if (user == null || user.Phone.IsNullOrEmpty())
+            {
+                throw new ArgumentException("Invalid login request", nameof(user));
+            }
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:secret"]);
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Phone.ToString()),
+            };
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                Issuer = _configuration["Jwt:issuer"],
+                Audience = _configuration["Jwt:audience"]
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
+
     }
 }

@@ -15,6 +15,7 @@ namespace _300Shine.DataAccessLayer.ServiceForCRUD.Mapping
     {
         public AutoMapper() {
             UserMappingProfile();
+            AppointmentProfile();
         }
         private void UserMappingProfile()
         {
@@ -25,6 +26,17 @@ namespace _300Shine.DataAccessLayer.ServiceForCRUD.Mapping
 
 
             CreateMap<UserEntity, ResponseUser>().ReverseMap();
+        }
+
+        private void AppointmentProfile()
+        {
+            CreateMap<AppointmentCreateDTO, AppointmentEntity>()
+           .ForMember(dest => dest.AppointmentDetails, opt => opt.MapFrom(src => src.Items));
+
+            CreateMap<AppointmentDetailCreateDTO, AppointmentDetailEntity>()
+                .ForMember(dest => dest.AppointmentDetailSlots, opt => opt.MapFrom(src => src.Slots));
+
+            CreateMap<SlotDTO, AppointmentDetailSlotEntity>();
         }
     }
 }

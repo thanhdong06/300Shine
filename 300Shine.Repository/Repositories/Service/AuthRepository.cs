@@ -48,20 +48,15 @@ namespace _300Shine.Repository.Repositories.Service
             return "Register successfully";
         }
 
-        public async Task<string> LoginAsync(LoginRequest request)
+        public async Task<UserEntity> LoginAsync(LoginRequest request)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Phone == request.Phone);
 
-            if (user == null)
+            if (user == null || user.Password != request.Password)
             {
                 throw new InvalidDataException("Invalid phone number or password");
             }
-
-            if (user.Password != request.Password)
-            {
-                throw new InvalidDataException("Invalid phone number or password");
-            }
-            return "Login successful";
+            return user;
         }
 
         public async Task<UserEntity> GetUserByPhoneAsync(string phone)

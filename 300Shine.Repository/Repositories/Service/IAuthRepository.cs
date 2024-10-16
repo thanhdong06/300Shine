@@ -12,7 +12,7 @@ namespace _300Shine.Repository.Repositories.Service
     public interface IAuthRepository
     {
         Task<string> Register(RegisterRequest request);
-        Task<string> LoginAsync(LoginRequest request);
+        Task<UserEntity> LoginAsync(LoginRequest request);
         Task<UserEntity> GetUserByPhoneAsync(string phone);
         Task UpdateUserAsync(UserEntity user);
     }

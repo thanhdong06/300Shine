@@ -49,9 +49,10 @@ namespace _300Shine.Repository.Repositories.Service
                     {
                         detail.AppointmentDetailSlots.Add(new AppointmentDetailSlotEntity
                         {
-                            SlotId = slot.Id
+                            SlotId = slot.Id,
                         });
                     }
+                    detail.Type = requestDetail.Type;
                 }
             }
 

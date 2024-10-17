@@ -17,6 +17,7 @@ namespace _300Shine.DataAccessLayer.Entities
         public decimal Price { get; set; }
         public string Name { get; set; }
         public string? Description { get; set; }
+        public string? Type { get; set; }
         public ICollection<AppointmentEntity> Appointments { get; set; }
         public ICollection<ServiceStyleEntity> ServiceStyles { get; set; }
         

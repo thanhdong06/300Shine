@@ -12,10 +12,8 @@ namespace _300Shine.DataAccessLayer.Entities
     {
         public string? Note { get; set; }
         public DateTime Date{ get; set; }
-        public DateTime? ReturnDate{ get; set; }
         public string Status { get; set; }
         public decimal Amount { get; set; }
-        public string? Type { get; set; }
         public int UserId { get; set; }
         [ForeignKey(nameof(UserId))]
         public UserEntity User { get; set; }

@@ -15,7 +15,7 @@ namespace _300Shine.Repository.Repositories.Service
 {
     public class ServiceRepository : IServiceRepository
     {
-        private readonly AppDbContext _context = new();
+        private readonly AppDbContext _context;
        
         private readonly IMapper _mapper;
 

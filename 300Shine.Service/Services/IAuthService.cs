@@ -12,8 +12,8 @@ namespace _300Shine.Service.Interface
     public interface IAuthService
     {
         Task<string> RegisterUserAsync(RegisterRequest registerRequest);
-        string CreateToken(LoginRequest user);
         Task<string> LoginAsync(LoginRequest request);
+        Task<string> VerifyOtpAsync(VerifyOtpRequest request);
 
     }
 }

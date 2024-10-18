@@ -23,14 +23,9 @@ namespace _300Shine.Repository
             _context = context;
         }
 
-        public async Task<bool> PhoneExistsAsync(int phone)
+        public async Task<bool> PhoneExistsAsync(string phone)
         {
             return await _context.Users.AnyAsync(u => u.Phone == phone);
-        }
-
-        public async Task<UserEntity> GetUserByPhoneAsync(int phone)
-        {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Phone == phone);
         }
 
         public async Task<List<ResponseUser>> GetAllUsersAsync()
@@ -69,9 +64,9 @@ namespace _300Shine.Repository
             return userResponses;
         }
 
-        public async Task<ResponseUser> GetUserByIdAsync(int userId)
+        public async Task<ResponseUser> GetUserByPhoneAsync(string phone)
         {
-            var user = await _context.Users.Include(u => u.Role).Include(u => u.Salon).FirstOrDefaultAsync(u => u.Id == userId && !u.IsDeleted);
+            var user = await _context.Users.Include(u => u.Role).Include(u => u.Salon).FirstOrDefaultAsync(u => u.Phone == phone && !u.IsDeleted);
 
             if (user == null)
             {
@@ -102,16 +97,15 @@ namespace _300Shine.Repository
             return userResponse;
         }
 
-        public async Task<string> CreateUserAsync(CreateUserRequest request)
+        public async Task<string> CreateStylistAsync(CreateUserRequest request)
         {
 
-                var checkRole = await _context.Roles.FirstOrDefaultAsync(r => r.Id == request.RoleId);
-                if (checkRole == null)
-                {
-                    throw new InvalidDataException("Role not found");
-                }           
+                var checkRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name.ToLower() == "stylist");
+
+                if (checkRole == null) throw new InvalidDataException("Role not found");
+                          
                 
-                var checkUser = await _context.Users.FirstOrDefaultAsync(s => s.Phone == request.Phone);
+                var checkUser = await _context.Users.FirstOrDefaultAsync(s => s.Phone == request.Phone && s.IsDeleted == false);
                 if (checkUser != null)
                 {
                     throw new InvalidDataException("User with this phone number already exists");
@@ -125,7 +119,7 @@ namespace _300Shine.Repository
                     Gender = request.Gender,
                     Phone = request.Phone,
                     Address = request.Address,
-                    RoleId = request.RoleId,
+                    RoleId = checkRole.Id,
                     IsVerified = request.IsVerified,
                     Status = "Active",
                     SalonId = request.SalonId
@@ -136,8 +130,8 @@ namespace _300Shine.Repository
 
                 if (request.IsStylist)
                 {
-                    var checkSalon = await _context.Salons.FirstOrDefaultAsync(s => s.Id == request.SalonId);
-                    if (checkSalon == null)
+                    var checkSalon = await _context.Salons.AnyAsync(s => s.Id == request.SalonId);
+                    if (!checkSalon)
                     {
                         throw new InvalidDataException("Salon not found");
                     }
@@ -168,7 +162,7 @@ namespace _300Shine.Repository
             existingUser.FullName = request.FullName;
             existingUser.DateOfBirth = request.DateOfBirth ?? existingUser.DateOfBirth;
             existingUser.Gender = request.Gender ?? existingUser.Gender;
-            existingUser.Phone = (int) request.Phone;
+            existingUser.Phone = request.Phone ?? request.Phone;
             existingUser.Address = request.Address;
             existingUser.RoleId = request.RoleId ?? existingUser.RoleId;
             existingUser.SalonId = request.SalonId ?? existingUser.SalonId;

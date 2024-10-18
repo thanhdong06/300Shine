@@ -35,12 +35,12 @@ namespace _300Shine.Controllers
             }
         }
 
-        [HttpGet("{userId}")]
-        public async Task<ActionResult<JsonResponse<ResponseUser>>> GetUserById(int userId)
+        [HttpGet("{phone}")]
+        public async Task<ActionResult<JsonResponse<ResponseUser>>> GetUserByPhoneAsync(string phone)
         {
             try
             {
-                var user = await _userService.GetUserByIdAsync(userId);
+                var user = await _userService.GetUserByPhoneAsync(phone);
                 return Ok(new JsonResponse<ResponseUser>(user, 200, "Successfully"));
             }
             catch (Exception ex)
@@ -54,7 +54,7 @@ namespace _300Shine.Controllers
         {
             try
             {
-                var result = await _userService.CreateUserAsync(request);
+                var result = await _userService.CreateStylistAsync(request);
                 if (result == "Role not found")
                 {
                     return BadRequest(new JsonResponse<string>("Role not found", 400, ""));

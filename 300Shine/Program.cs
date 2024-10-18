@@ -23,10 +23,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerService();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddDbContext<AppDbContext>(options =>
-    //options.UseSqlServer(builder.Configuration.GetConnectionString("local")));
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostGresServer")));
 builder.Services.AddCors(options =>
 {
@@ -49,8 +49,11 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ISMSService, SMSService>();
 builder.Services.AddScoped<IStylistRepository, StylistRepository>();
 builder.Services.AddScoped<IStylistService, StylistService>();
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 
 var app = builder.Build();
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
@@ -74,8 +77,8 @@ else
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAllOrigins");
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();

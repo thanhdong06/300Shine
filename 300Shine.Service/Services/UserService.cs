@@ -25,9 +25,9 @@ namespace _300Shine.Service
             _userRepository = userRepository;
             _mapper = mapper;
         }
-        public async Task<string> CreateUserAsync(CreateUserRequest request)
+        public async Task<string> CreateStylistAsync(CreateUserRequest request)
         {
-            return await _userRepository.CreateUserAsync(request);
+            return await _userRepository.CreateStylistAsync(request);
         }
 
         public async Task<string> DeleteUserAsync(int userId)
@@ -40,9 +40,9 @@ namespace _300Shine.Service
             return await _userRepository.GetAllUsersAsync();
         }
 
-        public async Task<ResponseUser> GetUserByIdAsync(int userId)
+        public async Task<ResponseUser> GetUserByPhoneAsync(string phone)
         {
-            return await _userRepository.GetUserByIdAsync(userId);
+            return await _userRepository.GetUserByPhoneAsync(phone);
         }
 
         public async Task<string> UpdateUserAsync(int userId, UpdateUserRequest request)

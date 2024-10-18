@@ -12,15 +12,13 @@ namespace _300Shine.DataAccessLayer.DBContext
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext()
-        {
-
-        }
+        public AppDbContext() { }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 
         }
+
         public DbSet<AppointmentDetailEntity> AppointmentDetails { get; set; }
         public DbSet<AppointmentEntity> Appointments { get; set; }
         public DbSet<AppointmentDetailSlotEntity> AppointmentSlots { get; set; }
@@ -40,6 +38,13 @@ namespace _300Shine.DataAccessLayer.DBContext
         public DbSet<UserEntity> Users { get; set; }
 
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseNpgsql("Server=dpg-crugtplumphs73en7km0-a.oregon-postgres.render.com; Port = 5432; Username = admin; Password = Sg1wdcJKbxrJjY688Qy0YR6324rolk76; Database = prn221_300shinedb; SSL Mode = Require");
+            }
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

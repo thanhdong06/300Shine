@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using _300Shine.DataAccessLayer.DBContext;
@@ -11,9 +12,11 @@ using _300Shine.DataAccessLayer.DBContext;
 namespace _300Shine.DataAccessLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241015235903_UpdateAppointmentDetail_TypeBeNull")]
+    partial class UpdateAppointmentDetail_TypeBeNull
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,9 +42,6 @@ namespace _300Shine.DataAccessLayer.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
-                    b.Property<DateTime>("ReturnDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<int>("ServiceId")
                         .HasColumnType("integer");
 
@@ -49,7 +49,7 @@ namespace _300Shine.DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("StylistId")
+                    b.Property<int>("StylistId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Type")
@@ -112,6 +112,9 @@ namespace _300Shine.DataAccessLayer.Migrations
                     b.Property<string>("Note")
                         .HasColumnType("text");
 
+                    b.Property<DateTime?>("ReturnDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("SalonId")
                         .HasColumnType("integer");
 
@@ -120,6 +123,9 @@ namespace _300Shine.DataAccessLayer.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Type")
                         .HasColumnType("text");
 
                     b.Property<int>("UserId")
@@ -264,9 +270,6 @@ namespace _300Shine.DataAccessLayer.Migrations
 
                     b.Property<int>("SalonId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("Type")
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -597,7 +600,8 @@ namespace _300Shine.DataAccessLayer.Migrations
                     b.HasOne("_300Shine.DataAccessLayer.Entities.StylistEntity", "Stylist")
                         .WithMany("AppointmentDetails")
                         .HasForeignKey("StylistId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Appointment");
 

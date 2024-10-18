@@ -2,6 +2,7 @@
 using _300Shine.ResponseType;
 using _300Shine.Service.Stylists;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace _300Shine.Controllers
 {

@@ -9,6 +9,8 @@ namespace _300Shine.Repository.Repositories.Stylist
 {
     public interface IStylistRepository
     {
+
         Task<List<SlotResponseModel>> GetEmptySlotByStylistId(int? stylistId, int? salonId, int? serviceId, DateTime date);
     }
+
 }

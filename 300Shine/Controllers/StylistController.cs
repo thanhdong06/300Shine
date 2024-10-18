@@ -18,7 +18,7 @@ namespace _300Shine.Controllers
         }
 
         [HttpGet("stylist/slot-by-stylistId")]
-        public async Task<ActionResult<JsonResponse<List<SlotResponseModel>>>> GetHotPotByID(int? stylistId, int? salonId, int? serviceId, DateTime date)
+        public async Task<ActionResult<JsonResponse<List<SlotResponseModel>>>> GetEmptySlotByStylistId(int? stylistId, int? salonId, int? serviceId, DateTime date)
         {
             try
             {

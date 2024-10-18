@@ -17,11 +17,11 @@ namespace _300Shine.Controllers
         }
 
         [HttpGet("stylist/slot-by-stylistId")]
-        public async Task<ActionResult<JsonResponse<List<SlotResponseModel>>>> GetHotPotByID(int id)
+        public async Task<ActionResult<JsonResponse<List<SlotResponseModel>>>> GetHotPotByID(int? stylistId, int? salonId, int? serviceId, DateTime date)
         {
             try
             {
-                var result = await _stylistService.GetEmptySlotByStylistId(id);
+                var result = await _stylistService.GetEmptySlotByStylistId( stylistId, salonId, serviceId, date);
                 return Ok(new JsonResponse<List<SlotResponseModel>> (result, 200, "Successfully"));
             }
             catch (Exception ex)

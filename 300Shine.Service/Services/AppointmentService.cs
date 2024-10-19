@@ -23,5 +23,10 @@ namespace _300Shine.Service.Services
         {
             return await _appointmentRepository.CreateAppointmentAsync(request, userId);
         }
+
+        public async Task<string> CreateAppointmentDetailWithReturnDayAsync(AppointmentDetailCreateWithReturnDateRequest request)
+        {
+            return await _appointmentRepository.CreateAppointmentDetailWithReturnDayAsync(request);
+        }
     }
 }

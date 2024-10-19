@@ -61,5 +61,58 @@ namespace _300Shine.Repository.Repositories.Service
 
             return appointmentEntity;
         }
+        public async Task<string> CreateAppointmentDetailWithReturnDayAsync(AppointmentDetailCreateWithReturnDateRequest request)
+        {
+            var app =await _context.Appointments.Include(x=>x.AppointmentDetails).SingleOrDefaultAsync(a=>a.Id==request.AppointmentId);
+            if (app == null)
+                throw new Exception("Appointment not found");
+
+            var appDetail = await _context.AppointmentDetails.SingleOrDefaultAsync(a => a.AppointmentId == app.Id); ;
+            if (appDetail == null)
+                throw new Exception("Appointment Detail do not contain this Appoinment");
+            var appointmentDetail = new AppointmentDetailEntity
+            {
+                AppointmentId = appDetail.AppointmentId,
+                StylistId = request.StylistId,
+                ReturnDate = request.ReturnDate,
+                ServiceId = appDetail.ServiceId,
+                Price = appDetail.Price,
+                Type = appDetail.Type,
+                Status = appDetail.Status,
+                // ... other properties as needed
+                AppointmentDetailSlots = new List<AppointmentDetailSlotEntity>()
+
+            };
+
+            //await _context.AppointmentDetails.AddAsync(appointmentDetail);
+            foreach (var slot in request.Slots)
+            {
+                var slots = await _context.Slots.SingleOrDefaultAsync(x=>x.Id ==slot.Id);
+                if (slots == null)
+                {
+                    
+                    throw new Exception("Slot not found.");
+                }
+
+                var appointmentDetailSlot = new AppointmentDetailSlotEntity
+                {
+                    AppointmentDetail = appointmentDetail,
+                    Slot = slots
+                };
+
+                appointmentDetail.AppointmentDetailSlots.Add(appointmentDetailSlot);
+            }
+
+            await _context.AppointmentDetails.AddAsync(appointmentDetail);
+            try
+            {
+                await _context.SaveChangesAsync();
+                return "Create Successfully";
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new Exception("Error saving changes", ex);
+            }
+        }
     }
 }

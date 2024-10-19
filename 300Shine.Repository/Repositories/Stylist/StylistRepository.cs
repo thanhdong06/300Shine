@@ -30,43 +30,63 @@ namespace _300Shine.Repository.Repositories.Stylist
             //if(stylist == null)
             //    throw new Exception("Stylist is not found");
             // Lấy danh sách các ca làm việc (shifts) của stylist trong ngày đã chọn
-            var stylistShifts = await _context.StylistShifts    
-                                              .Where(x => x.StylistId == stylistId && x.Shift.Date == date)
-                                              .Select(x => x.Shift)
-                                              .ToListAsync();
+            // Get all shifts for the specific stylist and date
+            // Fetch stylist shifts for the given stylist and date
+            // Fetch stylist shifts for the given stylist and date
+            var stylistShifts = await _context.StylistShifts
+                .Where(x => x.StylistId == stylistId && x.Shift.Date == date)
+                .Select(x => x.Shift)
+                .ToListAsync();
 
             if (stylistShifts == null || !stylistShifts.Any())
                 throw new Exception("Stylist has not chosen any shifts on this date");
 
-            // Lấy tất cả các slot không bị xóa từ cơ sở dữ liệu
+            // Fetch all non-deleted slots from the database
             var slots = await _context.Slots
-                                      .Where(x => !x.IsDeleted)
-                                      .ToListAsync();
+                .Where(x => !x.IsDeleted)
+                .ToListAsync();
 
-            // Lấy thông tin chi tiết của stylist
-            var appDetail = await _context.AppointmentDetails.SingleOrDefaultAsync(s => s.StylistId == stylistId);
-            if (appDetail == null)
+            // Fetch appointment details for the stylist and the given date
+            var appDetails = await _context.AppointmentDetails
+                .Where(s => s.StylistId == stylistId && s.Appointment.Date == date) // Filter by stylistId and appointment date
+                .ToListAsync();
+
+            if (appDetails == null || !appDetails.Any())
                 throw new Exception("Stylist of appointment not found");
 
-            // Lấy danh sách các slot đã được đặt trước cho cuộc hẹn của stylist
-            var appDetailSlot = await _context.AppointmentSlots
-                                              .Where(x => x.AppointmentDetailId == appDetail.Id)
-                                              .Select(ads => ads.SlotId)
-                                              .ToListAsync();
+            // Initialize the list for available slots
+            var availableSlots = new List<SlotResponseModel>();
 
-            // Lọc các slot có sẵn trong các ca làm việc của stylist và chưa được đặt
-            var availableSlots = slots.Select(s => new SlotResponseModel
+            // Iterate through each slot to determine its availability
+            foreach (var slot in slots)
             {
-                Id = s.Id,
-                Time = s.Time,
+                // Check if the slot time falls within any of the stylist's shifts
+                bool isWithinShift = stylistShifts.Any(shift => slot.Time.TimeOfDay >= shift.StartTime.TimeOfDay && slot.Time.TimeOfDay < shift.EndTime.TimeOfDay);
 
-                // Kiểm tra xem thời gian của slot có nằm trong khoảng thời gian của ca làm việc nào của stylist không
-                Status = stylistShifts.Any(shift => s.Time.TimeOfDay >= shift.StartTime.TimeOfDay && s.Time.TimeOfDay < shift.EndTime.TimeOfDay)
-                            ? !appDetailSlot.Contains(s.Id)
-                            : false // Nếu thời gian slot không nằm trong bất kỳ ca nào thì đặt trạng thái thành false
-            }).ToList();
+                // Get the list of slots already booked for the stylist's appointments on that day
+                var bookedSlots = await _context.AppointmentSlots
+                    .Where(x => appDetails.Select(ad => ad.Id).Contains(x.AppointmentDetailId) && x.SlotId == slot.Id)
+                    .Select(x => x.SlotId)
+                    .ToListAsync();
 
+                // If the slot is within the shift but already booked, set status to false
+                // If it's within the shift and not booked, set status to true
+                // If it's outside the shift, set status to false
+                var status = isWithinShift && !bookedSlots.Contains(slot.Id) ? true : false;
+
+                availableSlots.Add(new SlotResponseModel
+                {
+                    Id = slot.Id,
+                    Time = slot.Time,
+                    Status = status // Set the correct status based on the conditions
+                });
+            }
+
+            // Return the available slots
             return availableSlots;
+
+
+
 
             //var slotResponse = new List<SlotResponseModel>();
             //foreach( var app in appDetailSlot)

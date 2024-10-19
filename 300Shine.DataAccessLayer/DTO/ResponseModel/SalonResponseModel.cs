@@ -10,6 +10,7 @@ namespace _300Shine.DataAccessLayer.DTO.ResponseModel
     public class SalonResponseModel
     {
         public int Id { get; set; }
+        public string ImageUrl { get; set; }
         public string Address { get; set; }
         public int Phone { get; set; }
         public string District { get; set; }

@@ -10,6 +10,7 @@ namespace _300Shine.DataAccessLayer.Entities
     [Table("Salon")]
     public class SalonEntity : BaseEntity
     {
+        public string? ImageUrl { get; set; }
         public string Address { get; set; }
         public int Phone { get; set; }
         public string District { get; set; }

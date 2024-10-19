@@ -44,5 +44,26 @@ namespace _300Shine.Controllers
                 return BadRequest(new JsonResponse<string>("", 400, ex.Message));
             }
         }
+        //[Authorize]
+        [HttpPost("appoinment")]
+        public async Task<ActionResult<JsonResponse<string>>> CreateAppointmentDetailWithReturnDayAsync(AppointmentDetailCreateWithReturnDateRequest request)
+        {
+            try
+            {
+                
+
+                var result = await _appointmentService.CreateAppointmentDetailWithReturnDayAsync(request);
+                if (result == null)
+                {
+                    return BadRequest(new JsonResponse<string>("Failed to create appointment", 400, ""));
+                }
+
+                return Ok(new JsonResponse<string>(null, 200, "Create Successfully"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>("", 400, ex.Message));
+            }
+        }
     }
 }

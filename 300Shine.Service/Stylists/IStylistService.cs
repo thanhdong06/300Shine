@@ -9,6 +9,6 @@ namespace _300Shine.Service.Stylists
 {
     public interface IStylistService
     {
-        Task<List<SlotResponseModel>> GetEmptySlotByStylistId(int? stylistId, int? salonId, int? serviceId, DateTime? date);
+        Task<List<SlotResponseModel>> GetEmptySlotByStylistId(int? stylistId, int? salonId, int? serviceId, DateTime date);
     }
 }

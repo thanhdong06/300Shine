@@ -11,5 +11,6 @@ namespace _300Shine.Repository.Repositories.Service
     public interface IAppointmentRepository
     {
         Task<AppointmentEntity> CreateAppointmentAsync(AppointmentCreateDTO request, int userId);
+        Task<string> CreateAppointmentDetailWithReturnDayAsync(AppointmentDetailCreateWithReturnDateRequest request);
     }
 }

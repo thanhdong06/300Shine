@@ -11,5 +11,6 @@ namespace _300Shine.Service.Services
     public interface IAppointmentService
     {
         Task<AppointmentEntity> CreateAppointmentAsync(AppointmentCreateDTO request, int userId);
+        Task<string> CreateAppointmentDetailWithReturnDayAsync(AppointmentDetailCreateWithReturnDateRequest request);
     }
 }

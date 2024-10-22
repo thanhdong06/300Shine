@@ -50,7 +50,7 @@ namespace _300Shine.Repository.Repositories.Service
 
         public async Task<UserEntity> LoginAsync(LoginRequest request)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Phone == request.Phone);
+            var user = await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.Phone == request.Phone);
 
             if (user == null || user.Password != request.Password)
             {

@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace _300Shine.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -21,7 +21,7 @@ namespace _300Shine.Controllers
             _userService = userService;
         }
 
-        [HttpGet]
+        [HttpGet("users")]
         public async Task<ActionResult<JsonResponse<List<ResponseUser>>>> GetAllUsers([FromQuery] int? roleId = null)
         {
             try
@@ -35,7 +35,7 @@ namespace _300Shine.Controllers
             }
         }
 
-        [HttpGet("{phone}")]
+        [HttpGet("user/by/{phone}")]
         public async Task<ActionResult<JsonResponse<ResponseUser>>> GetUserByPhoneAsync(string phone)
         {
             try
@@ -47,10 +47,24 @@ namespace _300Shine.Controllers
             {
                 return BadRequest(new JsonResponse<ResponseUser>(null, 400, ex.Message));
             }
+        } 
+        
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<JsonResponse<ResponseUser>>> GetUserByIdAsync(int userId)
+        {
+            try
+            {
+                var user = await _userService.GetUserByIdAsync(userId);
+                return Ok(new JsonResponse<ResponseUser>(user, 200, "Successfully"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<ResponseUser>(null, 400, ex.Message));
+            }
         }
 
-        [HttpPost]
-        public async Task<ActionResult<JsonResponse<string>>> CreateUser([FromBody] CreateUserRequest request)
+        [HttpPost("stylist/create")]
+        public async Task<ActionResult<JsonResponse<string>>> CreateStylist([FromBody] CreateUserRequest request)
         {
             try
             {

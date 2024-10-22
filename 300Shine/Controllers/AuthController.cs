@@ -1,5 +1,6 @@
 ﻿using _300Shine.BusinessObject.DTO.Request;
 using _300Shine.DataAccessLayer.DTO.RequestModel;
+using _300Shine.DataAccessLayer.DTO.ResponseModel;
 using _300Shine.DataAccessLayer.Entities;
 using _300Shine.ResponseType;
 using _300Shine.Service;
@@ -43,12 +44,13 @@ namespace _300Shine.Controllers
 
         [HttpPost]
         [Route("login")]
-        public async Task<ActionResult<JsonResponse<string>>> Login([FromBody] LoginRequest request)
+        public async Task<ActionResult<JsonResponse<LoginResponse>>> Login([FromBody] LoginRequest request)
         {
             try
             {
-                var token = await _autheService.LoginAsync(request);
-                return Ok(new JsonResponse<string>(null, 200, token));
+                var loginResponse = await _autheService.LoginAsync(request);
+
+                return Ok(new JsonResponse<LoginResponse>(loginResponse, 200, "Login successful"));
             }
             catch (Exception ex)
             {

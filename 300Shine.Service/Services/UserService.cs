@@ -44,6 +44,10 @@ namespace _300Shine.Service
         {
             return await _userRepository.GetUserByPhoneAsync(phone);
         }
+        public async Task<ResponseUser> GetUserByIdAsync(int userId)
+        {
+            return await _userRepository.GetUserByIdAsync(userId);
+        }
 
         public async Task<string> UpdateUserAsync(int userId, UpdateUserRequest request)
         {

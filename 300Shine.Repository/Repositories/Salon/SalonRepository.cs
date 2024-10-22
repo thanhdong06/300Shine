@@ -1,4 +1,5 @@
 ﻿using _300Shine.DataAccessLayer.DBContext;
+using _300Shine.DataAccessLayer.DTO.RequestModel;
 using _300Shine.DataAccessLayer.DTO.ResponseModel;
 using _300Shine.DataAccessLayer.Entities;
 using AutoMapper;
@@ -14,7 +15,7 @@ namespace _300Shine.Repository.Repositories.Salon
 {
     public class SalonRepository : ISalonRepository
     {
-        private readonly AppDbContext _context = new();
+        private readonly AppDbContext _context;
 
         private readonly IMapper _mapper;
 
@@ -70,6 +71,105 @@ namespace _300Shine.Repository.Repositories.Salon
             }
             return stylistList;
 
+        }
+
+        public async Task<string> CreateSalon(SalonCreateDTO s) {
+            var newSalon = new SalonEntity()
+            {
+                ImageUrl = s.ImageUrl,
+                Address = s.Address,
+                Phone = s.Phone,
+                District = s.District
+            };
+            _context.Salons.Add(newSalon);
+            try
+            {
+                await _context.SaveChangesAsync();
+                return "Create Salon Successfully";
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new Exception("Error saving changes", ex);
+            }
+        }
+
+        public async Task<string> UpdateSalon(SalonUpdateDTO s)
+        {
+            var existedSalon = await _context.Salons.SingleOrDefaultAsync(x => x.Id == s.Id && x.IsDeleted == false);
+            if (existedSalon == null || existedSalon.IsDeleted == true)
+                throw new InvalidDataException("Salon is not found");
+            existedSalon.ImageUrl = s.ImageUrl;
+            existedSalon.Address = s.Address;
+            existedSalon.Phone = s.Phone;
+            existedSalon.District = s.District;
+            _context.Salons.Update(existedSalon);
+            try
+            {
+                await _context.SaveChangesAsync();
+                return "Update Salon Successfully";
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new Exception("Error saving changes", ex);
+            }
+        }
+
+        public async Task<string> DeleteSalon(int id)
+        {
+            var existedSalon = await _context.Salons.SingleOrDefaultAsync(x => x.Id == id);
+            if (existedSalon == null || existedSalon.IsDeleted == true)
+                throw new InvalidDataException("Salon is not found");
+
+            existedSalon.IsDeleted = true;
+
+            _context.Salons.Update(existedSalon);
+            try
+            {
+                await _context.SaveChangesAsync();
+                return "Delete Salon Successfully";
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new Exception("Error saving changes", ex);
+            }
+        }
+
+        public async Task<List<SalonChoiceDTO>> GetSalonsForChoosing(string? search, string? sortBy,
+            string? district, string? address,
+            int pageIndex, int pageSize)
+        {
+            IQueryable<SalonEntity> salons = _context.Salons
+                .Where(x => x.IsDeleted == false);
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                salons = salons.Where(x => x.District.Contains(search) || x.Address.Contains(search));
+            }
+
+            if (!string.IsNullOrEmpty(district))
+            {
+                salons = salons.Where(x => x.District == district);
+            }
+
+            if (!string.IsNullOrEmpty(address))
+            {
+                salons = salons.Where(x => x.Address.Contains(address));
+            }
+
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                if (sortBy.Equals("ascAddress"))
+                {
+                    salons = salons.OrderBy(x => x.Address);
+                }
+                else if (sortBy.Equals("descAddress"))
+                {
+                    salons = salons.OrderByDescending(x => x.Address);
+                }
+            }
+
+            var paginatedSalons = PaginatedList<SalonEntity>.Create(salons, pageIndex, pageSize);
+            return _mapper.Map<List<SalonChoiceDTO>>(paginatedSalons);
         }
     }
 }

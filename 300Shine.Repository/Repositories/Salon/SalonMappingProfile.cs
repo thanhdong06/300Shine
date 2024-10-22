@@ -19,6 +19,7 @@ namespace _300Shine.Repository.Repositories.Salon
                 .ForMember(dest => dest.Stylists, opt => opt.MapFrom(src => src.Stylists));
             CreateMap<ServiceEntity, ServiceRequestModel>();
             CreateMap<StylistEntity, StylistRequestModel>();
+            CreateMap<SalonEntity, SalonChoiceDTO>();
         }
         
     }

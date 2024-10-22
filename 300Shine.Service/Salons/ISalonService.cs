@@ -1,4 +1,5 @@
-﻿using _300Shine.DataAccessLayer.DTO.ResponseModel;
+﻿using _300Shine.DataAccessLayer.DTO.RequestModel;
+using _300Shine.DataAccessLayer.DTO.ResponseModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,16 @@ namespace _300Shine.Service.Salons
            decimal? fromPrice, decimal? toPrice,
            string? size,
            int pageIndex, int pageSize);
+        Task<List<SalonChoiceDTO>> GetSalonsForChoosing(string? search, string? sortBy,
+           string? district, string? address,
+           int pageIndex, int pageSize);
 
         Task<SalonResponseModel> GetSalonByID(int id);
+
+        Task<string> CreateSalon(SalonCreateDTO s);
+
+        Task<string> UpdateSalon(SalonUpdateDTO s);
+
+        Task<string> DeleteSalon(int id);
     }
 }

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace _300Shine.Repository
 {
@@ -28,10 +29,15 @@ namespace _300Shine.Repository
             return await _context.Users.AnyAsync(u => u.Phone == phone);
         }
 
-        public async Task<List<ResponseUser>> GetAllUsersAsync()
+        public async Task<List<ResponseUser>> GetAllUsersAsync(int? roleId = null)
         {
-            var users = await _context.Users.Include(u => u.Role).Include(u => u.Salon).Where(u => !u.IsDeleted).ToListAsync();
+            var query =  _context.Users.Include(u => u.Role).Include(u => u.Salon).Where(u => !u.IsDeleted);
+            if (roleId.HasValue)
+            {
+                query = query.Where(u => u.RoleId == roleId.Value);
+            }
 
+            var users = await query.ToListAsync();
             var userResponses = new List<ResponseUser>();
 
             foreach (var user in users)

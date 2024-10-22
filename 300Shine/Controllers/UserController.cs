@@ -22,11 +22,11 @@ namespace _300Shine.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<JsonResponse<List<ResponseUser>>>> GetAllUsers()
+        public async Task<ActionResult<JsonResponse<List<ResponseUser>>>> GetAllUsers([FromQuery] int? roleId = null)
         {
             try
             {
-                var users = await _userService.GetAllUsersAsync();
+                var users = await _userService.GetAllUsersAsync(roleId);
                 return Ok(new JsonResponse<List<ResponseUser>>(users, 200, "Successfully"));
             }
             catch (Exception ex)

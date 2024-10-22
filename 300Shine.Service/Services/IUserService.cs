@@ -12,7 +12,7 @@ namespace _300Shine.Service.Interface
 {
     public interface IUserService
     {
-        Task<List<ResponseUser>> GetAllUsersAsync();
+        Task<List<ResponseUser>> GetAllUsersAsync(int? roleId = null);
         Task<ResponseUser> GetUserByPhoneAsync(string phone);
         Task<string> CreateStylistAsync(CreateUserRequest request);
         Task<string> UpdateUserAsync(int userId, UpdateUserRequest request);

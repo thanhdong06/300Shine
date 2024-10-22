@@ -35,9 +35,9 @@ namespace _300Shine.Service
            return await _userRepository.DeleteUserAsync(userId);
         }
 
-        public async Task<List<ResponseUser>> GetAllUsersAsync()
+        public async Task<List<ResponseUser>> GetAllUsersAsync(int? roleId = null)
         {
-            return await _userRepository.GetAllUsersAsync();
+            return await _userRepository.GetAllUsersAsync(roleId);
         }
 
         public async Task<ResponseUser> GetUserByPhoneAsync(string phone)

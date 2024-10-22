@@ -101,60 +101,80 @@ namespace _300Shine.Repository
                 userResponse.SalaryPerDay = stylist.SalaryPerDay;
             }
             return userResponse;
+        } public async Task<ResponseUser> GetUserByIdAsync(int userId)
+        {
+            var user = await _context.Users.Include(u => u.Role).Include(u => u.Salon).FirstOrDefaultAsync(u => u.Id == userId && !u.IsDeleted);
+
+            if (user == null)
+            {
+                throw new KeyNotFoundException("User not found");
+            }
+
+            var userResponse = new ResponseUser
+            {
+                Id = user.Id,
+                FullName = user.FullName,
+                DateOfBirth = user.DateOfBirth,
+                Gender = user.Gender,
+                Phone = user.Phone,
+                Address = user.Address,
+                IsVerified = user.IsVerified,
+                Status = user.Status,
+                SalonId = user.SalonId,
+                RoleName = user.Role.Name
+            };
+
+            var stylist = await _context.Stylists.FirstOrDefaultAsync(s => s.UserId == user.Id);
+            if (stylist != null)
+            {
+                userResponse.Commission = stylist.Commission;
+                userResponse.Salary = stylist.Salary;
+                userResponse.SalaryPerDay = stylist.SalaryPerDay;
+            }
+            return userResponse;
         }
 
         public async Task<string> CreateStylistAsync(CreateUserRequest request)
         {
+            var checkUser = await _context.Users.FirstOrDefaultAsync(s => s.Phone == request.Phone && s.IsDeleted == false);
+            if (checkUser != null)
+            {
+                throw new InvalidDataException("User with this phone number already exists");
+            }
 
-                var checkRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name.ToLower() == "stylist");
+            var checkRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name.ToLower() == "stylist");
+            if (checkRole == null) throw new InvalidDataException("Role not found");
+            
+            var newUser = new UserEntity()
+            {
+                FullName = request.FullName,
+                Password = request.Password,
+                DateOfBirth = request.DateOfBirth,
+                Gender = request.Gender,
+                Phone = request.Phone,
+                Address = request.Address,
+                RoleId = checkRole.Id,
+                IsVerified = request.IsVerified,
+                Status = "Active",
+                SalonId = request.SalonId
+            };
 
-                if (checkRole == null) throw new InvalidDataException("Role not found");
-                          
-                
-                var checkUser = await _context.Users.FirstOrDefaultAsync(s => s.Phone == request.Phone && s.IsDeleted == false);
-                if (checkUser != null)
-                {
-                    throw new InvalidDataException("User with this phone number already exists");
-                }
+            _context.Users.Add(newUser);
+            await _context.SaveChangesAsync();
 
-                var newUser = new UserEntity()
-                {
-                    FullName = request.FullName,
-                    Password = request.Password,
-                    DateOfBirth = request.DateOfBirth,
-                    Gender = request.Gender,
-                    Phone = request.Phone,
-                    Address = request.Address,
-                    RoleId = checkRole.Id,
-                    IsVerified = request.IsVerified,
-                    Status = "Active",
-                    SalonId = request.SalonId
-                };
+            var newStylist = new StylistEntity()
+            {
+                UserId = newUser.Id,
+                Commission = request.Commission,
+                Salary = request.Salary,
+                SalaryPerDay = request.SalaryPerDay,
+                SalonId = request.SalonId
+            };
 
-                _context.Users.Add(newUser);
-                await _context.SaveChangesAsync();
+            _context.Stylists.Add(newStylist);
+            await _context.SaveChangesAsync();
 
-                if (request.IsStylist)
-                {
-                    var checkSalon = await _context.Salons.AnyAsync(s => s.Id == request.SalonId);
-                    if (!checkSalon)
-                    {
-                        throw new InvalidDataException("Salon not found");
-                    }
-
-                    var newStylist = new StylistEntity()
-                    {
-                        UserId = newUser.Id,
-                        Commission = request.Commission,
-                        Salary = request.Salary,
-                        SalaryPerDay = request.SalaryPerDay,
-                        SalonId = request.SalonId
-                    };
-
-                    _context.Stylists.Add(newStylist);
-                    await _context.SaveChangesAsync();
-                }
-                return "User created successfully";
+            return "Stylist created successfully";
           
         }
 

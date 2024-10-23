@@ -90,6 +90,35 @@ namespace _300Shine.Controllers
             {
                 return BadRequest(new JsonResponse<string>("", 400, ex.Message));
             }
+        } 
+        
+        [HttpPost("manager/create")]
+        public async Task<ActionResult<JsonResponse<string>>> CreateManager([FromBody] CreateUserRequest request)
+        {
+            try
+            {
+                var result = await _userService.CreateManagerAsync(request);
+                if (result == "Role not found")
+                {
+                    return BadRequest(new JsonResponse<string>("Role not found", 400, ""));
+                }
+
+                if (result == "Salon not found")
+                {
+                    return BadRequest(new JsonResponse<string>("Salon not found", 400, ""));
+                }
+
+                if (result == "User with this phone number already exists")
+                {
+                    return BadRequest(new JsonResponse<string>("Phone number already exists", 400, ""));
+                }
+
+                return Ok(new JsonResponse<string>(null, 200, "Create Successfully"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>("", 400, ex.Message));
+            }
         }
 
         [HttpPut("{userId}")]

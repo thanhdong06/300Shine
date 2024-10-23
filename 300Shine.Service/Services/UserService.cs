@@ -28,6 +28,10 @@ namespace _300Shine.Service
         public async Task<string> CreateStylistAsync(CreateUserRequest request)
         {
             return await _userRepository.CreateStylistAsync(request);
+        } 
+        public async Task<string> CreateManagerAsync(CreateUserRequest request)
+        {
+            return await _userRepository.CreateManagerAsync(request);
         }
 
         public async Task<string> DeleteUserAsync(int userId)

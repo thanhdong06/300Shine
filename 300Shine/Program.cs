@@ -16,6 +16,8 @@ using _300Shine.Service.Services;
 using Microsoft.EntityFrameworkCore;
 using _300Shine.Repository.Repositories.Stylist;
 using _300Shine.Service.Stylists;
+using _300Shine.Repository.Repositories.Manager;
+using _300Shine.Service.Manager;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,6 +56,8 @@ builder.Services.AddScoped<IStylistRepository, StylistRepository>();
 builder.Services.AddScoped<IStylistService, StylistService>();
 builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+builder.Services.AddScoped<IManagerRepository, ManagerRepository>();
+builder.Services.AddScoped<IManagerService, ManagerService>();
 
 var app = builder.Build();
 

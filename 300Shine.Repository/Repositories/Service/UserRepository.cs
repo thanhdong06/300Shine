@@ -176,6 +176,33 @@ namespace _300Shine.Repository
 
             return "Stylist created successfully";
           
+        }  
+        public async Task<string> CreateManagerAsync(CreateUserRequest request)
+        {
+            var checkUser = await _context.Users.FirstOrDefaultAsync(s => s.Phone == request.Phone && s.IsDeleted == false);
+            if (checkUser != null)
+            {
+                throw new InvalidDataException("User with this phone number already exists");
+            }
+
+            var checkRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name.ToLower() == "manager");
+            if (checkRole == null) throw new InvalidDataException("Role not found");
+            
+            var newUser = new UserEntity()
+            {
+                FullName = request.FullName,
+                Password = request.Password,
+                DateOfBirth = request.DateOfBirth,
+                Gender = request.Gender,
+                Phone = request.Phone,
+                Address = request.Address,
+                RoleId = checkRole.Id,
+                IsVerified = request.IsVerified,
+                Status = "Active",
+                SalonId = request.SalonId
+            };
+
+            return "Manager created successfully";          
         }
 
         public async Task<string> UpdateUserAsync(int userId, UpdateUserRequest request)

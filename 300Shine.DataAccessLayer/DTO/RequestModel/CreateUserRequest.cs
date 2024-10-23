@@ -17,7 +17,6 @@ namespace _300Shine.BusinessObject.DTO.Request
         public DateTime DateOfBirth { get; set; }
         public bool Gender { get; set; }
         public string Address { get; set; }
-        public bool IsStylist { get; set; }
         public bool IsVerified { get; set; } 
         public string Status { get; set; } 
         public int SalonId { get; set; }

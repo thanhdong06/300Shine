@@ -17,6 +17,7 @@ namespace _300Shine.Repository.Interface
         Task<ResponseUser> GetUserByPhoneAsync(string phone);
         Task<ResponseUser> GetUserByIdAsync(int userId);
         Task<string> CreateStylistAsync(CreateUserRequest request);
+        Task<string> CreateManagerAsync(CreateUserRequest request);
         Task<string> UpdateUserAsync(int userId, UpdateUserRequest request);
         Task<string> DeleteUserAsync(int userId);
     }

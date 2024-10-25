@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _300Shine.Repository.Repositories.Service
+namespace _300Shine.Repository.Repositories.Appoinment
 {
     public class AppointmentRepository : IAppointmentRepository
     {
@@ -63,7 +63,7 @@ namespace _300Shine.Repository.Repositories.Service
         }
         public async Task<string> CreateAppointmentDetailWithReturnDayAsync(AppointmentDetailCreateWithReturnDateRequest request)
         {
-            var app =await _context.Appointments.Include(x=>x.AppointmentDetails).SingleOrDefaultAsync(a=>a.Id==request.AppointmentId);
+            var app = await _context.Appointments.Include(x => x.AppointmentDetails).SingleOrDefaultAsync(a => a.Id == request.AppointmentId);
             if (app == null)
                 throw new Exception("Appointment not found");
 
@@ -87,10 +87,10 @@ namespace _300Shine.Repository.Repositories.Service
             //await _context.AppointmentDetails.AddAsync(appointmentDetail);
             foreach (var slot in request.Slots)
             {
-                var slots = await _context.Slots.SingleOrDefaultAsync(x=>x.Id ==slot.Id);
+                var slots = await _context.Slots.SingleOrDefaultAsync(x => x.Id == slot.Id);
                 if (slots == null)
                 {
-                    
+
                     throw new Exception("Slot not found.");
                 }
 

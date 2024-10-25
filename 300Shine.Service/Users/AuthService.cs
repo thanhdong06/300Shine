@@ -2,10 +2,8 @@
 using _300Shine.DataAccessLayer.DTO.RequestModel;
 using _300Shine.DataAccessLayer.Entities;
 using _300Shine.Repository;
-using _300Shine.Repository.Interface;
-using _300Shine.Repository.Repositories.Service;
-using _300Shine.Service.Interface;
-using _300Shine.Service.Services;
+using _300Shine.Repository.Repositories.User;
+using _300Shine.Service.SMS;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -17,7 +15,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _300Shine.Service
+namespace _300Shine.Service.Users
 {
     public class AuthService : IAuthService
     {
@@ -25,7 +23,8 @@ namespace _300Shine.Service
         private readonly IAuthRepository _authRepository;
         private readonly ISMSService _smsService;
 
-        public AuthService(IConfiguration configuration, IAuthRepository authRepository, ISMSService smsService) { 
+        public AuthService(IConfiguration configuration, IAuthRepository authRepository, ISMSService smsService)
+        {
             _configuration = configuration;
             _authRepository = authRepository;
             _smsService = smsService;

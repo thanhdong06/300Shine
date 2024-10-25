@@ -6,7 +6,7 @@ using AutoMapper;
 using DataAccessLayer.ServiceForCRUD.Paging;
 using Microsoft.EntityFrameworkCore;
 
-namespace _300Shine.Repository.Repositories.Service
+namespace _300Shine.Repository.Repositories.Shift
 {
     public class ShiftRepository : IShiftRepository
     {
@@ -59,7 +59,7 @@ namespace _300Shine.Repository.Repositories.Service
                 throw new InvalidDataException("Salon is not found");
             existedShift.Name = shift.Name;
             existedShift.Date = shift.Date;
-            existedShift.StartTime = shift.StartTime;   
+            existedShift.StartTime = shift.StartTime;
             existedShift.EndTime = shift.EndTime;
             existedShift.MinStaff = shift.MinStaff;
             existedShift.Status = shift.Status;

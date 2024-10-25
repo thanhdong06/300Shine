@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _300Shine.Service.Services
+namespace _300Shine.Service.Appoinments
 {
     public interface IAppointmentService
     {

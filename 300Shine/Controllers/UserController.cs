@@ -4,7 +4,7 @@ using _300Shine.DataAccessLayer.DTO.ResponseModel;
 using _300Shine.DataAccessLayer.Entities;
 using _300Shine.ResponseType;
 using _300Shine.Service;
-using _300Shine.Service.Interface;
+using _300Shine.Service.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

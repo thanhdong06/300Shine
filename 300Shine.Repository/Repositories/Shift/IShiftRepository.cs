@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _300Shine.Service.Services
+namespace _300Shine.Repository.Repositories.Shift
 {
-    public interface IShiftService
+    public interface IShiftRepository
     {
         Task<string> CreateShift(ShiftCreateDTO shift);
         Task<string> UpdateShift(ShiftUpdateDTO shift);

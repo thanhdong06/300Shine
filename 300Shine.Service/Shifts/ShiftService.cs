@@ -1,14 +1,14 @@
 ﻿using _300Shine.DataAccessLayer.DTO.RequestModel;
 using _300Shine.DataAccessLayer.DTO.ResponseModel;
 using _300Shine.DataAccessLayer.Entities;
-using _300Shine.Repository.Repositories.Service;
+using _300Shine.Repository.Repositories.Shift;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _300Shine.Service.Services
+namespace _300Shine.Service.Shifts
 {
     public class ShiftService : IShiftService
     {

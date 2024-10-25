@@ -2,7 +2,7 @@
 using _300Shine.DataAccessLayer.DTO.ResponseModel;
 using _300Shine.DataAccessLayer.Entities;
 using _300Shine.ResponseType;
-using _300Shine.Service.Services;
+using _300Shine.Service.Shifts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace _300Shine.Controllers

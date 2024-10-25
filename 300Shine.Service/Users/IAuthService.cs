@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _300Shine.Service.Interface
+namespace _300Shine.Service.Users
 {
     public interface IAuthService
     {

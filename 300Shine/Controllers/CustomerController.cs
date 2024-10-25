@@ -1,6 +1,6 @@
 ﻿using _300Shine.DataAccessLayer.DTO.RequestModel;
 using _300Shine.ResponseType;
-using _300Shine.Service.Services;
+using _300Shine.Service.Appoinments;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

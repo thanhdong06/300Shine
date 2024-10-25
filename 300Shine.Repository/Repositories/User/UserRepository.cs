@@ -3,7 +3,6 @@ using _300Shine.DataAccessLayer.DBContext;
 using _300Shine.DataAccessLayer.DTO.RequestModel;
 using _300Shine.DataAccessLayer.DTO.ResponseModel;
 using _300Shine.DataAccessLayer.Entities;
-using _300Shine.Repository.Interface;
 using Azure.Core;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _300Shine.Repository
+namespace _300Shine.Repository.Repositories.User
 {
     public class UserRepository : IUserRepository
     {
@@ -100,56 +99,56 @@ namespace _300Shine.Repository
         public async Task<string> CreateStylistAsync(CreateUserRequest request)
         {
 
-                var checkRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name.ToLower() == "stylist");
+            var checkRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name.ToLower() == "stylist");
 
-                if (checkRole == null) throw new InvalidDataException("Role not found");
-                          
-                
-                var checkUser = await _context.Users.FirstOrDefaultAsync(s => s.Phone == request.Phone && s.IsDeleted == false);
-                if (checkUser != null)
+            if (checkRole == null) throw new InvalidDataException("Role not found");
+
+
+            var checkUser = await _context.Users.FirstOrDefaultAsync(s => s.Phone == request.Phone && s.IsDeleted == false);
+            if (checkUser != null)
+            {
+                throw new InvalidDataException("User with this phone number already exists");
+            }
+
+            var newUser = new UserEntity()
+            {
+                FullName = request.FullName,
+                Password = request.Password,
+                DateOfBirth = request.DateOfBirth,
+                Gender = request.Gender,
+                Phone = request.Phone,
+                Address = request.Address,
+                RoleId = checkRole.Id,
+                IsVerified = request.IsVerified,
+                Status = "Active",
+                SalonId = request.SalonId
+            };
+
+            _context.Users.Add(newUser);
+            await _context.SaveChangesAsync();
+
+            if (request.IsStylist)
+            {
+                var checkSalon = await _context.Salons.AnyAsync(s => s.Id == request.SalonId);
+                if (!checkSalon)
                 {
-                    throw new InvalidDataException("User with this phone number already exists");
+                    throw new InvalidDataException("Salon not found");
                 }
 
-                var newUser = new UserEntity()
+                var newStylist = new StylistEntity()
                 {
-                    FullName = request.FullName,
-                    Password = request.Password,
-                    DateOfBirth = request.DateOfBirth,
-                    Gender = request.Gender,
-                    Phone = request.Phone,
-                    Address = request.Address,
-                    RoleId = checkRole.Id,
-                    IsVerified = request.IsVerified,
-                    Status = "Active",
+                    UserId = newUser.Id,
+                    Commission = request.Commission,
+                    Salary = request.Salary,
+                    SalaryPerDay = request.SalaryPerDay,
                     SalonId = request.SalonId
                 };
 
-                _context.Users.Add(newUser);
+                _context.Stylists.Add(newStylist);
                 await _context.SaveChangesAsync();
+            }
+            return "User created successfully";
 
-                if (request.IsStylist)
-                {
-                    var checkSalon = await _context.Salons.AnyAsync(s => s.Id == request.SalonId);
-                    if (!checkSalon)
-                    {
-                        throw new InvalidDataException("Salon not found");
-                    }
-
-                    var newStylist = new StylistEntity()
-                    {
-                        UserId = newUser.Id,
-                        Commission = request.Commission,
-                        Salary = request.Salary,
-                        SalaryPerDay = request.SalaryPerDay,
-                        SalonId = request.SalonId
-                    };
-
-                    _context.Stylists.Add(newStylist);
-                    await _context.SaveChangesAsync();
-                }
-                return "User created successfully";
-          
         }
 
         public async Task<string> UpdateUserAsync(int userId, UpdateUserRequest request)

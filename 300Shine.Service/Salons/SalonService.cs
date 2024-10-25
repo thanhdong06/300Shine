@@ -46,10 +46,7 @@ namespace _300Shine.Service.Salons
             return await _service.GetSalonsForChoosing(search, sortBy, district, address, pageIndex, pageSize);
         }
 
-        public async Task<List<StylistResponseModel>> GetStylistBySalonAndServiceID(int salonId, int serviceId)
-        {
-            return await _service.GetStylistBySalonAndServiceID(salonId, serviceId);
-        }
+       
 
         public async Task<string> UpdateSalon(SalonUpdateDTO s)
         {

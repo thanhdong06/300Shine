@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace _300Shine.Repository.Repositories.User
 {
@@ -27,10 +28,15 @@ namespace _300Shine.Repository.Repositories.User
             return await _context.Users.AnyAsync(u => u.Phone == phone);
         }
 
-        public async Task<List<ResponseUser>> GetAllUsersAsync()
+        public async Task<List<ResponseUser>> GetAllUsersAsync(int? roleId = null)
         {
-            var users = await _context.Users.Include(u => u.Role).Include(u => u.Salon).Where(u => !u.IsDeleted).ToListAsync();
+            var query =  _context.Users.Include(u => u.Role).Include(u => u.Salon).Where(u => !u.IsDeleted);
+            if (roleId.HasValue)
+            {
+                query = query.Where(u => u.RoleId == roleId.Value);
+            }
 
+            var users = await query.ToListAsync();
             var userResponses = new List<ResponseUser>();
 
             foreach (var user in users)
@@ -94,22 +100,50 @@ namespace _300Shine.Repository.Repositories.User
                 userResponse.SalaryPerDay = stylist.SalaryPerDay;
             }
             return userResponse;
+        } public async Task<ResponseUser> GetUserByIdAsync(int userId)
+        {
+            var user = await _context.Users.Include(u => u.Role).Include(u => u.Salon).FirstOrDefaultAsync(u => u.Id == userId && !u.IsDeleted);
+
+            if (user == null)
+            {
+                throw new KeyNotFoundException("User not found");
+            }
+
+            var userResponse = new ResponseUser
+            {
+                Id = user.Id,
+                FullName = user.FullName,
+                DateOfBirth = user.DateOfBirth,
+                Gender = user.Gender,
+                Phone = user.Phone,
+                Address = user.Address,
+                IsVerified = user.IsVerified,
+                Status = user.Status,
+                SalonId = user.SalonId,
+                RoleName = user.Role.Name
+            };
+
+            var stylist = await _context.Stylists.FirstOrDefaultAsync(s => s.UserId == user.Id);
+            if (stylist != null)
+            {
+                userResponse.Commission = stylist.Commission;
+                userResponse.Salary = stylist.Salary;
+                userResponse.SalaryPerDay = stylist.SalaryPerDay;
+            }
+            return userResponse;
         }
 
         public async Task<string> CreateStylistAsync(CreateUserRequest request)
         {
-
-            var checkRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name.ToLower() == "stylist");
-
-            if (checkRole == null) throw new InvalidDataException("Role not found");
-
-
             var checkUser = await _context.Users.FirstOrDefaultAsync(s => s.Phone == request.Phone && s.IsDeleted == false);
             if (checkUser != null)
             {
                 throw new InvalidDataException("User with this phone number already exists");
             }
 
+            var checkRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name.ToLower() == "stylist");
+            if (checkRole == null) throw new InvalidDataException("Role not found");
+            
             var newUser = new UserEntity()
             {
                 FullName = request.FullName,
@@ -127,28 +161,47 @@ namespace _300Shine.Repository.Repositories.User
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
 
-            if (request.IsStylist)
+            var newStylist = new StylistEntity()
             {
-                var checkSalon = await _context.Salons.AnyAsync(s => s.Id == request.SalonId);
-                if (!checkSalon)
-                {
-                    throw new InvalidDataException("Salon not found");
-                }
+                UserId = newUser.Id,
+                Commission = request.Commission,
+                Salary = request.Salary,
+                SalaryPerDay = request.SalaryPerDay,
+                SalonId = request.SalonId
+            };
 
-                var newStylist = new StylistEntity()
-                {
-                    UserId = newUser.Id,
-                    Commission = request.Commission,
-                    Salary = request.Salary,
-                    SalaryPerDay = request.SalaryPerDay,
-                    SalonId = request.SalonId
-                };
+            _context.Stylists.Add(newStylist);
+            await _context.SaveChangesAsync();
 
-                _context.Stylists.Add(newStylist);
-                await _context.SaveChangesAsync();
+            return "Stylist created successfully";
+          
+        }  
+        public async Task<string> CreateManagerAsync(CreateUserRequest request)
+        {
+            var checkUser = await _context.Users.FirstOrDefaultAsync(s => s.Phone == request.Phone && s.IsDeleted == false);
+            if (checkUser != null)
+            {
+                throw new InvalidDataException("User with this phone number already exists");
             }
-            return "User created successfully";
 
+            var checkRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name.ToLower() == "manager");
+            if (checkRole == null) throw new InvalidDataException("Role not found");
+            
+            var newUser = new UserEntity()
+            {
+                FullName = request.FullName,
+                Password = request.Password,
+                DateOfBirth = request.DateOfBirth,
+                Gender = request.Gender,
+                Phone = request.Phone,
+                Address = request.Address,
+                RoleId = checkRole.Id,
+                IsVerified = request.IsVerified,
+                Status = "Active",
+                SalonId = request.SalonId
+            };
+
+            return "Manager created successfully";          
         }
 
         public async Task<string> UpdateUserAsync(int userId, UpdateUserRequest request)

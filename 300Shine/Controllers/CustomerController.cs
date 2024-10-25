@@ -8,7 +8,7 @@ using System.Security.Claims;
 namespace _300Shine.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/appointment")]
     public class CustomerController : Controller
     {
         private readonly IAppointmentService _appointmentService;

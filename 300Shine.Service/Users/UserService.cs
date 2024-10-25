@@ -27,6 +27,10 @@ namespace _300Shine.Service.Users
         public async Task<string> CreateStylistAsync(CreateUserRequest request)
         {
             return await _userRepository.CreateStylistAsync(request);
+        } 
+        public async Task<string> CreateManagerAsync(CreateUserRequest request)
+        {
+            return await _userRepository.CreateManagerAsync(request);
         }
 
         public async Task<string> DeleteUserAsync(int userId)
@@ -34,14 +38,18 @@ namespace _300Shine.Service.Users
             return await _userRepository.DeleteUserAsync(userId);
         }
 
-        public async Task<List<ResponseUser>> GetAllUsersAsync()
+        public async Task<List<ResponseUser>> GetAllUsersAsync(int? roleId = null)
         {
-            return await _userRepository.GetAllUsersAsync();
+            return await _userRepository.GetAllUsersAsync(roleId);
         }
 
         public async Task<ResponseUser> GetUserByPhoneAsync(string phone)
         {
             return await _userRepository.GetUserByPhoneAsync(phone);
+        }
+        public async Task<ResponseUser> GetUserByIdAsync(int userId)
+        {
+            return await _userRepository.GetUserByIdAsync(userId);
         }
 
         public async Task<string> UpdateUserAsync(int userId, UpdateUserRequest request)

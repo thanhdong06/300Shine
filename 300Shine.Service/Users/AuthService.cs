@@ -1,5 +1,6 @@
 ﻿using _300Shine.BusinessObject.DTO.Request;
 using _300Shine.DataAccessLayer.DTO.RequestModel;
+using _300Shine.DataAccessLayer.DTO.ResponseModel;
 using _300Shine.DataAccessLayer.Entities;
 using _300Shine.Repository;
 using _300Shine.Repository.Repositories.User;
@@ -14,6 +15,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Twilio.Jwt.AccessToken;
 
 namespace _300Shine.Service.Users
 {
@@ -43,7 +45,7 @@ namespace _300Shine.Service.Users
             return result;
         }
 
-        public async Task<string> LoginAsync(LoginRequest request)
+        public async Task<LoginResponse> LoginAsync(LoginRequest request)
         {
             var user = await _authRepository.LoginAsync(request);
 
@@ -51,7 +53,27 @@ namespace _300Shine.Service.Users
             {
                 throw new InvalidDataException("Invalid phone number or password");
             }
-            return CreateToken(user);
+            var token = CreateToken(user);
+
+            var responseUser = new ResponseUser
+            {
+                Id = user.Id,
+                FullName = user.FullName,
+                DateOfBirth = user.DateOfBirth,
+                Gender = user.Gender,
+                Phone = user.Phone,
+                Address = user.Address,
+                IsVerified = user.IsVerified,
+                Status = user.Status,
+                SalonId = user.SalonId,
+                RoleName = user.Role.Name
+            };
+
+            return new LoginResponse
+            {
+                Token = token,
+                User = responseUser
+            };
         }
 
         public async Task<string> VerifyOtpAsync(VerifyOtpRequest request)

@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace _300Shine.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -21,12 +21,12 @@ namespace _300Shine.Controllers
             _userService = userService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<JsonResponse<List<ResponseUser>>>> GetAllUsers()
+        [HttpGet("users")]
+        public async Task<ActionResult<JsonResponse<List<ResponseUser>>>> GetAllUsers([FromQuery] int? roleId = null)
         {
             try
             {
-                var users = await _userService.GetAllUsersAsync();
+                var users = await _userService.GetAllUsersAsync(roleId);
                 return Ok(new JsonResponse<List<ResponseUser>>(users, 200, "Successfully"));
             }
             catch (Exception ex)
@@ -35,7 +35,7 @@ namespace _300Shine.Controllers
             }
         }
 
-        [HttpGet("{phone}")]
+        [HttpGet("user/by/{phone}")]
         public async Task<ActionResult<JsonResponse<ResponseUser>>> GetUserByPhoneAsync(string phone)
         {
             try
@@ -47,14 +47,57 @@ namespace _300Shine.Controllers
             {
                 return BadRequest(new JsonResponse<ResponseUser>(null, 400, ex.Message));
             }
+        } 
+        
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<JsonResponse<ResponseUser>>> GetUserByIdAsync(int userId)
+        {
+            try
+            {
+                var user = await _userService.GetUserByIdAsync(userId);
+                return Ok(new JsonResponse<ResponseUser>(user, 200, "Successfully"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<ResponseUser>(null, 400, ex.Message));
+            }
         }
 
-        [HttpPost]
-        public async Task<ActionResult<JsonResponse<string>>> CreateUser([FromBody] CreateUserRequest request)
+        [HttpPost("stylist/create")]
+        public async Task<ActionResult<JsonResponse<string>>> CreateStylist([FromBody] CreateUserRequest request)
         {
             try
             {
                 var result = await _userService.CreateStylistAsync(request);
+                if (result == "Role not found")
+                {
+                    return BadRequest(new JsonResponse<string>("Role not found", 400, ""));
+                }
+
+                if (result == "Salon not found")
+                {
+                    return BadRequest(new JsonResponse<string>("Salon not found", 400, ""));
+                }
+
+                if (result == "User with this phone number already exists")
+                {
+                    return BadRequest(new JsonResponse<string>("Phone number already exists", 400, ""));
+                }
+
+                return Ok(new JsonResponse<string>(null, 200, "Create Successfully"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>("", 400, ex.Message));
+            }
+        } 
+        
+        [HttpPost("manager/create")]
+        public async Task<ActionResult<JsonResponse<string>>> CreateManager([FromBody] CreateUserRequest request)
+        {
+            try
+            {
+                var result = await _userService.CreateManagerAsync(request);
                 if (result == "Role not found")
                 {
                     return BadRequest(new JsonResponse<string>("Role not found", 400, ""));

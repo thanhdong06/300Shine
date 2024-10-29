@@ -2,6 +2,7 @@
 using _300Shine.DataAccessLayer.DTO.ResponseModel;
 using _300Shine.DataAccessLayer.Entities;
 using AutoMapper;
+using DataAccessLayer.ServiceForCRUD.Paging;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -209,6 +210,16 @@ namespace _300Shine.Repository.Repositories.Stylist
 
             }
         }
-        
+        public async Task<List<StylistResponseModel>> GetStylistsBySalon(int salonId, string? search, int pageIndex, int pageSize)
+        {
+            var stylistList = _context.Stylists.Include(x => x.User).Where(x => x.SalonId == salonId && !x.IsDeleted);
+            if (!string.IsNullOrEmpty(search))
+            {
+                stylistList = stylistList.Where(x => x.User.FullName.ToLower().Contains(search.ToLower()));
+            }
+            var paginatedStylists = PaginatedList<StylistEntity>.Create(stylistList, pageIndex, pageSize);
+            return _mapper.Map<List<StylistResponseModel>>(paginatedStylists);
+        }
+
     }
 }

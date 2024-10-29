@@ -31,5 +31,10 @@ namespace _300Shine.Service.Stylists
         {
             return await _service.GetStylistBySalonAndServiceID(salonId,serviceId);
         }
+
+        public async Task<List<StylistResponseModel>> GetStylistsBySalon(int salonId, string? search, int pageIndex, int pageSize)
+        {
+            return await _service.GetStylistsBySalon(salonId, search, pageIndex, pageSize);
+        }
     }
 }

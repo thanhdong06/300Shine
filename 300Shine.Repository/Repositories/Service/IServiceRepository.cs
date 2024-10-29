@@ -25,6 +25,9 @@ namespace _300Shine.Repository.Repositories.Service
             string? size,
             int pageIndex, int pageSize);
 
-         Task<ServiceResponseModel> GetServiceByID(int id);
+        Task<ServiceResponseModel> GetServiceByID(int id);
+
+        Task<PaginatedList<ServiceResponseForChooseStylistFirst>> GetServicesByStylist(int stylistId,
+            int pageIndex, int pageSize);
     }
 }

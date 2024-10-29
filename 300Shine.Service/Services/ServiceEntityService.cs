@@ -2,6 +2,7 @@
 using _300Shine.DataAccessLayer.DTO.ResponseModel;
 using _300Shine.Repository.Repositories.Service;
 using AutoMapper;
+using DataAccessLayer.ServiceForCRUD.Paging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +43,12 @@ namespace _300Shine.Service.Services
         public async Task<string> UpdateService(UpdateServiceRequestModel s)
         {
             return await _serviceRepository.UpdateService(s);
+        }
+
+        public async Task<PaginatedList<ServiceResponseForChooseStylistFirst>> GetServicesByStylist(int stylistId,
+            int pageIndex, int pageSize)
+        {
+            return await _serviceRepository.GetServicesByStylist(stylistId, pageIndex, pageSize);
         }
     }
 }

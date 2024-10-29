@@ -206,5 +206,44 @@ namespace _300Shine.Repository.Repositories.Service
             return _mapper.Map<ServiceResponseModel>(service);
         }
 
+        public async Task<PaginatedList<ServiceResponseForChooseStylistFirst>> GetServicesByStylist(int stylistId,
+    int pageIndex, int pageSize)
+        {
+            var currentStylist = _context.Stylists
+                .SingleOrDefault(s => s.Id == stylistId && !s.IsDeleted);
+
+            if (currentStylist == null)
+                throw new InvalidDataException("Stylist is not found!");
+
+            var styleIds = _context.StylistStyles
+                .Where(x => x.StylistId == stylistId && !x.IsDeleted)
+                .Select(x => x.StyleId)
+                .ToList();
+
+            var services = _context.ServiceStyles
+                .Include(ss => ss.Service)
+                .ThenInclude(s => s.ServiceStyles)
+                .ThenInclude(ss => ss.Style)
+                .Where(ss => styleIds.Contains(ss.StyleId) && ss.Service.SalonId == currentStylist.SalonId && !ss.IsDeleted)
+                .Select(ss => ss.Service)
+                .Distinct();
+
+            var totalCount = await services.CountAsync();
+
+            var paginatedServiceEntities = await services
+                .Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var mappedPaginatedServices = new PaginatedList<ServiceResponseForChooseStylistFirst>(
+                _mapper.Map<List<ServiceResponseForChooseStylistFirst>>(paginatedServiceEntities),
+                totalCount,
+                pageIndex,
+                pageSize
+            );
+
+            return mappedPaginatedServices;
+        }
+
     }
 }

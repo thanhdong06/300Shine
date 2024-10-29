@@ -20,7 +20,12 @@ namespace _300Shine.Repository.Services
                     .ForMember(dest => dest.ServiceStyles, opt => opt.MapFrom(src => src.ServiceStyles
                     .GroupBy(ss => ss.StyleId)
                     .Select(g => g.First()).ToList()));
+            CreateMap<ServiceStyleEntity, StyleResponseDTO>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Style.Id))
+                    .ForMember(dest => dest.Style, opt => opt.MapFrom(src => src.Style.Style));
 
+            CreateMap<ServiceEntity, ServiceResponseForChooseStylistFirst>()
+                    .ForMember(dest => dest.ServiceStyles, opt => opt.MapFrom(src => src.ServiceStyles));
         }
     }
 }

@@ -18,7 +18,7 @@ namespace _300Shine.DataAccessLayer.Entities
         public decimal SalaryFromWorkingHour { get; set; }
         public decimal SalaryFromService {  get; set; }
         public decimal Amount { get; set; }
-        public int Date {  get; set; }
+        public int Payday {  get; set; }
         public int Month { get; set; }
         public int Year { get; set; }
         public string Status { get; set; }

@@ -18,6 +18,7 @@ namespace _300Shine.DataAccessLayer.Entities
         public string Name { get; set; }
         public string? Description { get; set; }
         public string? Type { get; set; }
+        public int? Duration { get; set; }
         public ICollection<AppointmentEntity> Appointments { get; set; }
         public ICollection<ServiceStyleEntity> ServiceStyles { get; set; }
         

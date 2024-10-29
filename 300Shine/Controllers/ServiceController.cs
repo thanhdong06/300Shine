@@ -3,7 +3,7 @@ using _300Shine.DataAccessLayer.DTO.ResponseModel;
 using _300Shine.ResponseType;
 using _300Shine.Service.Services;
 using AutoMapper;
-
+using DataAccessLayer.ServiceForCRUD.Paging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -89,6 +89,21 @@ namespace _300Shine.Controllers
             {
                 var result = await _serviceService.GetServiceByID(id);
                 return Ok(new JsonResponse<ServiceResponseModel>(result, 200, "Successfully"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>("Something wrong, please contact with admin", 400, ex.Message));
+            }
+
+        }
+
+        [HttpGet("service/list-by-stylist")]
+        public async Task<ActionResult<JsonResponse<PaginatedList<ServiceResponseForChooseStylistFirst>>>> GetServicesByStylist(int stylistId, int pageIndex, int pageSize)
+        {
+            try
+            {
+                var result = await _serviceService.GetServicesByStylist(stylistId, pageIndex, pageSize);
+                return Ok(new JsonResponse<PaginatedList<ServiceResponseForChooseStylistFirst>>(result, 200, "Retrieve service list by stylist id successfully"));
             }
             catch (Exception ex)
             {

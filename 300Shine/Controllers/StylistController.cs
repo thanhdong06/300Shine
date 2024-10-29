@@ -45,5 +45,20 @@ namespace _300Shine.Controllers
             }
 
         }
+
+        [HttpGet("stylist/list-by-salon-id")]
+        public async Task<ActionResult<JsonResponse<List<StylistResponseModel>>>> GetStylistsBySalon(int salonId, string? search, int pageIndex, int pageSize)
+        {
+            try
+            {
+                var result = await _stylistService.GetStylistsBySalon(salonId, search, pageIndex, pageSize);
+                return Ok(new JsonResponse<List<StylistResponseModel>>(result, 200, "Retrieve stylist list by salon id successfully"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>("Something wrong, please contact with admin", 400, ex.Message));
+            }
+
+        }
     }
 }

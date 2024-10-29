@@ -22,27 +22,23 @@ namespace _300Shine.Repository.Repositories.Manager
         {
             // Stylist theo salon
             var salonStylists = await _context.Stylists
-                .Where(s => s.SalonId == salonId)
-                .Select(s => s.UserId)
-                .ToListAsync();
+                 .Where(s => s.SalonId == salonId &&
+                    _context.StylistStyles.Any(ss => ss.StylistId == s.Id &&
+                                                     _context.ServiceStyles.Any(serv => serv.ServiceId == serviceId && serv.StyleId == ss.StyleId)))
+                 .Select(s => s.Id)
+                 .ToListAsync();
 
-            // Stylist theo service
-            var serviceStylists = await _context.ServiceStyles
-                .Where(ss => ss.Id == serviceId)
-                .Select(ss => ss.StyleId)
-                .ToListAsync();
-
-            // So sánh
-            var availableStylists = salonStylists.Intersect(serviceStylists).ToList();
-
-            if (!availableStylists.Any())
+            if (!salonStylists.Any())
             {
                 throw new InvalidOperationException("Salon hiện không có stylist nào làm được dịch vụ này");
             }
 
             // check stylist available on Date
             var availableOnDate = await _context.StylistShifts
-                .Where(s => availableStylists.Contains(s.StylistId) && s.Shift.Date == date)
+                .Where(s => salonStylists.Contains(s.StylistId) &&
+                    s.Shift.Date.Year == date.Year &&
+                    s.Shift.Date.Month == date.Month &&
+                    s.Shift.Date.Day == date.Day)
                 .Select(s => s.StylistId)
                 .ToListAsync();
 
@@ -52,13 +48,13 @@ namespace _300Shine.Repository.Repositories.Manager
             }
 
             // Fetch the stylist details
-            var stylistResponses = await _context.Users
+            var stylistResponses = await _context.Stylists
                 .Where(u => availableOnDate.Contains(u.Id))
                 .Select(u => new StylistResponseModel
                 {                  
                     Id = u.Id,
-                    Name = u.FullName,
-                    ImageUrl = u.ImageUrl,
+                    Name = u.User.FullName,
+                    ImageUrl = u.User.ImageUrl,
 
                 })
                 .ToListAsync();

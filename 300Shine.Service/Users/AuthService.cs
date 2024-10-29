@@ -34,6 +34,7 @@ namespace _300Shine.Service.Users
 
         public async Task<string> RegisterUserAsync(RegisterRequest registerRequest)
         {
+            registerRequest.Phone = FormatPhoneNumber(registerRequest.Phone);
             var result = await _authRepository.Register(registerRequest);
 
             var otp = _smsService.GenerateOtp();
@@ -47,6 +48,7 @@ namespace _300Shine.Service.Users
 
         public async Task<LoginResponse> LoginAsync(LoginRequest request)
         {
+            request.Phone = FormatPhoneNumber(request.Phone);
             var user = await _authRepository.LoginAsync(request);
 
             if (user == null)
@@ -78,6 +80,7 @@ namespace _300Shine.Service.Users
 
         public async Task<string> VerifyOtpAsync(VerifyOtpRequest request)
         {
+            request.Phone = FormatPhoneNumber(request.Phone);
             var user = await _authRepository.GetUserByPhoneAsync(request.Phone);
             if (user == null)
             {
@@ -87,7 +90,7 @@ namespace _300Shine.Service.Users
             if (user.Otp == request.Otp)
             {
                 user.IsVerified = true;
-                user.Otp = null; // Clear OTP after verification
+                user.Otp = string.Empty; // Clear OTP after verification
                 await _authRepository.UpdateUserAsync(user);
                 return "Phone number verified successfully.";
             }
@@ -123,6 +126,15 @@ namespace _300Shine.Service.Users
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
+        }
+
+        private string FormatPhoneNumber(string phone)
+        {
+            if (!string.IsNullOrEmpty(phone) && phone.StartsWith("0"))
+            {
+                return "+84" + phone.Substring(1);
+            }
+            return phone;
         }
 
     }

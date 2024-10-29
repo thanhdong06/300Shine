@@ -1,9 +1,8 @@
 ﻿using _300Shine.DataAccessLayer.DTO.ResponseModel;
 using _300Shine.ResponseType;
-using _300Shine.Service.Interface;
 using _300Shine.Service.Manager;
 using _300Shine.Service.Services;
-=======
+
 using _300Shine.Service.Slots;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +14,7 @@ namespace _300Shine.Controllers
     {
         private readonly IManagerService _managerService;
         private readonly ISlotService _slotService;
-    
+
         public ManagerController(IManagerService managerService, ISlotService slotService)
         {
             _managerService = managerService;
@@ -38,6 +37,7 @@ namespace _300Shine.Controllers
             {
                 return BadRequest(new JsonResponse<string>("Something went wrong, please contact admin.", 400, ex.Message));
             }
+        }
 
         [HttpGet("slot-by-stylistId-date")]
         public async Task<ActionResult<JsonResponse<List<SlotResponseModel>>>> GetSlotByStylistIdAndDate(int stylistId, DateTime date)
@@ -51,5 +51,6 @@ namespace _300Shine.Controllers
             {
                 return BadRequest(new JsonResponse<string>("Something wrong, please contact with admin", 400, ex.Message));
             }
+        }
     }
 }

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using Twilio.Rest.Api.V2010.Account;
 using Twilio;
 using Twilio.Types;
-using _300Shine.Repository.Interface;
 
-namespace _300Shine.Service.Services
+
+namespace _300Shine.Service.SMS
 {
     public class SMSService : ISMSService
     {

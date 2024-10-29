@@ -18,10 +18,11 @@ namespace _300Shine.DataAccessLayer.Entities
         [ForeignKey(nameof(ServiceId))]
         public ServiceEntity Service { get; set; }
 
-        public int StylistId { get; set; }
+        public int? StylistId { get; set; }
         [ForeignKey(nameof(StylistId))]
         public StylistEntity Stylist { get; set; }
 
+        public DateTime ReturnDate { get; set; }
         public decimal Price { get; set; }
         public string? Type { get; set; }
         public string Status { get; set; }

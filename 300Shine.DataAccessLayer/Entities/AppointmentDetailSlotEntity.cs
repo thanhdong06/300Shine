@@ -17,6 +17,5 @@ namespace _300Shine.DataAccessLayer.Entities
         [ForeignKey(nameof(SlotId))]
         public SlotEntity Slot { get; set; }
         
-        
     }
 }

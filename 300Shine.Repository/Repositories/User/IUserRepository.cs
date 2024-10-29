@@ -8,10 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _300Shine.Service.Interface
+namespace _300Shine.Repository.Repositories.User
 {
-    public interface IUserService
+    public interface IUserRepository
     {
+        Task<bool> PhoneExistsAsync(string phone);
         Task<List<ResponseUser>> GetAllUsersAsync(int? roleId = null);
         Task<ResponseUser> GetUserByPhoneAsync(string phone);
         Task<ResponseUser> GetUserByIdAsync(int userId);

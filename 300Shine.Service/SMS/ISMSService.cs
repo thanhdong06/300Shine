@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _300Shine.Service.Services
+namespace _300Shine.Service.SMS
 {
     public interface ISMSService
     {

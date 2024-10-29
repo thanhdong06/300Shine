@@ -1,23 +1,23 @@
 using _300Shine.Configuration;
 using _300Shine.DataAccessLayer.DBContext;
-using _300Shine.Repository;
-using _300Shine.Repository.Interface;
 using _300Shine.Repository.Repositories.Salon;
 using _300Shine.Repository.Repositories.Service;
-using _300Shine.Service;
-using _300Shine.Service.Interface;
 using _300Shine.Service.Salons;
-using _300Shine.Repository;
-using _300Shine.Repository.Interface;
-using _300Shine.Repository.Repositories.Service;
-using _300Shine.Service;
-using _300Shine.Service.Interface;
 using _300Shine.Service.Services;
 using Microsoft.EntityFrameworkCore;
 using _300Shine.Repository.Repositories.Stylist;
 using _300Shine.Service.Stylists;
 using _300Shine.Repository.Repositories.Manager;
 using _300Shine.Service.Manager;
+using _300Shine.Service.Slots;
+using _300Shine.Repository.Repositories.Slot;
+using _300Shine.Repository.Repositories.User;
+using _300Shine.Repository.Repositories.Appoinment;
+using _300Shine.Repository.Repositories.Shift;
+using _300Shine.Service.Appoinments;
+using _300Shine.Service.Users;
+using _300Shine.Service.Shifts;
+using _300Shine.Service.SMS;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +47,8 @@ builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 builder.Services.AddScoped<IServiceEntityService, ServiceEntityService>();
 builder.Services.AddScoped<ISalonRepository, SalonRepository>();
 builder.Services.AddScoped<ISalonService, SalonService>();
+builder.Services.AddScoped<IShiftRepository, ShiftRepository>();
+builder.Services.AddScoped<IShiftService, ShiftService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
@@ -58,9 +60,10 @@ builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<IManagerRepository, ManagerRepository>();
 builder.Services.AddScoped<IManagerService, ManagerService>();
-
+builder.Services.AddScoped<ISlotRepository, SlotRepository>();
+builder.Services.AddScoped<ISlotService, SlotService>();
 var app = builder.Build();
-
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 // Configure the HTTP request pipeline.
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

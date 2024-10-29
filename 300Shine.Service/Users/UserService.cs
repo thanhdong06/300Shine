@@ -2,8 +2,7 @@
 using _300Shine.DataAccessLayer.DTO.RequestModel;
 using _300Shine.DataAccessLayer.DTO.ResponseModel;
 using _300Shine.DataAccessLayer.Entities;
-using _300Shine.Repository.Interface;
-using _300Shine.Service.Interface;
+using _300Shine.Repository.Repositories.User;
 using AutoMapper;
 using Azure.Core;
 using System;
@@ -12,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _300Shine.Service
+namespace _300Shine.Service.Users
 {
     public class UserService : IUserService
     {
@@ -36,7 +35,7 @@ namespace _300Shine.Service
 
         public async Task<string> DeleteUserAsync(int userId)
         {
-           return await _userRepository.DeleteUserAsync(userId);
+            return await _userRepository.DeleteUserAsync(userId);
         }
 
         public async Task<List<ResponseUser>> GetAllUsersAsync(int? roleId = null)

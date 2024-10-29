@@ -2,7 +2,6 @@
 using _300Shine.DataAccessLayer.DBContext;
 using _300Shine.DataAccessLayer.DTO.RequestModel;
 using _300Shine.DataAccessLayer.Entities;
-
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _300Shine.Repository.Repositories.Service
+namespace _300Shine.Repository.Repositories.User
 {
     public class AuthRepository : IAuthRepository
     {

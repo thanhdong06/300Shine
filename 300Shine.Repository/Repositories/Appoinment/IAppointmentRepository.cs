@@ -6,10 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _300Shine.Service.Services
+namespace _300Shine.Repository.Repositories.Appoinment
 {
-    public interface IAppointmentService
+    public interface IAppointmentRepository
     {
         Task<AppointmentEntity> CreateAppointmentAsync(AppointmentCreateDTO request, int userId);
+        Task<string> CreateAppointmentDetailWithReturnDayAsync(AppointmentDetailCreateWithReturnDateRequest request);
     }
 }

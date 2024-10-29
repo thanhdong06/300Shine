@@ -3,7 +3,6 @@ using _300Shine.DataAccessLayer.DBContext;
 using _300Shine.DataAccessLayer.DTO.RequestModel;
 using _300Shine.DataAccessLayer.DTO.ResponseModel;
 using _300Shine.DataAccessLayer.Entities;
-using _300Shine.Repository.Interface;
 using Azure.Core;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
-namespace _300Shine.Repository
+namespace _300Shine.Repository.Repositories.User
 {
     public class UserRepository : IUserRepository
     {

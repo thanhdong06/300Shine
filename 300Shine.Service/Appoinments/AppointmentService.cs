@@ -1,6 +1,6 @@
 ﻿using _300Shine.DataAccessLayer.DTO.RequestModel;
 using _300Shine.DataAccessLayer.Entities;
-using _300Shine.Repository.Repositories.Service;
+using _300Shine.Repository.Repositories.Appoinment;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _300Shine.Service.Services
+namespace _300Shine.Service.Appoinments
 {
     public class AppointmentService : IAppointmentService
     {
@@ -16,12 +16,17 @@ namespace _300Shine.Service.Services
 
         public AppointmentService(IAppointmentRepository appointmentRepository)
         {
-            _appointmentRepository = appointmentRepository;           
+            _appointmentRepository = appointmentRepository;
         }
 
         public async Task<AppointmentEntity> CreateAppointmentAsync(AppointmentCreateDTO request, int userId)
         {
             return await _appointmentRepository.CreateAppointmentAsync(request, userId);
+        }
+
+        public async Task<string> CreateAppointmentDetailWithReturnDayAsync(AppointmentDetailCreateWithReturnDateRequest request)
+        {
+            return await _appointmentRepository.CreateAppointmentDetailWithReturnDayAsync(request);
         }
     }
 }

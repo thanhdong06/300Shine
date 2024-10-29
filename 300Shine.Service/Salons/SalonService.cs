@@ -1,4 +1,5 @@
-﻿using _300Shine.DataAccessLayer.DTO.ResponseModel;
+﻿using _300Shine.DataAccessLayer.DTO.RequestModel;
+using _300Shine.DataAccessLayer.DTO.ResponseModel;
 using _300Shine.Repository.Repositories.Salon;
 using AutoMapper;
 using System;
@@ -20,6 +21,16 @@ namespace _300Shine.Service.Salons
             _mapper = mapper;
         }
 
+        public async Task<string> CreateSalon(SalonCreateDTO s)
+        {
+            return await _service.CreateSalon(s);
+        }
+
+        public async Task<string> DeleteSalon(int id)
+        {
+            return await _service.DeleteSalon(id);
+        }
+
         public async Task<SalonResponseModel> GetSalonByID(int id)
         {
             return await _service.GetSalonByID(id);   
@@ -30,9 +41,16 @@ namespace _300Shine.Service.Salons
             return await _service.GetSalons(search, sortBy, fromPrice, toPrice, size, pageIndex, pageSize);
         }
 
-        public async Task<List<StylistResponseModel>> GetStylistBySalonAndServiceID(int salonId, int serviceId)
+        public async Task<List<SalonChoiceDTO>> GetSalonsForChoosing(string? search, string? sortBy, string? district, string? address, int pageIndex, int pageSize)
         {
-            return await _service.GetStylistBySalonAndServiceID(salonId, serviceId);
+            return await _service.GetSalonsForChoosing(search, sortBy, district, address, pageIndex, pageSize);
+        }
+
+       
+
+        public async Task<string> UpdateSalon(SalonUpdateDTO s)
+        {
+            return await _service.UpdateSalon(s);
         }
     }
 }

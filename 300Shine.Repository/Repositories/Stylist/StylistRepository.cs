@@ -100,8 +100,8 @@ namespace _300Shine.Repository.Repositories.Stylist
                 var appDetails = await _context.AppointmentDetails
                     .Where(s => s.StylistId == stylistId && s.Appointment.Date.Year == date.Year && s.Appointment.Date.Month == date.Month && s.Appointment.Date.Day == date.Day) // Filter by stylistId and appointment date, sửa so sánh ngày giờ  
                     .ToListAsync();
-                if (appDetails == null || !appDetails.Any())
-                    throw new Exception("Stylist of appoinment not found");
+                //if (appDetails == null || !appDetails.Any())
+                //    throw new Exception("Stylist of appoinment not found");
 
 
                 // Initialize the list for available slots

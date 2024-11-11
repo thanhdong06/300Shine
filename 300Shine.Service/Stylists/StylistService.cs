@@ -22,6 +22,12 @@ namespace _300Shine.Service.Stylists
             _mapper = mapper;
         }
 
+        public async Task<List<StylistResponseModel>> GetAllStylist(int pageIndex, int pageSize)
+        {
+           return await _service.GetAllStylist(pageIndex, pageSize);
+        }
+
+
         public async Task<List<SlotResponseModel>> GetEmptySlotByStylistId(int? stylistId, int? salonId, int? serviceId, DateTime date)
         {
             return await _service.GetEmptySlotByStylistId(stylistId, salonId, serviceId, date);

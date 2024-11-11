@@ -16,7 +16,20 @@ namespace _300Shine.Controllers
         {
             _stylistService = stylistService;
         }
+        [HttpGet("list")]
+        public async Task<ActionResult<JsonResponse<List<StylistResponseModel>>>> GetAll(int pageIndex, int pageSize)
+        {
+            try
+            {
+                var result = await _stylistService.GetAllStylist(pageIndex,pageSize);
+                return Ok(new JsonResponse<List<StylistResponseModel>>(result, 200, "Successfully"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>("Something wrong, please contact with admin", 400, ex.Message));
+            }
 
+        }
         [HttpGet("slot-by-stylistId")]
         public async Task<ActionResult<JsonResponse<List<SlotResponseModel>>>> GetEmptySlotByStylistId(int? stylistId, int? salonId, int? serviceId, DateTime date)
         {

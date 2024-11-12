@@ -13,6 +13,7 @@ namespace _300Shine.DataAccessLayer.DTO.RequestModel
         public decimal Price { get; set; }
         public string Name { get; set; }
         public string? Description { get; set; }
+        public int Duration { get; set; }   
     }
     public class CreateServiceRequestModel
     {
@@ -21,6 +22,7 @@ namespace _300Shine.DataAccessLayer.DTO.RequestModel
         public string Name { get; set; }
         public string? Description { get; set; }
         public int SalonId { get; set; }
+        public int Duration { get; set; }
         public List<ServiceStyleRequestModel> ServiceStyles { get; set; }
     }
     public class UpdateServiceRequestModel
@@ -31,6 +33,7 @@ namespace _300Shine.DataAccessLayer.DTO.RequestModel
         public string Name { get; set; }
         public string? Description { get; set; }
         public int SalonId { get; set; }
+        public int Duration { get; set; }
         public bool IsDeleted { get; set; }
         public List<ServiceStyleRequestModel> ServiceStyles { get; set; }
     }

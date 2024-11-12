@@ -20,6 +20,7 @@ namespace _300Shine.DataAccessLayer.Entities
         public int SalonId { get; set; }
         [ForeignKey(nameof(SalonId))]
         public SalonEntity Salon { get; set; }
+        public int? OrderCode { get; set; }
 
 
         public ICollection<AppointmentDetailEntity> AppointmentDetails { get; set; }

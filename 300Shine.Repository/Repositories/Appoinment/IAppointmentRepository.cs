@@ -10,7 +10,7 @@ namespace _300Shine.Repository.Repositories.Appoinment
 {
     public interface IAppointmentRepository
     {
-        Task<AppointmentEntity> CreateAppointmentAsync(AppointmentCreateDTO request, int userId);
+        Task<AppointmentEntity> CreateAppointmentAsync(AppointmentCreateDTO request, int userId, int OrderCode);
         Task<string> CreateAppointmentDetailWithReturnDayAsync(AppointmentDetailCreateWithReturnDateRequest request);
     }
 }

@@ -23,13 +23,14 @@ namespace _300Shine.Repository.Repositories.Appoinment
             _mapper = mapper;
         }
 
-        public async Task<AppointmentEntity> CreateAppointmentAsync(AppointmentCreateDTO request, int userId)
+        public async Task<AppointmentEntity> CreateAppointmentAsync(AppointmentCreateDTO request, int userId, int OrderCode)
         {
             var appointmentEntity = _mapper.Map<AppointmentEntity>(request);
 
             appointmentEntity.UserId = userId;
             appointmentEntity.Status = "Pending";
-            appointmentEntity.Date = DateTime.Now;
+            appointmentEntity.Date = request.DateToGo;
+            appointmentEntity.OrderCode = OrderCode;
 
             foreach (var detail in appointmentEntity.AppointmentDetails)
             {
@@ -39,11 +40,25 @@ namespace _300Shine.Repository.Repositories.Appoinment
                 {
                     detail.StylistId = requestDetail.StylistId;
                     detail.Status = "Pending";
-                    detail.Price = await _context.Services
-                        .Where(s => s.Id == detail.ServiceId)
-                        .Select(s => s.Price)
-                        .FirstOrDefaultAsync();
+                    var service = await _context.Services
+                                .Where(s => s.Id == detail.ServiceId)
+                                .Select(s => new { s.Price, s.Type })
+                                .FirstOrDefaultAsync();
 
+                    if (service != null)
+                    {
+                        detail.Price = service.Price;
+                        detail.Type = service.Type;
+
+                        if (service.Type == "onetime")
+                        {
+                            detail.ReturnDate = request.DateToGo.AddDays(7);
+                        }
+                        else
+                        {
+                            detail.ReturnDate = request.DateToGo;
+                        }
+                    }
                     detail.AppointmentDetailSlots = new List<AppointmentDetailSlotEntity>();
                     foreach (var slot in requestDetail.Slots)
                     {
@@ -52,7 +67,6 @@ namespace _300Shine.Repository.Repositories.Appoinment
                             SlotId = slot.Id,
                         });
                     }
-                    detail.Type = requestDetail.Type;
                 }
             }
 

@@ -40,6 +40,7 @@ namespace _300Shine.Repository.Repositories.Service
                 Description = s.Description,
                 ImageUrl = s.ImageUrl,
                 SalonId = s.SalonId,
+                Duration = s.Duration,
                 ServiceStyles=new List<ServiceStyleEntity>()
             };
             foreach (var serviceStyles in serviceStyleDTOList)
@@ -84,6 +85,7 @@ namespace _300Shine.Repository.Repositories.Service
             serviceEntity.Price = s.Price;
             serviceEntity.ImageUrl = s.ImageUrl;
            serviceEntity.SalonId=s.SalonId;
+            serviceEntity.Duration = s.Duration;
             var existedServiceStyleIdInList = serviceEntity.ServiceStyles.Select(x => x.StyleId).ToList();
             var newServiceStyleIdInList = serviceStyleList.Select(x => x.StyleId).ToList();
             var removeServiceStyleIdInList = existedServiceStyleIdInList.Where(existedServiceStyleId => !newServiceStyleIdInList.Contains(existedServiceStyleId)).ToList();

@@ -128,5 +128,19 @@ namespace _300Shine.Repository.Repositories.Appoinment
                 throw new Exception("Error saving changes", ex);
             }
         }
+
+        public async Task<AppointmentEntity> UpdateAppointmentStatusAsync(int orderCode, string status)
+        {
+            var appointment = await _context.Appointments.FirstOrDefaultAsync(a => a.OrderCode == orderCode);
+
+            if (appointment == null)
+            {
+                throw new KeyNotFoundException($"Appointment with OrderCode {orderCode} not found.");
+            }
+
+            appointment.Status = status;
+            await _context.SaveChangesAsync();
+            return appointment;
+        }
     }
 }

@@ -12,5 +12,6 @@ namespace _300Shine.Service.Appoinments
     {
         Task<AppointmentEntity> CreateAppointmentAsync(AppointmentCreateDTO request, int userId, int OrderCode);
         Task<string> CreateAppointmentDetailWithReturnDayAsync(AppointmentDetailCreateWithReturnDateRequest request);
+        Task<AppointmentEntity> UpdateAppointmentStatusAsync(int orderCode, string status);
     }
 }

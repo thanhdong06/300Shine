@@ -9,6 +9,7 @@ namespace _300Shine.DataAccessLayer.DTO.RequestModel
     public class AppointmentCreateDTO
     {
         public int SalonId { get; set; }
+        public DateTime DateToGo { get; set; }
         public List<AppointmentDetailCreateDTO> Items { get; set; }
     }
     public class AppointmentDetailCreateWithReturnDateRequest

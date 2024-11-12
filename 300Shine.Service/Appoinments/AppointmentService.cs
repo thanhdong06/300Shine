@@ -19,14 +19,18 @@ namespace _300Shine.Service.Appoinments
             _appointmentRepository = appointmentRepository;
         }
 
-        public async Task<AppointmentEntity> CreateAppointmentAsync(AppointmentCreateDTO request, int userId)
+        public async Task<AppointmentEntity> CreateAppointmentAsync(AppointmentCreateDTO request, int userId, int OrderCode)
         {
-            return await _appointmentRepository.CreateAppointmentAsync(request, userId);
+            return await _appointmentRepository.CreateAppointmentAsync(request, userId, OrderCode);
         }
 
         public async Task<string> CreateAppointmentDetailWithReturnDayAsync(AppointmentDetailCreateWithReturnDateRequest request)
         {
             return await _appointmentRepository.CreateAppointmentDetailWithReturnDayAsync(request);
+        } 
+        public async Task<AppointmentEntity> UpdateAppointmentStatusAsync(int orderCode, string status)
+        {
+            return await _appointmentRepository.UpdateAppointmentStatusAsync(orderCode, status);
         }
     }
 }

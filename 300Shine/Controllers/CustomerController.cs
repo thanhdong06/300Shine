@@ -3,6 +3,8 @@ using _300Shine.ResponseType;
 using _300Shine.Service.Appoinments;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Net.payOS.Types;
+using Net.payOS;
 using System.Security.Claims;
 
 namespace _300Shine.Controllers
@@ -30,14 +32,31 @@ namespace _300Shine.Controllers
                     return BadRequest(new JsonResponse<string>("User ID not found", 400, ""));
                 }
                 int userId = int.Parse(userIdClaim.Value);
+                var genOrderCode = int.Parse(DateTimeOffset.Now.ToString("ffffff"));
 
-                var result = await _appointmentService.CreateAppointmentAsync(request, userId);
+                var result = await _appointmentService.CreateAppointmentAsync(request, userId, genOrderCode);
                 if (result == null)
                 {
                     return BadRequest(new JsonResponse<string>("Failed to create appointment", 400, ""));
                 }
 
-                return Ok(new JsonResponse<string>(null, 200, "Create Successfully"));
+                var clientId = "38bb31de-35a1-4335-8bfa-34ab42934b0a";
+                var apiKey = "4d398076-e456-42ab-8ced-149bdce1eb0e";
+                var checksumKey = "2067a941fc37077fc1972209419726845f1db43072a0a971ae2169dd0df41e74";
+
+                var payOS = new PayOS(clientId, apiKey, checksumKey);
+
+                var paymentLinkRequest = new PaymentData(
+                    orderCode: genOrderCode,
+                    amount: 2000,
+                    description: "Thanh toan don hang",
+                    items: [],
+                    returnUrl: "",
+                    cancelUrl: ""
+                );
+                var response = await payOS.createPaymentLink(paymentLinkRequest);
+
+                return Ok(response);
             }
             catch (Exception ex)
             {

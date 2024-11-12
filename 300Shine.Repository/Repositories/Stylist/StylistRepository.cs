@@ -231,5 +231,15 @@ namespace _300Shine.Repository.Repositories.Stylist
             var paginatedStylists = PaginatedList<StylistEntity>.Create(stylist, pageIndex, pageSize);
             return _mapper.Map<List<StylistResponseModel>>(paginatedStylists);
         }
+
+        public async Task<StylistResponseModel> GetStylistById(int stylistId)
+        {
+            var stylist = await _context.Stylists.Include(x => x.User).SingleOrDefaultAsync(x => x.Id == stylistId && !x.IsDeleted);
+            if (stylist == null)
+            {
+                throw new Exception("Not found this stylist");
+            }
+            return _mapper.Map<StylistResponseModel>(stylist);
+        }
     }
 }

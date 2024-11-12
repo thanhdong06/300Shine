@@ -33,6 +33,11 @@ namespace _300Shine.Service.Stylists
             return await _service.GetEmptySlotByStylistId(stylistId, salonId, serviceId, date);
         }
 
+        public async Task<StylistResponseModel> GetStylistById(int stylistId)
+        {
+            return await _service.GetStylistById(stylistId);
+        }
+
         public async Task<List<StylistResponseModel>> GetStylistBySalonAndServiceID(int salonId, int serviceId)
         {
             return await _service.GetStylistBySalonAndServiceID(salonId,serviceId);

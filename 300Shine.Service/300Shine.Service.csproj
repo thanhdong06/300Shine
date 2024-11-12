@@ -11,4 +11,8 @@
     <ProjectReference Include="..\300Shine.Repository\300Shine.Repository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="CloudinaryDotNet" Version="1.26.2" />
+  </ItemGroup>
+
 </Project>

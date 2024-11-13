@@ -27,6 +27,7 @@ namespace _300Shine.DataAccessLayer.DTO.ResponseModel
         public string Name { get; set; }
         public string? Description { get; set; }
         public int SalonId { get; set; }
+        public int Duration { get; set; }
         public bool IsDeleted { get; set; }
         public List<StyleResponseDTO> ServiceStyles { get; set; }
     }

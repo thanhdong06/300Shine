@@ -28,5 +28,7 @@ namespace _300Shine.Repository.Repositories.Salon
            int pageIndex, int pageSize);
 
         Task<SalonResponseModel> GetSalonByID(int id);
+
+        Task<List<SalonEntity>> GetAllSalonsAsync();
     }
 }

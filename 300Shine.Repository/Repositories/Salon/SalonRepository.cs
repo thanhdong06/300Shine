@@ -33,6 +33,11 @@ namespace _300Shine.Repository.Repositories.Salon
             return _mapper.Map<List<SalonResponseModel>>(paginatedUsers);  
         }
 
+        public async Task<List<SalonEntity>> GetAllSalonsAsync()
+        { 
+            return await _context.Salons.Where(x => !x.IsDeleted).ToListAsync();
+        }
+
         public async Task<SalonResponseModel> GetSalonByID(int id)
         {
             var salon = await _context.Salons.Include(ss => ss.Services).Include(s=>s.Stylists).SingleOrDefaultAsync(x => x.Id == id && x.IsDeleted == false);

@@ -14,6 +14,7 @@ namespace _300Shine.Service.Shifts
         Task<string> CreateShift(ShiftCreateDTO shift);
         Task<string> UpdateShift(ShiftUpdateDTO shift);
         Task<string> DeleteShift(int id);
+        Task AutoCreateShiftForWholeWeek();
         Task<ShiftResponseDTO> GetShiftById(int id);
         Task<List<ShiftResponseDTO>> GetShifts(string? search, DateTime? date, string? status, int pageIndex, int pageSize);
     }

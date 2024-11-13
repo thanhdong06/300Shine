@@ -12,6 +12,7 @@ namespace _300Shine.Repository.Repositories.Shift
     public interface IShiftRepository
     {
         Task<string> CreateShift(ShiftCreateDTO shift);
+        Task AutoCreateShiftForWholeWeek();
         Task<string> UpdateShift(ShiftUpdateDTO shift);
         Task<string> DeleteShift(int id);
         Task<ShiftResponseDTO> GetShiftById(int id);

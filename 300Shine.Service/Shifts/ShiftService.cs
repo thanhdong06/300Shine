@@ -43,6 +43,11 @@ namespace _300Shine.Service.Shifts
         {
             return await _shiftRepository.GetShifts(search, date, status, pageIndex, pageSize);
         }
+
+        public async Task AutoCreateShiftForWholeWeek()
+        {
+            await _shiftRepository.AutoCreateShiftForWholeWeek();
+        }
     }
 
 }

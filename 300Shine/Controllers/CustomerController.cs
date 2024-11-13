@@ -89,7 +89,7 @@ namespace _300Shine.Controllers
         }
         [Authorize]
         [HttpGet("list")]
-        public async Task<ActionResult<JsonResponse<List<AppointmentResponseModel>>>> GetAppoinmentById()
+        public async Task<ActionResult<JsonResponse<List<AppointmentResponseModel>>>> GetAppoinmentById(string status)
         {
             try
             {
@@ -100,7 +100,7 @@ namespace _300Shine.Controllers
                 }
                 int userId = int.Parse(userIdClaim.Value);
 
-                var result = await _appointmentService.GetAppoinmentByUserId(userId);
+                var result = await _appointmentService.GetAppoinmentByUserId(userId, status);
                 if (result == null)
                 {
                     return BadRequest(new JsonResponse<string>("Failed to get appointments", 400, ""));

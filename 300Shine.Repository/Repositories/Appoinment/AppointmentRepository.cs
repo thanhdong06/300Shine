@@ -130,10 +130,10 @@ namespace _300Shine.Repository.Repositories.Appoinment
             }
         }
 
-        public async Task<List<AppointmentResponseModel>> GetAppoinmentByUserId(int userId)
+        public async Task<List<AppointmentResponseModel>> GetAppoinmentByUserId(int userId, string status)
         {
             var appointments =  await _context.Appointments
-           .Where(a => a.UserId == userId)
+           .Where(a => a.UserId == userId && a.Status.Equals(status))
            .Include(a => a.User)               
            .Include(a => a.Salon)              
            .Include(a => a.AppointmentDetails)

@@ -21,8 +21,22 @@ namespace _300Shine.Controllers
         {
             try
             {
-                var result = await _stylistService.GetAllStylist(pageIndex,pageSize);
+                var result = await _stylistService.GetAllStylist(pageIndex, pageSize);
                 return Ok(new JsonResponse<List<StylistResponseModel>>(result, 200, "Successfully"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>("Something wrong, please contact with admin", 400, ex.Message));
+            }
+
+        }
+        [HttpGet("{stylistId}")]
+        public async Task<ActionResult<JsonResponse<StylistResponseModel>>> GetStylistById(int? stylistId)
+        {
+            try
+            {
+                var result = await _stylistService.GetStylistById(stylistId ?? default (int));
+                return Ok(new JsonResponse<StylistResponseModel>(result, 200, "Successfully"));
             }
             catch (Exception ex)
             {

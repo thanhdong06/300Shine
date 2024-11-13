@@ -98,7 +98,7 @@ namespace _300Shine.Controllers
         }
 
         [HttpGet("service/list-by-stylist")]
-        public async Task<ActionResult<JsonResponse<PaginatedList<ServiceResponseForChooseStylistFirst>>>> GetServicesByStylist(int stylistId, int pageIndex, int pageSize)
+        public async Task<ActionResult<JsonResponse<PaginatedList<ServiceResponseForChooseStylistFirst>>>> GetServicesByStylist(int stylistId, int? pageIndex, int? pageSize)
         {
             try
             {

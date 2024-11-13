@@ -46,7 +46,7 @@ namespace _300Shine.Service.Services
         }
 
         public async Task<PaginatedList<ServiceResponseForChooseStylistFirst>> GetServicesByStylist(int stylistId,
-            int pageIndex, int pageSize)
+            int? pageIndex, int? pageSize)
         {
             return await _serviceRepository.GetServicesByStylist(stylistId, pageIndex, pageSize);
         }

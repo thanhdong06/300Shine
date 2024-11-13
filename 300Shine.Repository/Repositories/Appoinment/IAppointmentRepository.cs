@@ -1,4 +1,5 @@
 ﻿using _300Shine.DataAccessLayer.DTO.RequestModel;
+using _300Shine.DataAccessLayer.DTO.ResponseModel;
 using _300Shine.DataAccessLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -14,5 +15,7 @@ namespace _300Shine.Repository.Repositories.Appoinment
         Task<string> CreateAppointmentDetailWithReturnDayAsync(AppointmentDetailCreateWithReturnDateRequest request);
         Task<AppointmentEntity> UpdateAppointmentStatusAsync(int orderCode, string status);
         Task<AppointmentEntity> UpdateAppointmentById(int appointmentId, string status);
+        Task<List<AppointmentResponseModel>> GetAppoinmentByUserId(int userId, string status);
+        Task<List<AppointmentResponseModel>> GetAppoinmentsByStatus(string status);
     }
 }

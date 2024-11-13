@@ -53,6 +53,7 @@ namespace _300Shine.Repository.Repositories.User
                     Status = user.Status,
                     SalonId = user.SalonId,
                     RoleName = user.Role.Name,
+                    ImageUrl = user.ImageUrl,
                 };
 
                 var stylist = await _context.Stylists.FirstOrDefaultAsync(s => s.UserId == user.Id);
@@ -90,6 +91,7 @@ namespace _300Shine.Repository.Repositories.User
                 Status = user.Status,
                 SalonId = user.SalonId,
                 RoleName = user.Role.Name
+
             };
 
             var stylist = await _context.Stylists.FirstOrDefaultAsync(s => s.UserId == user.Id);
@@ -120,7 +122,8 @@ namespace _300Shine.Repository.Repositories.User
                 IsVerified = user.IsVerified,
                 Status = user.Status,
                 SalonId = user.SalonId,
-                RoleName = user.Role.Name
+                RoleName = user.Role.Name,
+                ImageUrl = user.ImageUrl,
             };
 
             var stylist = await _context.Stylists.FirstOrDefaultAsync(s => s.UserId == user.Id);
@@ -146,6 +149,7 @@ namespace _300Shine.Repository.Repositories.User
             
             var newUser = new UserEntity()
             {
+                ImageUrl = request.ImageUrl,
                 FullName = request.FullName,
                 Password = request.Password,
                 DateOfBirth = request.DateOfBirth,
@@ -189,6 +193,7 @@ namespace _300Shine.Repository.Repositories.User
             
             var newUser = new UserEntity()
             {
+                ImageUrl = request.ImageUrl,
                 FullName = request.FullName,
                 Password = request.Password,
                 DateOfBirth = request.DateOfBirth,

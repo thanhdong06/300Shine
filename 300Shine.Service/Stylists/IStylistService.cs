@@ -13,5 +13,6 @@ namespace _300Shine.Service.Stylists
         Task<List<StylistResponseModel>> GetStylistBySalonAndServiceID(int salonId, int serviceId);
         Task<List<StylistResponseModel>> GetStylistsBySalon(int salonId, string? search, int pageIndex, int pageSize);
         Task<List<StylistResponseModel>> GetAllStylist(int pageIndex, int pageSize);
+        Task<StylistResponseModel> GetStylistById(int stylistId);
     }
 }

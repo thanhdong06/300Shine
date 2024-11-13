@@ -129,6 +129,16 @@ namespace _300Shine.Repository.Repositories.Appoinment
             }
         }
 
+        public async Task<List<AppointmentEntity>> GetAppoinmentByUserId(int userId)
+        {
+            return await _context.Appointments
+           .Where(a => a.UserId == userId)
+           .Include(a => a.User)               
+           .Include(a => a.Salon)              
+           .Include(a => a.AppointmentDetails) 
+           .ToListAsync();
+        }
+
         public async Task<AppointmentEntity> UpdateAppointmentStatusAsync(int orderCode, string status)
         {
             var appointment = await _context.Appointments.FirstOrDefaultAsync(a => a.OrderCode == orderCode);

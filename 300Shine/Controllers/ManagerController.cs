@@ -78,5 +78,27 @@ namespace _300Shine.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+        
+        [HttpPut("update-status-by-ID")]
+        public async Task<IActionResult> UpdateStatusByID([FromBody] UpdateAppointmentStatusByID request)
+        {
+            if (request == null || string.IsNullOrEmpty(request.Status))
+            {
+                return BadRequest("Invalid request data.");
+            }
+            try
+            {
+                var updatedAppointment = await _appointmentService.UpdateAppointmentById(request.AppointmentId, request.Status);
+                return Ok(updatedAppointment);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
     }
 }

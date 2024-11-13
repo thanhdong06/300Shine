@@ -142,5 +142,19 @@ namespace _300Shine.Repository.Repositories.Appoinment
             await _context.SaveChangesAsync();
             return appointment;
         }
+
+        public async Task<AppointmentEntity> UpdateAppointmentById(int appointmentId, string status)
+        {
+            var appointment = await _context.Appointments.FirstOrDefaultAsync(p => p.Id == appointmentId);
+
+            if (appointment == null)
+            {
+                throw new KeyNotFoundException($"Appointment with ID {appointmentId} not found.");
+            }
+
+            appointment.Status = status;
+            await _context.SaveChangesAsync();
+            return appointment;
+        }
     }
 }

@@ -32,6 +32,7 @@ namespace _300Shine.Controllers
                     return BadRequest(new JsonResponse<string>("User ID not found", 400, ""));
                 }
                 int userId = int.Parse(userIdClaim.Value);
+
                 var genOrderCode = int.Parse(DateTimeOffset.Now.ToString("ffffff"));
 
                 var result = await _appointmentService.CreateAppointmentAsync(request, userId, genOrderCode);

@@ -7,6 +7,7 @@ using Net.payOS.Types;
 using Net.payOS;
 using System.Security.Claims;
 using _300Shine.DataAccessLayer.Entities;
+using _300Shine.DataAccessLayer.DTO.ResponseModel;
 
 namespace _300Shine.Controllers
 {
@@ -33,6 +34,7 @@ namespace _300Shine.Controllers
                     return BadRequest(new JsonResponse<string>("User ID not found", 400, ""));
                 }
                 int userId = int.Parse(userIdClaim.Value);
+
                 var genOrderCode = int.Parse(DateTimeOffset.Now.ToString("ffffff"));
 
                 var result = await _appointmentService.CreateAppointmentAsync(request, userId, genOrderCode);
@@ -87,7 +89,7 @@ namespace _300Shine.Controllers
         }
         [Authorize]
         [HttpGet("list")]
-        public async Task<ActionResult<JsonResponse<List<AppointmentEntity>>>> GetAppoinmentById()
+        public async Task<ActionResult<JsonResponse<List<AppointmentResponseModel>>>> GetAppoinmentById()
         {
             try
             {
@@ -104,7 +106,7 @@ namespace _300Shine.Controllers
                     return BadRequest(new JsonResponse<string>("Failed to get appointments", 400, ""));
                 }
 
-                return Ok(new JsonResponse<List<AppointmentEntity>>(result, 200, "Get appointments successfully"));
+                return Ok(new JsonResponse<List<AppointmentResponseModel>>(result, 200, "Get appointments successfully"));
             }
             catch (Exception ex)
             {

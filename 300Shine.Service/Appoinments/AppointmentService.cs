@@ -1,4 +1,5 @@
 ﻿using _300Shine.DataAccessLayer.DTO.RequestModel;
+using _300Shine.DataAccessLayer.DTO.ResponseModel;
 using _300Shine.DataAccessLayer.Entities;
 using _300Shine.Repository.Repositories.Appoinment;
 using Microsoft.Extensions.Configuration;
@@ -29,7 +30,7 @@ namespace _300Shine.Service.Appoinments
             return await _appointmentRepository.CreateAppointmentDetailWithReturnDayAsync(request);
         }
 
-        public async Task<List<AppointmentEntity>> GetAppoinmentByUserId(int userId)
+        public async Task<List<AppointmentResponseModel>> GetAppoinmentByUserId(int userId)
         {
             return await _appointmentRepository.GetAppoinmentByUserId(userId);
         }

@@ -3,6 +3,7 @@ using _300Shine.DataAccessLayer.DBContext;
 using _300Shine.DataAccessLayer.DTO.RequestModel;
 using _300Shine.DataAccessLayer.Entities;
 using Microsoft.EntityFrameworkCore;
+using Service.Password;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,12 @@ namespace _300Shine.Repository.Repositories.User
     public class AuthRepository : IAuthRepository
     {
         private readonly AppDbContext _context;
-        public AuthRepository(AppDbContext context)
+        private readonly IPasswordService _passwordService;
+
+        public AuthRepository(AppDbContext context, IPasswordService passwordService)
         {
             _context = context;
+            _passwordService = passwordService;
         }
 
         public async Task<string> Register(RegisterRequest request)
@@ -29,7 +33,7 @@ namespace _300Shine.Repository.Repositories.User
             var newUser = new UserEntity()
             {
                 FullName = request.FullName,
-                Password = request.Password,
+                Password =_passwordService.HashPassword(request.Password),
                 DateOfBirth = request.DateOfBirth,
                 Gender = request.Gender,
                 Phone = request.Phone,
@@ -51,11 +55,13 @@ namespace _300Shine.Repository.Repositories.User
         {
             var user = await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.Phone == request.Phone);
 
-            if (user == null || user.Password != request.Password)
+            if (user == null)
             {
-                throw new InvalidDataException("Invalid phone number or password");
+                throw new InvalidDataException("Invalid phone number");
             }
-            return user;
+            var samePassword = _passwordService.VerifyPassword(request.Password, user.Password);
+            if(samePassword) { return user; }
+           throw new Exception("Wrong Phone Or Password");
         }
 
         public async Task<UserEntity> GetUserByPhoneAsync(string phone)

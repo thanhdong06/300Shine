@@ -19,6 +19,7 @@ using _300Shine.Service.Users;
 using _300Shine.Service.Shifts;
 using _300Shine.Service.SMS;
 using _300Shine.Service.UploadImage;
+using Service.Password;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,6 +71,7 @@ builder.Services.AddScoped<IManagerService, ManagerService>();
 builder.Services.AddScoped<ISlotRepository, SlotRepository>();
 builder.Services.AddScoped<ISlotService, SlotService>();
 builder.Services.AddScoped<IUploadImageService, UploadImageService>();
+builder.Services.AddScoped<IPasswordService, PasswordService>();
 var app = builder.Build();
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 // Configure the HTTP request pipeline.

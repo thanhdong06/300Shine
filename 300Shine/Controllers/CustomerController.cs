@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Net.payOS.Types;
 using Net.payOS;
 using System.Security.Claims;
+using _300Shine.DataAccessLayer.Entities;
+using _300Shine.DataAccessLayer.DTO.ResponseModel;
 
 namespace _300Shine.Controllers
 {
@@ -61,7 +63,7 @@ namespace _300Shine.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new JsonResponse<string>("", 400, ex.Message));
+                return BadRequest(new JsonResponse<string>("Something wrong, please contact admin", 400, ex.Message));
             }
         }
         //[Authorize]
@@ -82,7 +84,33 @@ namespace _300Shine.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new JsonResponse<string>("", 400, ex.Message));
+                return BadRequest(new JsonResponse<string>("Something wrong, please contact admin", 400, ex.Message));
+            }
+        }
+        [Authorize]
+        [HttpGet("list")]
+        public async Task<ActionResult<JsonResponse<List<AppointmentResponseModel>>>> GetAppoinmentById()
+        {
+            try
+            {
+                var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+                if (userIdClaim == null)
+                {
+                    return BadRequest(new JsonResponse<string>("User ID not found", 400, ""));
+                }
+                int userId = int.Parse(userIdClaim.Value);
+
+                var result = await _appointmentService.GetAppoinmentByUserId(userId);
+                if (result == null)
+                {
+                    return BadRequest(new JsonResponse<string>("Failed to get appointments", 400, ""));
+                }
+
+                return Ok(new JsonResponse<List<AppointmentResponseModel>>(result, 200, "Get appointments successfully"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>("Something wrong, please contact admin", 400, ex.Message));
             }
         }
     }

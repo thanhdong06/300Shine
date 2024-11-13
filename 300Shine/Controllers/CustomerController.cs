@@ -51,12 +51,12 @@ namespace _300Shine.Controllers
                     amount: 2000,
                     description: "Thanh toan don hang",
                     items: [],
-                    returnUrl: "",
-                    cancelUrl: ""
+                    returnUrl: "http://localhost:3039/payment-successfully",
+                    cancelUrl: "http://localhost:3039/payment-cancel"
                 );
                 var response = await payOS.createPaymentLink(paymentLinkRequest);
 
-                return Ok(response);
+                return Ok(new JsonResponse<object>(response, 400, "create payment request successfully"));
             }
             catch (Exception ex)
             {

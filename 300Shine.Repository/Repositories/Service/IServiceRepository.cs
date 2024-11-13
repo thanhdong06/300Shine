@@ -28,6 +28,6 @@ namespace _300Shine.Repository.Repositories.Service
         Task<ServiceResponseModel> GetServiceByID(int id);
 
         Task<PaginatedList<ServiceResponseForChooseStylistFirst>> GetServicesByStylist(int stylistId,
-            int pageIndex, int pageSize);
+            int? pageIndex, int? pageSize);
     }
 }

@@ -16,7 +16,7 @@ namespace _300Shine.Repository.Repositories.Service
     public class ServiceRepository : IServiceRepository
     {
         private readonly AppDbContext _context;
-       
+
         private readonly IMapper _mapper;
 
         public ServiceRepository(AppDbContext context, IMapper mapper)
@@ -28,7 +28,7 @@ namespace _300Shine.Repository.Repositories.Service
         public async Task<string> CreateService(CreateServiceRequestModel s)
         {
             var serviceStyleDTOList = s.ServiceStyles;
-            var checkSalonId = await _context.Salons.SingleOrDefaultAsync(sa=>sa.Id == s.SalonId);
+            var checkSalonId = await _context.Salons.SingleOrDefaultAsync(sa => sa.Id == s.SalonId);
             if (checkSalonId == null || checkSalonId.IsDeleted == true)
             {
                 throw new InvalidDataException("Salon is not found");
@@ -41,7 +41,7 @@ namespace _300Shine.Repository.Repositories.Service
                 ImageUrl = s.ImageUrl,
                 SalonId = s.SalonId,
                 Duration = s.Duration,
-                ServiceStyles=new List<ServiceStyleEntity>()
+                ServiceStyles = new List<ServiceStyleEntity>()
             };
             foreach (var serviceStyles in serviceStyleDTOList)
             {
@@ -77,14 +77,14 @@ namespace _300Shine.Repository.Repositories.Service
         public async Task<string> UpdateService(UpdateServiceRequestModel s)
         {
             var serviceStyleList = s.ServiceStyles;
-            var serviceEntity = await _context.Services.Include(s=>s.ServiceStyles).SingleOrDefaultAsync(x => x.Id == s.Id && x.IsDeleted == false);
-            if (serviceEntity == null || serviceEntity.IsDeleted==true)
+            var serviceEntity = await _context.Services.Include(s => s.ServiceStyles).SingleOrDefaultAsync(x => x.Id == s.Id && x.IsDeleted == false);
+            if (serviceEntity == null || serviceEntity.IsDeleted == true)
                 throw new InvalidDataException("Service is not found");
             serviceEntity.Name = s.Name;
             serviceEntity.Description = s.Description;
             serviceEntity.Price = s.Price;
             serviceEntity.ImageUrl = s.ImageUrl;
-           serviceEntity.SalonId=s.SalonId;
+            serviceEntity.SalonId = s.SalonId;
             serviceEntity.Duration = s.Duration;
             var existedServiceStyleIdInList = serviceEntity.ServiceStyles.Select(x => x.StyleId).ToList();
             var newServiceStyleIdInList = serviceStyleList.Select(x => x.StyleId).ToList();
@@ -96,7 +96,7 @@ namespace _300Shine.Repository.Repositories.Service
                 if (existedStyleIdPosition == -1)
                 {
                     var checkStyle = await _context.Styles.SingleOrDefaultAsync(x => x.Id == serviceStyles.StyleId);
-                    if (checkStyle == null || checkStyle.IsDeleted==true)
+                    if (checkStyle == null || checkStyle.IsDeleted == true)
                         throw new InvalidDataException("Style is not found");
                     var serviceStyle = new ServiceStyleEntity()
                     {
@@ -117,11 +117,11 @@ namespace _300Shine.Repository.Repositories.Service
                     var serviceStyle = _context.ServiceStyles.FirstOrDefault(i => i.Service.Id == serviceEntity.Id && i.Style.Id == removeServiceStyleId);
 
                     serviceEntity.ServiceStyles.Remove(serviceStyle);
-                    
+
                 }
             }
             _context.Services.Update(serviceEntity);
-           
+
             if (await _context.SaveChangesAsync() > 0)
                 return "Update Service Successfully";
             else
@@ -135,7 +135,7 @@ namespace _300Shine.Repository.Repositories.Service
                 throw new InvalidDataException("Service is not found");
 
             service.IsDeleted = true;
-            
+
             _context.Services.Update(service);
             if (await _context.SaveChangesAsync() > 0)
                 return "Delete Service Successfully";
@@ -148,7 +148,7 @@ namespace _300Shine.Repository.Repositories.Service
             string? size,
             int pageIndex, int pageSize)
         {
-            IQueryable<ServiceEntity> services = _context.Services.Include(ss=>ss.ServiceStyles).Where(x => x.Id != null && x.IsDeleted == false);
+            IQueryable<ServiceEntity> services = _context.Services.Include(ss => ss.ServiceStyles).Where(x => x.Id != null && x.IsDeleted == false);
 
             //TÌM THEO TÊN
             if (!string.IsNullOrEmpty(search))
@@ -201,15 +201,17 @@ namespace _300Shine.Repository.Repositories.Service
 
         public async Task<ServiceResponseModel> GetServiceByID(int id)
         {
-            var service = await _context.Services.Include(ss=>ss.ServiceStyles).SingleOrDefaultAsync(x => x.Id == id && x.IsDeleted == false);
+            var service = await _context.Services.Include(ss => ss.ServiceStyles).SingleOrDefaultAsync(x => x.Id == id && x.IsDeleted == false);
             if (service == null || service.IsDeleted == true)
                 throw new Exception("Service is not found");
 
             return _mapper.Map<ServiceResponseModel>(service);
         }
 
-        public async Task<PaginatedList<ServiceResponseForChooseStylistFirst>> GetServicesByStylist(int stylistId,
-    int pageIndex, int pageSize)
+        public async Task<PaginatedList<ServiceResponseForChooseStylistFirst>> GetServicesByStylist(
+            int stylistId,
+            int? pageIndex = null,
+            int? pageSize = null)
         {
             var currentStylist = _context.Stylists
                 .SingleOrDefault(s => s.Id == stylistId && !s.IsDeleted);
@@ -232,20 +234,29 @@ namespace _300Shine.Repository.Repositories.Service
 
             var totalCount = await services.CountAsync();
 
-            var paginatedServiceEntities = await services
-                .Skip((pageIndex - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
+            List<ServiceEntity> paginatedServiceEntities;
+            if (pageIndex.HasValue && pageSize.HasValue && pageIndex > 0 && pageSize > 0)
+            {
+                paginatedServiceEntities = await services
+                    .Skip((pageIndex.Value - 1) * pageSize.Value)
+                    .Take(pageSize.Value)
+                    .ToListAsync();
+            }
+            else
+            {
+                paginatedServiceEntities = await services.ToListAsync();
+            }
 
             var mappedPaginatedServices = new PaginatedList<ServiceResponseForChooseStylistFirst>(
                 _mapper.Map<List<ServiceResponseForChooseStylistFirst>>(paginatedServiceEntities),
                 totalCount,
-                pageIndex,
-                pageSize
+                pageIndex ?? 1, 
+                pageSize ?? totalCount 
             );
 
             return mappedPaginatedServices;
         }
+
 
     }
 }

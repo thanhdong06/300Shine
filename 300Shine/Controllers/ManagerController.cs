@@ -1,5 +1,7 @@
-﻿using _300Shine.DataAccessLayer.DTO.ResponseModel;
+﻿using _300Shine.DataAccessLayer.DTO.RequestModel;
+using _300Shine.DataAccessLayer.DTO.ResponseModel;
 using _300Shine.ResponseType;
+using _300Shine.Service.Appoinments;
 using _300Shine.Service.Manager;
 using _300Shine.Service.Services;
 
@@ -14,11 +16,13 @@ namespace _300Shine.Controllers
     {
         private readonly IManagerService _managerService;
         private readonly ISlotService _slotService;
+        private readonly IAppointmentService _appointmentService;
 
-        public ManagerController(IManagerService managerService, ISlotService slotService)
+        public ManagerController(IManagerService managerService, ISlotService slotService, IAppointmentService appointmentService)
         {
             _managerService = managerService;
             _slotService = slotService;
+            _appointmentService = appointmentService;
         }
 
         [HttpGet("available-stylists")]
@@ -50,6 +54,28 @@ namespace _300Shine.Controllers
             catch (Exception ex)
             {
                 return BadRequest(new JsonResponse<string>("Something wrong, please contact with admin", 400, ex.Message));
+            }
+        }
+
+        [HttpPut("update-status")]
+        public async Task<IActionResult> UpdateStatus([FromBody] UpdateAppointmentStatusRequest request)
+        {
+            if (request == null || string.IsNullOrEmpty(request.Status))
+            {
+                return BadRequest("Invalid request data.");
+            }
+            try
+            {
+                var updatedAppointment = await _appointmentService.UpdateAppointmentStatusAsync(request.OrderCode, request.Status);
+                return Ok(updatedAppointment);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
     }

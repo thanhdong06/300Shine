@@ -15,6 +15,7 @@ namespace _300Shine.Repository.Repositories.Appoinment
         Task<string> CreateAppointmentDetailWithReturnDayAsync(AppointmentDetailCreateWithReturnDateRequest request);
         Task<AppointmentEntity> UpdateAppointmentStatusAsync(int orderCode, string status);
         Task<List<AppointmentResponseModel>> GetAppoinmentByUserId(int userId, string status);
+        Task<List<AppointmentResponseModel>> GetAppoinmentsByStatus(string status);
 
     }
 }

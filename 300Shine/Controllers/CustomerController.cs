@@ -72,7 +72,7 @@ namespace _300Shine.Controllers
         {
             try
             {
-                
+
 
                 var result = await _appointmentService.CreateAppointmentDetailWithReturnDayAsync(request);
                 if (result == null)
@@ -101,6 +101,25 @@ namespace _300Shine.Controllers
                 int userId = int.Parse(userIdClaim.Value);
 
                 var result = await _appointmentService.GetAppoinmentByUserId(userId, status);
+                if (result == null)
+                {
+                    return BadRequest(new JsonResponse<string>("Failed to get appointments", 400, ""));
+                }
+
+                return Ok(new JsonResponse<List<AppointmentResponseModel>>(result, 200, "Get appointments successfully"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>("Something wrong, please contact admin", 400, ex.Message));
+            }
+        }
+        [Authorize]
+        [HttpGet("list-by-status")]
+        public async Task<ActionResult<JsonResponse<List<AppointmentResponseModel>>>> GetAppoinmentByStatus(string status)
+        {
+            try
+            {
+                var result = await _appointmentService.GetAppoinmentsByStatus(status);
                 if (result == null)
                 {
                     return BadRequest(new JsonResponse<string>("Failed to get appointments", 400, ""));

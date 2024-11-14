@@ -2,6 +2,7 @@
 using _300Shine.DataAccessLayer.DTO.ResponseModel;
 using _300Shine.DataAccessLayer.Entities;
 using _300Shine.Repository.Repositories.Shift;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +48,11 @@ namespace _300Shine.Service.Shifts
         public async Task AutoCreateShiftForWholeWeek()
         {
             await _shiftRepository.AutoCreateShiftForWholeWeek();
+        }
+
+        public async Task<List<ShiftForChoosingDTO>> GetShiftsBySalonAndStylistId(int salonId, int stylistId)
+        {
+            return await _shiftRepository.GetShiftsBySalonAndStylistId(salonId, stylistId);
         }
 
         public async Task<string> ShiftsForStylist(ShiftCreateForStylistDTO request)

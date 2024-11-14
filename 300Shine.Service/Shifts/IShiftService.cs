@@ -17,6 +17,7 @@ namespace _300Shine.Service.Shifts
         Task AutoCreateShiftForWholeWeek();
         Task<ShiftResponseDTO> GetShiftById(int id);
         Task<List<ShiftResponseDTO>> GetShifts(string? search, DateTime? date, string? status, int pageIndex, int pageSize);
+        Task<List<ShiftForChoosingDTO>> GetShiftsBySalonAndStylistId(int salonId, int stylistId);
         Task<string> ShiftsForStylist(ShiftCreateForStylistDTO request);
     }
 

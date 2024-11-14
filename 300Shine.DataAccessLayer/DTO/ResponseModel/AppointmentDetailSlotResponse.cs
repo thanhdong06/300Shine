@@ -10,7 +10,7 @@ namespace _300Shine.DataAccessLayer.DTO.ResponseModel
 {
     public class AppointmentDetailSlotResponse
     {
-        public int AppointmentDetailId { get; set; }
+        public int SlotId { get; set; }
        
         public DateTime? Slot { get; set; }
        

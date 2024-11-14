@@ -61,7 +61,7 @@ namespace _300Shine.Controllers
         }
 
         [HttpGet("shift/list")]
-        public async Task<ActionResult<List<JsonResponse<ShiftResponseDTO>>>> GetShifts(string? search, DateTime? date, string? status, int pageIndex, int pageSize)
+        public async Task<ActionResult<JsonResponse<List<ShiftResponseDTO>>>> GetShifts(string? search, DateTime? date, string? status, int pageIndex, int pageSize)
         {
             try
             {
@@ -87,6 +87,21 @@ namespace _300Shine.Controllers
                 return BadRequest(new JsonResponse<string>("Something went wrong, please contact admin", 400, ex.Message));
             }
         }
+
+        [HttpGet("shift/list-by-salon-id")]
+        public async Task<ActionResult<JsonResponse<List<ShiftForChoosingDTO>>>> GetShiftsBySalonAndStylistId(int salonId, int stylistId)
+        {
+            try
+            {
+                var result = await _shiftService.GetShiftsBySalonAndStylistId(salonId, stylistId);
+                return Ok(new JsonResponse<List<ShiftForChoosingDTO>>(result, 200, "Successfully retrieved shifts by salon id"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>("Something went wrong, please contact admin", 400, ex.Message));
+            }
+        }
+
         [HttpPost("shift/new-shift-for-stylist")]
         public async Task<ActionResult<JsonResponse<string>>> CreateShiftForStylist([FromBody] ShiftCreateForStylistDTO request)
         {

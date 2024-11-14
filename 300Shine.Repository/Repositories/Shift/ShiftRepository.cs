@@ -122,26 +122,28 @@ namespace _300Shine.Repository.Repositories.Shift
             return _mapper.Map<List<ShiftResponseDTO>>(paginatedShifts);
         }
 
-        public async Task<List<ShiftForChoosingDTO>> GetShiftsBySalonAndStylistId(int salonId, int stylistId)
+        public async Task<List<ShiftForChoosingDTO>> GetShiftsBySalonAndStylistId(int userId)
         {
+            var stylist = await _context.Stylists.SingleOrDefaultAsync(x => x.UserId == userId);
+
             var today = DateTime.Today;
             var startOfWeek = today.AddDays(-(int)today.DayOfWeek + (int)DayOfWeek.Monday);
             var endOfWeek = startOfWeek.AddDays(6);
 
-            var existedStylist = _context.Stylists.FirstOrDefault(s => s.Id == stylistId);
+            var existedStylist = _context.Stylists.FirstOrDefault(s => s.Id == stylist.Id);
             if (existedStylist == null)
             {
                 throw new InvalidDataException("The stylist is not found");
             }
-            else if (existedStylist.SalonId != salonId)
+            else if (existedStylist.SalonId != stylist.SalonId)
             {
                 throw new InvalidDataException("The stylist does not belong to this salon.");
             }
 
-            var chosenShifts = _context.StylistShifts.Where(s => !s.IsDeleted && s.StylistId == stylistId).Select(s => s.ShiftId).ToHashSet(); ;
+            var chosenShifts = _context.StylistShifts.Where(s => !s.IsDeleted && s.StylistId == stylist.Id).Select(s => s.ShiftId).ToHashSet(); ;
 
             var shifts = await _context.Shifts
-                .Where(s => s.SalonId == salonId && s.Date >= startOfWeek && s.Date <= endOfWeek)
+                .Where(s => s.SalonId == stylist.SalonId && s.Date >= startOfWeek && s.Date <= endOfWeek)
                 .OrderBy(s => s.Date)
                 .ToListAsync();
 

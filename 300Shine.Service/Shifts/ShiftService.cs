@@ -50,9 +50,9 @@ namespace _300Shine.Service.Shifts
             await _shiftRepository.AutoCreateShiftForWholeWeek();
         }
 
-        public async Task<List<ShiftForChoosingDTO>> GetShiftsBySalonAndStylistId(int salonId, int stylistId)
+        public async Task<List<ShiftForChoosingDTO>> GetShiftsBySalonAndStylistId(int userId )
         {
-            return await _shiftRepository.GetShiftsBySalonAndStylistId(salonId, stylistId);
+            return await _shiftRepository.GetShiftsBySalonAndStylistId(userId);
         }
 
         public async Task<string> ShiftsForStylist(ShiftCreateForStylistDTO request)

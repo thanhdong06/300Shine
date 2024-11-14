@@ -3,7 +3,9 @@ using _300Shine.DataAccessLayer.DTO.ResponseModel;
 using _300Shine.DataAccessLayer.Entities;
 using _300Shine.ResponseType;
 using _300Shine.Service.Shifts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace _300Shine.Controllers
 {
@@ -88,12 +90,20 @@ namespace _300Shine.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("shift/list-by-salon-id")]
-        public async Task<ActionResult<JsonResponse<List<ShiftForChoosingDTO>>>> GetShiftsBySalonAndStylistId(int salonId, int stylistId)
+        public async Task<ActionResult<JsonResponse<List<ShiftForChoosingDTO>>>> GetShiftsBySalonAndStylistId()
         {
             try
             {
-                var result = await _shiftService.GetShiftsBySalonAndStylistId(salonId, stylistId);
+                var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+                if (userIdClaim == null)
+                {
+                    return BadRequest(new JsonResponse<string>("User ID not found", 400, ""));
+                }
+                int userId = int.Parse(userIdClaim.Value);
+
+                var result = await _shiftService.GetShiftsBySalonAndStylistId(userId);
                 return Ok(new JsonResponse<List<ShiftForChoosingDTO>>(result, 200, "Successfully retrieved shifts by salon id"));
             }
             catch (Exception ex)

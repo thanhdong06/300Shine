@@ -254,5 +254,56 @@ namespace _300Shine.Repository.Repositories.Appoinment
             await _context.SaveChangesAsync();
             return appointment;
         }
+
+        public async Task<List<AppointmentResponseModel>> GetAppoinmentByStylistId(int userId, string status, string appoinmentDetailStatus)
+        {
+            var stylist = await _context.Stylists.SingleOrDefaultAsync(x=>x.UserId == userId);
+            
+            var appointments = await _context.Appointments
+                .Where(a => a.Status == status &&
+                            a.AppointmentDetails
+                            .Any(ad =>ad.StylistId == stylist.Id && ad.Status == appoinmentDetailStatus))
+          .Include(a => a.User)
+          .Include(a => a.Salon)
+          .Include(a => a.AppointmentDetails)
+          .ThenInclude(ad => ad.Stylist)
+          .Include(a => a.AppointmentDetails)
+          .ThenInclude(ad => ad.Service)
+          .Include(a => a.AppointmentDetails)
+           .ThenInclude(ad => ad.AppointmentDetailSlots)
+               .ThenInclude(s => s.Slot)
+           .Include(a => a.AppointmentDetails)
+           .ThenInclude(ad => ad.Stylist).ThenInclude(u => u.User)
+          .ToListAsync();
+            // Map the AppointmentEntity to AppointmentResponseModel
+            var appointmentDtos = appointments.Select(a => new AppointmentResponseModel
+            {
+                AppointmentId = a.Id,
+                Note = a.Note,
+                Date = a.Date,
+                Status = a.Status,
+                Amount = a.Amount,
+                UserName = a.User?.FullName,
+                SalonAddress = a.Salon?.Address,
+                OrderCode = a.OrderCode ?? default(int),
+                AppointmentDetails = a.AppointmentDetails.Select(ad => new AppoinmentDetailResponseModel
+                {
+                    AppointmentId = ad.AppointmentId,
+                    ServiceName = ad.Service?.Name,
+                    StylistName = ad.Stylist?.User?.FullName,
+                    ReturnDate = ad.ReturnDate,
+                    Price = ad.Price,
+                    Type = ad.Type,
+                    Status = ad.Status,
+                    AppointmentDetailSlots = ad.AppointmentDetailSlots.Select(sl => new AppointmentDetailSlotResponse
+                    {
+                        SlotId = sl.SlotId,
+                        Slot = sl.Slot?.Time,
+                    }).ToList()
+                }).ToList()
+
+            }).ToList();
+            return appointmentDtos;
+        }
     }
 }

@@ -50,5 +50,9 @@ namespace _300Shine.Service.Appoinments
             return await _appointmentRepository.UpdateAppointmentById(appointmentId, status);
         }
 
+        public async Task<List<AppointmentResponseModel>> GetAppoinmentByStylistId(int stylistId, string status, string appoinmentDetailStatus)
+        {
+            return await _appointmentRepository.GetAppoinmentByStylistId(stylistId, status, appoinmentDetailStatus);    
+        }
     }
 }

@@ -88,7 +88,7 @@ namespace _300Shine.Controllers
             }
             try
             {
-                var updatedAppointment = await _appointmentService.UpdateAppointmentById(request.AppointmentDetailId, request.Status);
+                var updatedAppointment = await _appointmentService.UpdateAppointmentById(request.AppointmentId, request.Status);
                 return Ok(updatedAppointment);
             }
             catch (KeyNotFoundException ex)

@@ -236,7 +236,7 @@ namespace _300Shine.Repository.Repositories.Appoinment
 
         public async Task<AppointmentDetailEntity> UpdateAppointmentById(int appointmentId, string status)
         {
-            var appointment = await _context.AppointmentDetails.FirstOrDefaultAsync(p => p.Id == appointmentId);
+            var appointment = await _context.AppointmentDetails.FirstOrDefaultAsync(p => p.AppointmentId == appointmentId);
 
             if (appointment == null)
             {

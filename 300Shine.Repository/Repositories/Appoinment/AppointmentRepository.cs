@@ -148,6 +148,7 @@ namespace _300Shine.Repository.Repositories.Appoinment
             // Map the AppointmentEntity to AppointmentResponseModel
             var appointmentDtos = appointments.Select(a => new AppointmentResponseModel
             {
+                AppointmentId = a.Id.ToString(),
                 Note = a.Note,
                 Date = a.Date,
                 Status = a.Status,
@@ -166,7 +167,7 @@ namespace _300Shine.Repository.Repositories.Appoinment
                     Status = ad.Status,
                     AppointmentDetailSlots = ad.AppointmentDetailSlots.Select(sl => new AppointmentDetailSlotResponse
                     {
-                        AppointmentDetailId =sl.AppointmentDetailId,
+                        SlotId =sl.SlotId,
                         Slot = sl.Slot?.Time,
                     }).ToList()
                 }).ToList()
@@ -193,6 +194,7 @@ namespace _300Shine.Repository.Repositories.Appoinment
             // Map the AppointmentEntity to AppointmentResponseModel
             var appointmentDtos = appointments.Select(a => new AppointmentResponseModel
             {
+                AppointmentId = a.Id.ToString(),
                 Note = a.Note,
                 Date = a.Date,
                 Status = a.Status,
@@ -211,7 +213,7 @@ namespace _300Shine.Repository.Repositories.Appoinment
                     Status = ad.Status,
                     AppointmentDetailSlots = ad.AppointmentDetailSlots.Select(sl => new AppointmentDetailSlotResponse
                     {
-                        AppointmentDetailId = sl.AppointmentDetailId,
+                        SlotId = sl.SlotId,
                         Slot = sl.Slot?.Time,
                     }).ToList()
                 }).ToList()
@@ -234,9 +236,9 @@ namespace _300Shine.Repository.Repositories.Appoinment
             return appointment;
         }
 
-        public async Task<AppointmentEntity> UpdateAppointmentById(int appointmentId, string status)
+        public async Task<AppointmentDetailEntity> UpdateAppointmentById(int appointmentId, string status)
         {
-            var appointment = await _context.Appointments.FirstOrDefaultAsync(p => p.Id == appointmentId);
+            var appointment = await _context.AppointmentDetails.FirstOrDefaultAsync(p => p.AppointmentId == appointmentId);
 
             if (appointment == null)
             {

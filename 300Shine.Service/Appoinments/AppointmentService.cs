@@ -45,7 +45,7 @@ namespace _300Shine.Service.Appoinments
             return await _appointmentRepository.UpdateAppointmentStatusAsync(orderCode, status);
         }
 
-        public async Task<AppointmentEntity> UpdateAppointmentById(int appointmentId, string status)
+        public async Task<AppointmentDetailEntity> UpdateAppointmentById(int appointmentId, string status)
         {
             return await _appointmentRepository.UpdateAppointmentById(appointmentId, status);
         }

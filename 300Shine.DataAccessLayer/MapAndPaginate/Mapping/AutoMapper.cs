@@ -44,6 +44,8 @@ namespace _300Shine.DataAccessLayer.ServiceForCRUD.Mapping
         private void ShiftProfile()
         {
             CreateMap<ShiftEntity, ShiftResponseDTO>().ReverseMap();
+            CreateMap<ShiftEntity, ShiftForChoosingDTO>()
+            .ForMember(dest => dest.isChosen, opt => opt.MapFrom(src => false));
         }
         private void StylistProfile()
         {

@@ -122,6 +122,42 @@ namespace _300Shine.Repository.Repositories.Shift
             return _mapper.Map<List<ShiftResponseDTO>>(paginatedShifts);
         }
 
+        public async Task<List<ShiftForChoosingDTO>> GetShiftsBySalonAndStylistId(int salonId, int stylistId)
+        {
+            var today = DateTime.Today;
+            var startOfWeek = today.AddDays(-(int)today.DayOfWeek + (int)DayOfWeek.Monday);
+            var endOfWeek = startOfWeek.AddDays(6);
+
+            var existedStylist = _context.Stylists.FirstOrDefault(s => s.Id == stylistId);
+            if (existedStylist == null)
+            {
+                throw new InvalidDataException("The stylist is not found");
+            }
+            else if (existedStylist.SalonId != salonId)
+            {
+                throw new InvalidDataException("The stylist does not belong to this salon.");
+            }
+
+            var chosenShifts = _context.StylistShifts.Where(s => !s.IsDeleted && s.StylistId == stylistId).Select(s => s.ShiftId).ToHashSet(); ;
+
+            var shifts = await _context.Shifts
+                .Where(s => s.SalonId == salonId && s.Date >= startOfWeek && s.Date <= endOfWeek)
+                .OrderBy(s => s.Date)
+                .ToListAsync();
+
+            var shiftsDTO = _mapper.Map<List<ShiftForChoosingDTO>>(shifts);
+
+            foreach (var shift in shiftsDTO)
+            {
+                if (chosenShifts.Contains(shift.Id))
+                {
+                    shift.isChosen = true;
+                }
+            }
+
+            return shiftsDTO;
+        }
+
         public async Task AutoCreateShiftForWholeWeek()
         {
             var salons = await _salonRepository.GetAllSalonsAsync();
@@ -175,7 +211,6 @@ namespace _300Shine.Repository.Repositories.Shift
             return await _context.Shifts
                 .AnyAsync(s => s.SalonId == salonId && s.Date >= startOfWeek && s.Date <= endOfWeek);
         }
-
     }
 
 }

@@ -18,6 +18,7 @@ namespace _300Shine.DataAccessLayer.ServiceForCRUD.Mapping
             AppointmentProfile();
             ShiftProfile();
             StylistProfile();
+            StyleProfile();
         }
         private void UserMappingProfile()
         {
@@ -51,6 +52,10 @@ namespace _300Shine.DataAccessLayer.ServiceForCRUD.Mapping
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.User != null ? src.User.FullName : string.Empty))
             .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.User != null ? src.User.ImageUrl : string.Empty));
+        }
+        private void StyleProfile()
+        {
+            CreateMap<StyleEntity, StyleResponseDTO>().ReverseMap();
         }
     }
 }

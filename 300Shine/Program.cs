@@ -20,6 +20,8 @@ using _300Shine.Service.Shifts;
 using _300Shine.Service.SMS;
 using _300Shine.Service.UploadImage;
 using Service.Password;
+using _300Shine.Repository.Repositories.Style;
+using _300Shine.Service.Styles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,6 +74,8 @@ builder.Services.AddScoped<ISlotRepository, SlotRepository>();
 builder.Services.AddScoped<ISlotService, SlotService>();
 builder.Services.AddScoped<IUploadImageService, UploadImageService>();
 builder.Services.AddScoped<IPasswordService, PasswordService>();
+builder.Services.AddScoped<IStyleRepository, StyleRepository>();
+builder.Services.AddScoped<IStyleService, StyleService>();
 
 // Configuration for background method
 builder.Services.AddHostedService<ShiftHostedService>();

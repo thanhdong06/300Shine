@@ -62,7 +62,7 @@ namespace _300Shine.Controllers
         {
             if (request == null || string.IsNullOrEmpty(request.Status))
             {
-                return BadRequest("Invalid request data.");
+                return BadRequest(new JsonResponse<string>("Invalid request data.", 400, ""));
             }
             try
             {
@@ -71,7 +71,7 @@ namespace _300Shine.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                return NotFound(ex.Message);
+                return NotFound(new JsonResponse<string>(ex.Message, 404, ""));
             }
             catch (Exception ex)
             {
@@ -84,16 +84,16 @@ namespace _300Shine.Controllers
         {
             if (request == null || string.IsNullOrEmpty(request.Status))
             {
-                return BadRequest("Invalid request data.");
+                return BadRequest(new JsonResponse<string>("Invalid request data.", 400, ""));
             }
             try
             {
                 var updatedAppointment = await _appointmentService.UpdateAppointmentById(request.AppointmentId, request.Status);
-                return Ok(updatedAppointment);
+                return Ok(new JsonResponse<object>(updatedAppointment, 200, ""));
             }
             catch (KeyNotFoundException ex)
             {
-                return NotFound(ex.Message);
+                return NotFound(new JsonResponse<string>(ex.Message, 404, ""));
             }
             catch (Exception ex)
             {

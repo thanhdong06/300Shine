@@ -117,7 +117,14 @@ namespace _300Shine.Controllers
         {
             try
             {
-                var result = await _shiftService.ShiftsForStylist(request);
+                var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+                if (userIdClaim == null)
+                {
+                    return BadRequest(new JsonResponse<string>("User ID not found", 400, ""));
+                }
+                int userId = int.Parse(userIdClaim.Value);
+
+                var result = await _shiftService.ShiftsForStylist(userId, request);
                 return Ok(new JsonResponse<string>("Shift chosen successfully", 200, result));
             }
             catch (Exception ex)

@@ -30,9 +30,9 @@ namespace _300Shine.Service.Appoinments
             return await _appointmentRepository.CreateAppointmentDetailWithReturnDayAsync(request);
         }
 
-        public async Task<List<AppointmentResponseModel>> GetAppoinmentByUserId(int userId, string status)
+        public async Task<List<AppointmentResponseModel>> GetAppoinmentByUserId(int userId, string status, string appoinmentDetailStatus)
         {
-            return await _appointmentRepository.GetAppoinmentByUserId(userId,status);
+            return await _appointmentRepository.GetAppoinmentByUserId(userId,status, appoinmentDetailStatus);
         }
 
         public async Task<List<AppointmentResponseModel>> GetAppoinmentsByStatus(string status)

@@ -34,7 +34,7 @@ namespace _300Shine.DataAccessLayer.DTO.RequestModel
     }
     public class ShiftCreateForStylistDTO
     {
-        public int StylistId { get; set; }
+        //public int StylistId { get; set; }
         public List<int> ShiftIds { get; set; }
     }
 }

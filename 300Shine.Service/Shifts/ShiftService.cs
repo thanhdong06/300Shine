@@ -55,9 +55,9 @@ namespace _300Shine.Service.Shifts
             return await _shiftRepository.GetShiftsBySalonAndStylistId(userId);
         }
 
-        public async Task<string> ShiftsForStylist(ShiftCreateForStylistDTO request)
+        public async Task<string> ShiftsForStylist(int userId, ShiftCreateForStylistDTO request)
         {
-            return await _shiftRepository.ShiftsForStylist(request);
+            return await _shiftRepository.ShiftsForStylist(userId, request);
         }
     }
 

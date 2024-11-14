@@ -9,17 +9,17 @@ namespace _300Shine.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AppoinmentController : Controller
+    public class AppointmentController : Controller
     {
         private readonly IAppointmentService _appointmentService;
 
-        public AppoinmentController(IAppointmentService appointmentService)
+        public AppointmentController(IAppointmentService appointmentService)
         {
             _appointmentService = appointmentService;
         }
         [Authorize]
         [HttpGet("list")]
-        public async Task<ActionResult<JsonResponse<List<AppointmentResponseModel>>>> GetAppoinmentByUserId(string status)
+        public async Task<ActionResult<JsonResponse<List<AppointmentResponseModel>>>> GetAppoinmentByUserId(string status, string appoinmentDetailStatus)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace _300Shine.Controllers
                 }
                 int userId = int.Parse(userIdClaim.Value);
 
-                var result = await _appointmentService.GetAppoinmentByUserId(userId, status);
+                var result = await _appointmentService.GetAppoinmentByUserId(userId, status, appoinmentDetailStatus);
                 if (result == null)
                 {
                     return BadRequest(new JsonResponse<string>("Failed to get appointments", 400, ""));

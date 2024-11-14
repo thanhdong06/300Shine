@@ -213,9 +213,10 @@ namespace _300Shine.Repository.Repositories.Shift
             return await _context.Shifts
                 .AnyAsync(s => s.SalonId == salonId && s.Date >= startOfWeek && s.Date <= endOfWeek);
         }
-        public async Task<string> ShiftsForStylist(ShiftCreateForStylistDTO request)
+        public async Task<string> ShiftsForStylist(int userId, ShiftCreateForStylistDTO request)
         {
-          var stylist = await _context.Stylists.SingleOrDefaultAsync(s=>s.Id == request.StylistId);
+
+            var stylist = await _context.Stylists.SingleOrDefaultAsync(s=>s.UserId == userId);
             if (stylist == null)
             {
                 throw new Exception("Stylist not found");
@@ -227,7 +228,7 @@ namespace _300Shine.Repository.Repositories.Shift
 
 
             var existingShifts = _context.StylistShifts
-           .Where(ss => ss.StylistId == request.StylistId && request.ShiftIds.Contains(ss.ShiftId))
+           .Where(ss => ss.StylistId == stylist.Id && request.ShiftIds.Contains(ss.ShiftId))
            .Select(ss => ss.ShiftId)
            .ToList();
 
@@ -247,7 +248,7 @@ namespace _300Shine.Repository.Repositories.Shift
                   
                     var stylistShift = new StylistShiftEntity
                     {
-                        StylistId = request.StylistId,
+                        StylistId = stylist.Id,
                         ShiftId = shiftid
                     };
                     _context.StylistShifts.Add(stylistShift);

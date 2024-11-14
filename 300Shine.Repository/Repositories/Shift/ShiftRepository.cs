@@ -176,6 +176,56 @@ namespace _300Shine.Repository.Repositories.Shift
                 .AnyAsync(s => s.SalonId == salonId && s.Date >= startOfWeek && s.Date <= endOfWeek);
         }
 
+        public async Task<string> ShiftsForStylist(ShiftCreateForStylistDTO request)
+        {
+          var stylist = await _context.Stylists.SingleOrDefaultAsync(s=>s.Id == request.StylistId);
+            if (stylist == null)
+            {
+                throw new Exception("Stylist not found");
+            }
+            else if (request.ShiftIds == null || !request.ShiftIds.Any())
+            {
+                throw new Exception("You are not choosing shift yet");
+            }
+
+
+            var existingShifts = _context.StylistShifts
+           .Where(ss => ss.StylistId == request.StylistId && request.ShiftIds.Contains(ss.ShiftId))
+           .Select(ss => ss.ShiftId)
+           .ToList();
+
+            // Lưu các shift bị trùng
+            var duplicateShifts = request.ShiftIds.Where(id => existingShifts.Contains(id)).ToList();
+
+            if (duplicateShifts.Any())
+            {
+                throw new Exception ($"Shifts with IDs [{string.Join(", ", duplicateShifts)}] have already been assigned to the stylist.");
+            }
+
+
+            try
+            {
+                foreach (var shiftid in request.ShiftIds)
+                {
+                  
+                    var stylistShift = new StylistShiftEntity
+                    {
+                        StylistId = request.StylistId,
+                        ShiftId = shiftid
+                    };
+                    _context.StylistShifts.Add(stylistShift);
+                }
+
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+           
+            return ("Shifts assigned to stylist successfully.");
+
+        }
     }
 
 }

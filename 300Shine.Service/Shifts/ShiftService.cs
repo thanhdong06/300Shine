@@ -48,6 +48,11 @@ namespace _300Shine.Service.Shifts
         {
             await _shiftRepository.AutoCreateShiftForWholeWeek();
         }
+
+        public async Task<string> ShiftsForStylist(ShiftCreateForStylistDTO request)
+        {
+            return await _shiftRepository.ShiftsForStylist(request);
+        }
     }
 
 }

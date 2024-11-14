@@ -8,7 +8,7 @@ namespace _300Shine.DataAccessLayer.DTO.RequestModel
 {
     public class UpdateAppointmentStatusByID
     {
-        public int AppointmentDetailId { get; set; }
+        public int AppointmentId { get; set; }
         public string Status { get; set; }
     }
 }

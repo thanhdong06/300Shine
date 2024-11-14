@@ -87,6 +87,19 @@ namespace _300Shine.Controllers
                 return BadRequest(new JsonResponse<string>("Something went wrong, please contact admin", 400, ex.Message));
             }
         }
+        [HttpPost("shift/new-shift-for-stylist")]
+        public async Task<ActionResult<JsonResponse<string>>> CreateShiftForStylist([FromBody] ShiftCreateForStylistDTO request)
+        {
+            try
+            {
+                var result = await _shiftService.ShiftsForStylist(request);
+                return Ok(new JsonResponse<string>("Shift chosen successfully", 200, result));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>("Something went wrong, please contact admin", 400, ex.Message));
+            }
+        }
     }
 
 }

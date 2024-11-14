@@ -17,6 +17,7 @@ namespace _300Shine.Repository.Repositories.Shift
         Task<string> DeleteShift(int id);
         Task<ShiftResponseDTO> GetShiftById(int id);
         Task<List<ShiftResponseDTO>> GetShifts(string? search, DateTime? date, string? status, int pageIndex, int pageSize);
+        Task<string> ShiftsForStylist(ShiftCreateForStylistDTO request);
     }
 
 }

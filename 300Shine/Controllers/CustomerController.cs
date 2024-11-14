@@ -42,6 +42,7 @@ namespace _300Shine.Controllers
                 {
                     return BadRequest(new JsonResponse<string>("Failed to create appointment", 400, ""));
                 }
+                int amountInInt = Convert.ToInt32(Math.Round(result.Amount));
 
                 var clientId = "38bb31de-35a1-4335-8bfa-34ab42934b0a";
                 var apiKey = "4d398076-e456-42ab-8ced-149bdce1eb0e";
@@ -51,7 +52,7 @@ namespace _300Shine.Controllers
 
                 var paymentLinkRequest = new PaymentData(
                     orderCode: genOrderCode,
-                    amount: 2000,
+                    amount: amountInInt,
                     description: "Thanh toan don hang",
                     items: [],
                     returnUrl: "http://localhost:3039/payment-successfully",

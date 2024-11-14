@@ -33,6 +33,8 @@ namespace _300Shine.Repository.Repositories.Appoinment
             appointmentEntity.Date = request.DateToGo;
             appointmentEntity.OrderCode = OrderCode;
 
+            decimal totalAmount = 0;
+
             foreach (var detail in appointmentEntity.AppointmentDetails)
             {
                 var requestDetail = request.Items.FirstOrDefault(d => d.ServiceId == detail.ServiceId);
@@ -49,6 +51,8 @@ namespace _300Shine.Repository.Repositories.Appoinment
                     if (service != null)
                     {
                         detail.Price = service.Price;
+                        totalAmount += service.Price;
+
                         detail.Type = service.Type;
 
                         if (service.Type == "onetime")
@@ -70,6 +74,7 @@ namespace _300Shine.Repository.Repositories.Appoinment
                     }
                 }
             }
+            appointmentEntity.Amount = totalAmount;
 
             await _context.Appointments.AddAsync(appointmentEntity);
             await _context.SaveChangesAsync();

@@ -146,7 +146,7 @@ namespace _300Shine.Repository.Repositories.User
 
             var checkRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name.ToLower() == "stylist");
             if (checkRole == null) throw new InvalidDataException("Role not found");
-            
+
             var newUser = new UserEntity()
             {
                 ImageUrl = request.ImageUrl,
@@ -176,6 +176,18 @@ namespace _300Shine.Repository.Repositories.User
 
             _context.Stylists.Add(newStylist);
             await _context.SaveChangesAsync();
+
+            if (request.StyleId != null && request.StyleId.Any())
+            {
+                var stylistStyles = request.StyleId.Select(styleId => new StylistStyleEntity
+                {
+                    StylistId = newStylist.Id,
+                    StyleId = styleId
+                });
+
+                _context.StylistStyles.AddRange(stylistStyles);
+                await _context.SaveChangesAsync();
+            }
 
             return "Stylist created successfully";
           

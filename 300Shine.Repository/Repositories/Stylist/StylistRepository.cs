@@ -98,7 +98,7 @@ namespace _300Shine.Repository.Repositories.Stylist
                     throw new Exception("Stylist of service not found");
                 // Fetch appointment details for the stylist and the given date
                 var appDetails = await _context.AppointmentDetails
-                    .Where(s => s.StylistId == stylistId && s.Appointment.Date.Year == date.Year && s.Appointment.Date.Month == date.Month && s.Appointment.Date.Day == date.Day) // Filter by stylistId and appointment date, sửa so sánh ngày giờ  
+                    .Where(s => s.StylistId == stylistId && s.Appointment.Date.Year == date.Year && s.Appointment.Date.Month == date.Month && s.Appointment.Date.Day == date.Day && s.Appointment.Status != "Canceled") // Filter by stylistId and appointment date, sửa so sánh ngày giờ  
                     .ToListAsync();
                 //if (appDetails == null || !appDetails.Any())
                 //    throw new Exception("Stylist of appoinment not found");
@@ -156,7 +156,7 @@ namespace _300Shine.Repository.Repositories.Stylist
                     foreach (var stylist in commonStylists)
                     {
                         var stylistShifts = await _context.StylistShifts
-    .Where(x => x.StylistId == stylist.Id && x.Shift.Date.Year == date.Year && x.Shift.Date.Month == date.Month && x.Shift.Date.Day == date.Day) //sửa so sánh ngày 
+    .Where(x => x.StylistId == stylist.Id && x.Shift.Date.Year == date.Year && x.Shift.Date.Month == date.Month && x.Shift.Date.Day == date.Day ) //sửa so sánh ngày 
     .Select(x => x.Shift)
     .ToListAsync();
 
@@ -170,7 +170,7 @@ namespace _300Shine.Repository.Repositories.Stylist
 
                         // Fetch appointment details for the stylist and the given date
                         var appDetails = await _context.AppointmentDetails
-                            .Where(s => s.StylistId == stylist.Id && s.Appointment.Date.Year == date.Year && s.Appointment.Date.Month == date.Month && s.Appointment.Date.Day == date.Day) // Filter by stylistId and appointment date, sửa so sánh ngày giờ  
+                            .Where(s => s.StylistId == stylist.Id && s.Appointment.Date.Year == date.Year && s.Appointment.Date.Month == date.Month && s.Appointment.Date.Day == date.Day && s.Appointment.Status != "Canceled") // Filter by stylistId and appointment date, sửa so sánh ngày giờ  
                             .ToListAsync();
 
                         if (appDetails == null || !appDetails.Any())

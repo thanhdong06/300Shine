@@ -13,7 +13,6 @@ namespace _300Shine.DataAccessLayer.DTO.ResponseModel
         public int AppointmentId { get; set; }
         public string ServiceName { get; set; }
         public string StylistName { get; set; }
-        
         public DateTime ReturnDate { get; set; }
         public decimal Price { get; set; }
         public string Type { get; set; }

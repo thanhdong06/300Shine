@@ -9,8 +9,8 @@ namespace _300Shine.Controllers
     [Route("api/payment")]
     public class PaymentController : Controller
     {
-        [HttpPost]
-        public async Task<IActionResult> Create()
+        [HttpGet]
+        public async Task<IActionResult> Create(int orderCode, int amount)
         {
             var clientId = "38bb31de-35a1-4335-8bfa-34ab42934b0a";
             var apiKey = "4d398076-e456-42ab-8ced-149bdce1eb0e";
@@ -19,8 +19,8 @@ namespace _300Shine.Controllers
             var payOS = new PayOS(clientId, apiKey, checksumKey);
 
             var paymentLinkRequest = new PaymentData(
-                orderCode: int.Parse(DateTimeOffset.Now.ToString("ffffff")),
-                amount: 2000,
+                orderCode: orderCode,
+                amount: amount,
                 description: "Thanh toan don hang",
                 items: [],
                 returnUrl: "http://localhost:3039/payment-successfully",

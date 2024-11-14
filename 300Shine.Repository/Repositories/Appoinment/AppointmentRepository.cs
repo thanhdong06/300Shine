@@ -29,7 +29,7 @@ namespace _300Shine.Repository.Repositories.Appoinment
             var appointmentEntity = _mapper.Map<AppointmentEntity>(request);
 
             appointmentEntity.UserId = userId;
-            appointmentEntity.Status = "Pending";
+            appointmentEntity.Status = "Canceled";
             appointmentEntity.Date = request.DateToGo;
             appointmentEntity.OrderCode = OrderCode;
 
@@ -153,7 +153,7 @@ namespace _300Shine.Repository.Repositories.Appoinment
             // Map the AppointmentEntity to AppointmentResponseModel
             var appointmentDtos = appointments.Select(a => new AppointmentResponseModel
             {
-                AppointmentId = a.Id.ToString(),
+                AppointmentId = a.Id,
                 Note = a.Note,
                 Date = a.Date,
                 Status = a.Status,
@@ -199,7 +199,7 @@ namespace _300Shine.Repository.Repositories.Appoinment
             // Map the AppointmentEntity to AppointmentResponseModel
             var appointmentDtos = appointments.Select(a => new AppointmentResponseModel
             {
-                AppointmentId = a.Id.ToString(),
+                AppointmentId = a.Id,
                 Note = a.Note,
                 Date = a.Date,
                 Status = a.Status,

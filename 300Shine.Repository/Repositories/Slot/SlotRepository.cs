@@ -39,7 +39,8 @@ namespace _300Shine.Repository.Repositories.Slot
                 .Where(s => s.StylistId == stylistId 
                 && s.Appointment.Date.Year == date.Year 
                 && s.Appointment.Date.Month == date.Month 
-                && s.Appointment.Date.Day == date.Day) // Filter by stylistId and appointment date, sửa so sánh ngày giờ  
+                && s.Appointment.Date.Day == date.Day
+                && s.Appointment.Status != "Canceled") // Filter by stylistId and appointment date, sửa so sánh ngày giờ  
                 .ToListAsync();
             if (appDetails == null || !appDetails.Any())
                 throw new Exception("Stylist of appoinment not found");

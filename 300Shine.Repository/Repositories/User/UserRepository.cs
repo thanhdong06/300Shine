@@ -147,6 +147,9 @@ namespace _300Shine.Repository.Repositories.User
             var checkRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name.ToLower() == "stylist");
             if (checkRole == null) throw new InvalidDataException("Role not found");
 
+            var checkSalon = await _context.Salons.FirstOrDefaultAsync(r => r.Id == request.SalonId);
+            if (checkSalon == null) throw new InvalidDataException("Salon not found");
+
             var newUser = new UserEntity()
             {
                 ImageUrl = request.ImageUrl,
@@ -203,6 +206,9 @@ namespace _300Shine.Repository.Repositories.User
             var checkRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name.ToLower() == "manager");
             if (checkRole == null) throw new InvalidDataException("Role not found");
             
+            var checkSalon = await _context.Salons.FirstOrDefaultAsync(r => r.Id == request.SalonId);
+            if (checkSalon == null) throw new InvalidDataException("Salon not found");
+            
             var newUser = new UserEntity()
             {
                 ImageUrl = request.ImageUrl,
@@ -217,6 +223,8 @@ namespace _300Shine.Repository.Repositories.User
                 Status = "Active",
                 SalonId = request.SalonId
             };
+            _context.Users.Add(newUser);
+            await _context.SaveChangesAsync();
 
             return "Manager created successfully";          
         }

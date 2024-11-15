@@ -27,7 +27,7 @@ namespace _300Shine.BusinessObject.DTO.Request
         public decimal Salary { get; set; }
         public decimal SalaryPerDay { get; set; }
 
-        public List<int> StyleId { get; set; } = new List<int>();
+        public List<int>? StyleId { get; set; } = new List<int>();
 
     }
 }

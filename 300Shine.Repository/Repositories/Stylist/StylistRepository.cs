@@ -48,7 +48,7 @@ namespace _300Shine.Repository.Repositories.Stylist
             var salon = await _context.Salons.Include(ss => ss.Services).Include(s => s.Stylists).AnyAsync(x => x.Id == salonId && x.IsDeleted == false);
             if (!salon)
                 throw new Exception("Salon is not found");
-            var serviceStyle = await _context.ServiceStyles.SingleOrDefaultAsync(x => x.ServiceId == serviceId && x.IsDeleted == false);
+            var serviceStyle = await _context.ServiceStyles.FirstOrDefaultAsync(x => x.ServiceId == serviceId && x.IsDeleted == false);
             if (serviceStyle == null)
                 throw new Exception("Style of service is not found");
 
@@ -60,7 +60,7 @@ namespace _300Shine.Repository.Repositories.Stylist
 
             foreach (var stylist in stylistStyle)
             {
-                var stylists = await _context.Stylists.Include(u => u.User).SingleOrDefaultAsync(x => x.Id == stylist.StylistId && x.SalonId == salonId);
+                var stylists = await _context.Stylists.Include(u => u.User).FirstOrDefaultAsync(x => x.Id == stylist.StylistId && x.SalonId == salonId);
                 var stylistResponse = new StylistResponseModel()
                 {
                     Id = stylists.Id,
@@ -111,7 +111,7 @@ namespace _300Shine.Repository.Repositories.Stylist
                 foreach (var slot in slots)
                 {
                     // Check if the slot time falls within any of the stylist's shifts
-                    bool isWithinShift = stylistShifts.Any(shift => slot.Time.TimeOfDay >= shift.StartTime.TimeOfDay && slot.Time.TimeOfDay < shift.EndTime.TimeOfDay);
+                    bool isWithinShift = stylistShifts.Any(shift => slot.Time.TimeOfDay >= shift.StartTime.TimeOfDay && slot.Time.TimeOfDay <=shift.EndTime.TimeOfDay);
 
                     // Get the list of slots already booked for the stylist's appointments on that day
                     var bookedSlots = await _context.AppointmentSlots
@@ -183,7 +183,7 @@ namespace _300Shine.Repository.Repositories.Stylist
                         foreach (var slot in slots)
                         {
                             // Check if the slot time falls within any of the stylist's shifts
-                            bool isWithinShift = stylistShifts.Any(shift => slot.Time.TimeOfDay >= shift.StartTime.TimeOfDay && slot.Time.TimeOfDay < shift.EndTime.TimeOfDay);
+                            bool isWithinShift = stylistShifts.Any(shift => slot.Time.TimeOfDay >= shift.StartTime.TimeOfDay && slot.Time.TimeOfDay <= shift.EndTime.TimeOfDay);
 
                             // Get the list of slots already booked for the stylist's appointments on that day
                             var bookedSlots = await _context.AppointmentSlots

@@ -182,10 +182,11 @@ namespace _300Shine.Repository.Repositories.Appoinment
             return appointmentDtos;
         }
 
-        public async Task<List<AppointmentResponseModel>> GetAppoinmentsByStatus(string status)
+        public async Task<List<AppointmentResponseModel>> GetAppoinmentsByStatus(string status, string process)
         {
             var appointments = await _context.Appointments
-           .Where(a => a.Status.Equals(status))
+           .Where(a => a.Status.Equals(status)  && a.AppointmentDetails
+                            .Any(ad => ad.Status == process))
            .Include(a => a.User)
            .Include(a => a.Salon)
            .Include(a => a.AppointmentDetails)

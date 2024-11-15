@@ -35,9 +35,9 @@ namespace _300Shine.Service.Appoinments
             return await _appointmentRepository.GetAppoinmentByUserId(userId,status, appoinmentDetailStatus);
         }
 
-        public async Task<List<AppointmentResponseModel>> GetAppoinmentsByStatus(string status)
+        public async Task<List<AppointmentResponseModel>> GetAppoinmentsByStatus(string status, string process)
         {
-            return await _appointmentRepository.GetAppoinmentsByStatus(status);
+            return await _appointmentRepository.GetAppoinmentsByStatus(status, process);
         }
 
         public async Task<AppointmentEntity> UpdateAppointmentStatusAsync(int orderCode, string status)

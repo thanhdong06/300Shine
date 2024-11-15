@@ -16,7 +16,7 @@ namespace _300Shine.Service.Appoinments
         Task<AppointmentEntity> UpdateAppointmentStatusAsync(int orderCode, string status);
         Task<AppointmentDetailEntity> UpdateAppointmentById(int appointmentId, string status);
         Task<List<AppointmentResponseModel>> GetAppoinmentByUserId(int userId, string status, string appoinmentDetailStatus);
-        Task<List<AppointmentResponseModel>> GetAppoinmentsByStatus(string status);
+        Task<List<AppointmentResponseModel>> GetAppoinmentsByStatus(string status, string process);
         Task<List<AppointmentResponseModel>> GetAppoinmentByStylistId(int stylistId, string status, string appoinmentDetailStatus);
     }
 }

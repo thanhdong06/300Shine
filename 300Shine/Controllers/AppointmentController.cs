@@ -46,11 +46,11 @@ namespace _300Shine.Controllers
 
         //[Authorize]
         [HttpGet("list-by-status")]
-        public async Task<ActionResult<JsonResponse<List<AppointmentResponseModel>>>> GetAppoinmentByStatus(string status)
+        public async Task<ActionResult<JsonResponse<List<AppointmentResponseModel>>>> GetAppoinmentByStatus(string status, string process)
         {
             try
             {
-                var result = await _appointmentService.GetAppoinmentsByStatus(status);
+                var result = await _appointmentService.GetAppoinmentsByStatus(status, process);
                 if (result == null)
                 {
                     return BadRequest(new JsonResponse<string>("Failed to get appointments", 400, ""));

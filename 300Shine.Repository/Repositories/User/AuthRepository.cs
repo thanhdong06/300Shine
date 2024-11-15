@@ -40,7 +40,7 @@ namespace _300Shine.Repository.Repositories.User
                 Address = request.Address,
                 RoleId = 3,
                 SalonId = 1,
-                IsVerified = false,
+                IsVerified = true,
                 Status = "Active",
                 ImageUrl = request.ImageUrl,
             };

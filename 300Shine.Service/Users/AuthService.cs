@@ -37,11 +37,11 @@ namespace _300Shine.Service.Users
             registerRequest.Phone = FormatPhoneNumber(registerRequest.Phone);
             var result = await _authRepository.Register(registerRequest);
 
-            var otp = _smsService.GenerateOtp();
-            await _smsService.SendOtpSmsAsync(registerRequest.Phone, otp);
+            //var otp = _smsService.GenerateOtp();
+            //await _smsService.SendOtpSmsAsync(registerRequest.Phone, otp);
 
             var user = await _authRepository.GetUserByPhoneAsync(registerRequest.Phone);
-            user.Otp = otp;
+            user.Otp = string.Empty;
             await _authRepository.UpdateUserAsync(user);
             return result;
         }

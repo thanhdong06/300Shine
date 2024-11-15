@@ -81,19 +81,19 @@ namespace _300Shine.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("verify-otp")]
-        public async Task<IActionResult> VerifyOtp([FromBody] VerifyOtpRequest request)
-        {
-            try
-            {
-                var result = await _autheService.VerifyOtpAsync(request);
-                return Ok(new JsonResponse<string>(result, 200, "OTP verification process completed."));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new JsonResponse<string>("Something went wrong, please contact admin", 400, ex.Message));
-            }
-        }
+        //[HttpPost]
+        //[Route("verify-otp")]
+        //public async Task<IActionResult> VerifyOtp([FromBody] VerifyOtpRequest request)
+        //{
+        //    try
+        //    {
+        //        var result = await _autheService.VerifyOtpAsync(request);
+        //        return Ok(new JsonResponse<string>(result, 200, "OTP verification process completed."));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(new JsonResponse<string>("Something went wrong, please contact admin", 400, ex.Message));
+        //    }
+        //}
     }
 }
